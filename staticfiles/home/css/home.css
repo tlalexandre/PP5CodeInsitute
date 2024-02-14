@@ -1,0 +1,20 @@
+.outsideImage{
+    background-image: url('../../../../static/images/CoffeeBeanOutside.jpg');
+    background-position: center center; /* Change as needed */
+    height: 55vh;
+    max-height: 500px; /* Set a specific height */
+    min-width: 300px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 1rem;
+}
+.coffeeCup {
+    background-image: url('../../../../static/images/CoffeeCup.jpg');
+    background-position: center center;
+    height: 300px;
+    max-height: 320px;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: 100%; /* Change this to zoom in or out */
+    border-radius: 1rem;
+}

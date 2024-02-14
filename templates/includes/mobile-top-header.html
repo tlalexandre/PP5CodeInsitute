@@ -1,0 +1,31 @@
+
+<li class="list-inline-item">
+    <a class="{% if grand_total %}text-primary font-weight-bold{% else %}text-black{% endif %} nav-link d-block d-lg-none white bg-accent-color rounded" href="">
+        <div class="text-center">
+            <div><i class="fas fa-shopping-bag fa-lg"></i></div>
+            <p class="my-0">
+                {% if grand_total %}
+                ${{ grand_total|floatformat:2 }}
+                {% else %}
+                $0.00
+                {% endif %}
+            </p>
+        </div>
+    </a>
+</li>
+<li class="list-inline-item dropdown">
+    <a class="text-black nav-link d-block d-lg-none white bg-accent-color rounded" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="text-center">
+            <div><i class="fas fa-user fa-lg"></i></div>
+            <p class="my-0">Account</p>
+        </div>
+    </a>
+    <div class="dropdown-menu border-0" aria-labelledby="user-options">
+        
+    </div>
+</li>
+<li class="list-inline-item dropdown">
+    <a href="" class="text-black nav-link d-block d-lg-none href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <h1 class="text-uppercase allerta brand-color">The Coffee Bean</h1>
+    </a>
+</li>
