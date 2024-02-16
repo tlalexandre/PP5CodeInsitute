@@ -42,8 +42,14 @@
         </li>
 
         <li class="nav-item dropdown">
-            <a class="logo-font font-weight-300 nav-link text-black text-center" href="#"   aria-haspopup="true" aria-expanded="false">
+            <a class="logo-font font-weight-300 nav-link text-black text-center" href="{% url 'order_online' %}"   aria-haspopup="true" aria-expanded="false">
+                {% if request.resolver_match.url_name == 'order_online' %}
+                <span class="bg-brand-color white px-4 mx-2 rounded-pill">
+                {% endif %}
                 Order Online
+                {% if request.resolver_match.url_name == 'order_online' %}
+                    </span>
+                {% endif %}
             </a>
         </li>
 
