@@ -1,16 +1,25 @@
 <div class="collapse navbar-collapse" id="main-nav">
     <ul class="navbar-nav w-auto mx-auto jost text-uppercase ">
         <li class="nav-item dropdown">
-            <!-- Need to add the condition to display it under the active link(NEED URLS SETUP) -->
             <a href="{% url 'home' %}" class="logo-font font-weight-300 nav-link text-black text-center" id="home-link" aria-haspopup="true" aria-expanded="false">
-                <span class="bg-brand-color white px-4 mx-2 rounded-pill">
-                    Home
-                </span>
+                {% if request.resolver_match.url_name == 'home' %}
+                    <span class="bg-brand-color white px-4 mx-2 rounded-pill">
+                {% endif %}
+                Home
+                {% if request.resolver_match.url_name == 'home' %}
+                    </span>
+                {% endif %}
             </a>
         </li>
         <li class="nav-item dropdown">
             <a class="logo-font font-weight-300 nav-link text-black text-center" href="{% url 'about' %}"  aria-haspopup="true" aria-expanded="false">
+                {% if request.resolver_match.url_name == 'about' %}
+                    <span class="bg-brand-color white px-4 mx-2 rounded-pill">
+                {% endif %}
                 About
+                {% if request.resolver_match.url_name == 'about' %}
+                    </span>
+                {% endif %}
             </a>
             <!-- <div class="dropdown-menu border-0" aria-labelledby="all-products-link">
                 <a href="" class="dropdown-item">By Price</a>
@@ -22,7 +31,13 @@
 
         <li class="nav-item dropdown">
             <a class="logo-font font-weight-300 nav-link text-black text-center" href="{% url 'menu' %}"  aria-haspopup="true" aria-expanded="false">
+                {% if request.resolver_match.url_name == 'menu' %}
+                <span class="bg-brand-color white px-4 mx-2 rounded-pill">
+                {% endif %}
                 Menu
+                {% if request.resolver_match.url_name == 'menu' %}
+                    </span>
+                {% endif %}
             </a>
         </li>
 
