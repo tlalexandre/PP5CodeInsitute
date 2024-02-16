@@ -1,3 +1,4 @@
+/* General Settings */
 body{
     height: calc(100vh - 164px);
     font-family: "Jost", sans-serif;
@@ -35,6 +36,13 @@ body{
 
 .rounded{
     border-radius: 1rem !important;
+}
+
+.floating-button{
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 1000;
 }
 
 /* from Bulma */
