@@ -107,6 +107,7 @@
     {% endblock %}
 
     <!-- NEED TO ADD CONDITION TO DISPLAY IT EVERYWHERE except on Order Online page -->
+    {% if not request.resolver_match.url_name == 'order_online' %}
     <div class="text-center">
         <a href="" class="btn btn-primary mb-2 floating-button">Order Here 
             <span class="icon white">
@@ -114,6 +115,7 @@
             </span>
         </a>
     </div>
+    {% endif %}
 
 
     {% block postloadjs %}
