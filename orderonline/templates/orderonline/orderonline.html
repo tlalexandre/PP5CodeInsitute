@@ -15,8 +15,16 @@
 {% block content %}
 <div class="container-fluid h-100 bg-white">
     <div class="row">
-    <h1>Order Online</h1> 
-       
+       <h1>Order Online</h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <ul class="">
+                {% for category in categories %}
+                    <li class="no-bullets"><a href="{{ category.link }}" class="nav-link white bg-brand-color">{{ category.friendly_name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </div>
 {% endblock %}

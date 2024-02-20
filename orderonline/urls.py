@@ -5,5 +5,4 @@ from . import views
 
 urlpatterns = [
     path('', views.order_online, name='order_online'),
-
 ]
