@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import MenuCategory, MenuItem
 
 # Create your views here.
@@ -16,4 +16,8 @@ def order_online(request):
     }
 
     return render(request, 'orderonline/orderonline.html', context)
+
+def item_detail(request, item_id):
+    item = get_object_or_404(MenuItem, pk=item_id)
+    return render(request, 'orderonline/item_detail.html', {'item': item})
 

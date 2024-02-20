@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'orderonline/css/orderonline.css' %}">
+{% endblock %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="card-body">
+    <a href="{% url 'item_detail' item.id %}" class="block-link">
+        <h5 class="card-title">{{ item.name }}</h5>  
+    </a>
+        <div class="d-flex">
+            <div class="item-info">
+                <p class="card-text my-0">Ingredients : {{ item.description | truncatechars:50 }}</p>
+                <p class="card-text price">{{ item.price }} € </p>
+            </div>
+            <div class="quantity-container">
+                <button class="quantity-button" id="increase">+</button>
+                <button class="quantity-button" id="decrease">-</button>
+            </div>
+        </div>    
+    </div>
+    <img src="{{ item.image.url }}" class="card-img-top card-img-top-fixed rounded-right" alt="{{ item.name }}">
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'orderonline/js/orderonline.js' %}"></script>
+{% endblock %}
