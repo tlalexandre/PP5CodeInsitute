@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'orderonline/css/orderonline.css' %}">
 {% endblock %}
 
 {% block page_header %}
@@ -13,19 +14,53 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid h-100 bg-white">
-    <div class="row">
-       <h1>Order Online</h1>
-    </div>
-    <div class="row">
+<div class="container-fluid bg-white">
+    <div class="row ">
         <div class="col-sm-2">
-            <ul class="">
+            <ul class="pl-0 navbar-menu">
                 {% for category in categories %}
-                    <li class="no-bullets"><a href="{{ category.link }}" class="nav-link white bg-brand-color">{{ category.friendly_name }}</a></li>
+                    <li class="no-bullets mb-2"><a href="#{{ category.friendly_name }}" class="nav-link">{{ category.friendly_name }}</a></li>
                 {% endfor %}
             </ul>
         </div>
+        <div class="col-sm-10 menu-items">
+            <div class="row">
+                {% for category in categories %}
+                    <div id="{{ category.friendly_name }}" class="row category">
+                        <h2 class="w-100 text-center">{{category.friendly_name}}</h2>
+                        <br>
+                        {% for item in items %}
+                            {% if item.category == category %}
+                                <div class="col-sm-6 mb-2">
+                                    <div class="card card-fixed-height rounded">
+                                        <div class="card-body">
+                                            <a href="" class="block-link">
+                                                <h5 class="card-title">{{ item.name }}</h5>  
+                                            </a>
+                                                <div class="d-flex">
+                                                    <div class="item-info">
+                                                        <p class="card-text my-0">Ingredients : {{ item.description | truncatechars:50 }}</p>
+                                                        <p class="card-text price">{{ item.price }} € </p>
+                                                    </div>
+                                                    <div class="quantity-container">
+                                                        <button class="quantity-button" id="increase">+</button>
+                                                        <button class="quantity-button" id="decrease">-</button>
+                                                    </div>
+                                                </div>    
+                                            </div>
+                                            <img src="{{ item.image.url }}" class="card-img-top card-img-top-fixed rounded-right" alt="{{ item.name }}">
+                                        </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>        
     </div>
 </div>
 {% endblock %}
 
+{% block extra_js %}
+    <script src="{% static 'orderonline/js/orderonline.js' %}"></script>
+{% endblock %}

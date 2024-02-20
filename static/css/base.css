@@ -16,7 +16,7 @@ body{
     color: #6B2934;
 }
 .white{
-    color: #F3F7F5 ;
+    color: #F3F7F5 !important;
 }
 .bg-white{
     background-color: #F3F7F5 !important;
@@ -35,7 +35,11 @@ body{
 }
 
 .rounded{
-    border-radius: 1rem !important;
+    border-radius: 1.25rem !important;
+}
+.rounded-right{
+    border-top-right-radius: 1.25rem !important;
+    border-bottom-right-radius: 1.25rem !important;
 }
 
 .floating-button{

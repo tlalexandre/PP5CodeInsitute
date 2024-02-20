@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import MenuCategory
+from .models import MenuCategory, MenuItem
 
 # Create your views here.
 
@@ -8,5 +8,12 @@ def order_online(request):
     
     categories = MenuCategory.objects.all()
 
-    return render(request, 'orderonline/orderonline.html', {'categories': categories})
+    items= MenuItem.objects.all()
+    
+    context= {
+        'categories': categories,
+        'items': items,
+    }
+
+    return render(request, 'orderonline/orderonline.html', context)
 
