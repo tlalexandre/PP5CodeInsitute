@@ -14,25 +14,119 @@
 {% endblock %}
 
 {% block content %}
-<div class="card-body">
-    <a href="{% url 'item_detail' item.id %}" class="block-link">
-        <h5 class="card-title">{{ item.name }}</h5>  
-    </a>
-        <div class="d-flex">
-            <div class="item-info">
-                <p class="card-text my-0">Ingredients : {{ item.description | truncatechars:50 }}</p>
-                <p class="card-text price">{{ item.price }} € </p>
-            </div>
-            <div class="quantity-container">
-                <button class="quantity-button" id="increase">+</button>
-                <button class="quantity-button" id="decrease">-</button>
+<div class="row">
+    <div class="col-sm-2 mb-5">
+        <ul class="pl-0 navbar-menu">
+            {% for category in categories %}
+                <li class="no-bullets mb-2"><a href="#{{ category.friendly_name }}" class="nav-link">{{ category.friendly_name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="w-75 item-card-body mx-auto rounded justify-content-center">
+        <div class="position-relative">
+            <a href="{% url 'order_online' %}" class="rounded p-2 position-absolute bg-white brand-color" style="top: 10px; left: 10px;">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <img src="{{ item.image.url }}" class="card-img-top item-detail-img rounded" alt="{{ item.name }}">
+        </div>
+            <h2 class="card-title ml-2">{{ item.name }}</h2>  
+        <div class="d-flex mx-4">
+            <div class="item-info w-100">
+                <p class="card-text my-2 ">Ingredients : {{ item.description }}</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+
+                <div class="row">
+
+                    <!-- Displays the option to the user to choose between two ingredients included in the item for free. -->
+                    {% regroup menu_item_ingredients by option as ingredient_groups %}
+                    {% for group in ingredient_groups %}
+                    <div class="col-12 col-md-4">
+                        {% if group.grouper %}
+                        <h3>{{ group.grouper.name }}</h3>
+                        {% else %}
+                        <h3>Extras</h3>
+                        {% endif %}
+                        {% for ingredient in group.list %}
+                        <div>
+                            <label for="ingredient_{{ ingredient.id }}">{{ ingredient.ingredient.name }}{% if ingredient.price != 0 %} - {{ ingredient.price }} €{% endif %}</label>
+                            <input type="radio" id="ingredient_{{ ingredient.id }}" name="option_{{ group.grouper.id }}" value="{{ ingredient.ingredient.id }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+
+                {% if included_items %}
+                <h3 class="text-center mt-5"><u>Included Items</u></h3>
+                    <select id="included_item" name="included_item" class="col-12 col-md-6" onchange="showIngredients(this.value)">
+                        {% for included_item in included_items %}
+                            <option value="{{ included_item.id }}">
+                                {{ included_item.included_item.name }} - {{ included_item.price }} €
+                            </option>
+                        {% endfor %}
+                    </select>
+                {% for included_item in included_items %}
+                    <div id="ingredients_{{ included_item.id }}" style="display: none;">
+                        <div class="row">
+                            {% regroup included_item.ingredients by option as ingredient_groups %}
+                            {% for group in ingredient_groups %}
+                                <div class="col-12 col-md-4">
+                                    {% if group.grouper %}
+                                        <h3>{{ group.grouper.name }}</h3>
+                                    {% else %}
+                                        <h3>Extras</h3>
+                                    {% endif %}
+                                    {% for ingredient in group.list %}
+                                        <div>
+                                            <label for="ingredient_{{ ingredient.id }}">{{ ingredient.ingredient.name }}{% if ingredient.price != 0 %} - {{ ingredient.price }} €{% endif %}</label>
+                                            <input type="radio" id="ingredient_{{ ingredient.id }}" name="option_{{ group.grouper.id }}" value="{{ ingredient.ingredient.id }}">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                
+                        <div class="d-flex justify-content-center mt-2">
+                            <button class="bg-brand-color white rounded-pill mb-2 w-50">Add to Cart  {{ item.price }} € </button>
+                        </div>
+
+                </form>
+                {% endif %}
             </div>
         </div>    
+
     </div>
-    <img src="{{ item.image.url }}" class="card-img-top card-img-top-fixed rounded-right" alt="{{ item.name }}">
+</div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'orderonline/js/orderonline.js' %}"></script>
+<script>
+    function showIngredients(includedItemId) {
+    // Hide all ingredient divs
+    var ingredientDivs = document.querySelectorAll('[id^="ingredients_"]');
+        for (var i = 0; i < ingredientDivs.length; i++) {
+            ingredientDivs[i].style.display = 'none';
+
+        }
+
+        // Show the selected ingredient div
+        var selectedIngredientDiv = document.getElementById('ingredients_' + includedItemId);
+        if (selectedIngredientDiv) {
+            selectedIngredientDiv.style.display = 'block';
+
+        }
+}
+    // Call showIngredients on page load for the initially selected included item
+    window.onload = function() {
+        var initialIncludedItemId = document.getElementById('included_item').value;
+        showIngredients(initialIncludedItemId);
+    }
+</script>
 {% endblock %}

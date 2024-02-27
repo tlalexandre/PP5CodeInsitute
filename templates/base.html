@@ -106,8 +106,8 @@
     {% block content %}
     {% endblock %}
 
-    <!-- NEED TO ADD CONDITION TO DISPLAY IT EVERYWHERE except on Order Online page -->
-    {% if not request.resolver_match.url_name == 'order_online' %}
+    <!-- NEED TO ADD CONDITION TO DISPLAY IT EVERYWHERE except on pages that contain 'orderonline' in the URL -->
+    {% if 'orderonline' not in request.path %}
     <div class="text-center">
         <a href="{% url 'order_online'%}" class="btn btn-primary mb-2 floating-button">Order Here 
             <span class="icon white">

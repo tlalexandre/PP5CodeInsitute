@@ -38,6 +38,7 @@ class MenuItem(models.Model):
 class MenuItemIngredient(models.Model):
     menu_item = models.ForeignKey('MenuItem', on_delete=models.CASCADE)
     ingredient = models.ForeignKey('Ingredient', on_delete=models.CASCADE)
+    option = models.ForeignKey('IngredientOption', null=True, blank=True, on_delete=models.SET_NULL)  # new field
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     is_optional = models.BooleanField(default=True)
 
@@ -45,15 +46,16 @@ class MenuItemIngredient(models.Model):
         return self.menu_item.name + ' - ' + self.ingredient.name
     
 class IngredientOption(models.Model):
-    menu_items = models.ManyToManyField('MenuItem', blank=True)  # Changed from ForeignKey to ManyToManyField
+    menu_items = models.ManyToManyField('MenuItem', blank=True)
     category= models.ForeignKey('MenuCategory', null=True,blank=True,  on_delete=models.CASCADE)
-    name = models.CharField(max_length=254)  # e.g. "Egg Style"
+    name = models.CharField(max_length=254)
+    single_select = models.BooleanField(default=False)  # moved from Ingredient
+
     def __str__(self):
         return self.name
-    
+
 class Ingredient(models.Model):
     name = models.CharField(max_length=254)
-    option = models.ForeignKey('IngredientOption', null=True, blank=True, on_delete=models.SET_NULL)  # new field
 
     def __str__(self):
         return self.name

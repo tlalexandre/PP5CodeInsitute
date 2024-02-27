@@ -6,18 +6,22 @@ class MenuItemAdmin(admin.ModelAdmin):
     list_filter = ('category',)
     filter_horizontal = ('ingredients',)
 
-class IngredientAdmin(admin.ModelAdmin):
-    list_display = ('name', 'option')
-    list_filter = ('option',)
 
 
 class MenuItemIngredientAdmin(admin.ModelAdmin):
-    list_display = ('menu_item', 'ingredient', 'price', 'is_optional')
+    list_display = ('menu_item', 'ingredient', 'price', 'option','is_optional')
     
 
+class MenuItemIngredientInline(admin.TabularInline):
+    model = MenuItemIngredient
+    extra = 1
+
+class IngredientOptionAdmin(admin.ModelAdmin):
+    inlines = [MenuItemIngredientInline]
+
+admin.site.register(IngredientOption, IngredientOptionAdmin)
 admin.site.register(MenuCategory)
 admin.site.register(MenuItem, MenuItemAdmin)
 admin.site.register(MenuItemIngredient, MenuItemIngredientAdmin)
-admin.site.register(Ingredient, IngredientAdmin)
+admin.site.register(Ingredient)
 admin.site.register(MenuItemIncludedItem)
-admin.site.register(IngredientOption)
