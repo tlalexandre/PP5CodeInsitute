@@ -35,3 +35,4 @@ def item_detail(request, item_id):
         'included_items': included_items,
         'categories': categories,
     })
+

@@ -18,7 +18,7 @@
     <div class="col-sm-2 mb-5">
         <ul class="pl-0 navbar-menu">
             {% for category in categories %}
-                <li class="no-bullets mb-2"><a href="#{{ category.friendly_name }}" class="nav-link">{{ category.friendly_name }}</a></li>
+                <li class="no-bullets mb-2"><a href="/orderonline/#{{ category.friendly_name }}" class="nav-link">{{ category.friendly_name }}</a></li>
             {% endfor %}
         </ul>
     </div>
@@ -51,9 +51,13 @@
                         {% for ingredient in group.list %}
                         <div>
                             <label for="ingredient_{{ ingredient.id }}">{{ ingredient.ingredient.name }}{% if ingredient.price != 0 %} - {{ ingredient.price }} €{% endif %}</label>
-                            <input type="radio" id="ingredient_{{ ingredient.id }}" name="option_{{ group.grouper.id }}" value="{{ ingredient.ingredient.id }}">
+                            {% if group.grouper %}
+                                <input type="radio" id="ingredient_{{ ingredient.id }}" name="option_{{ group.grouper.id }}" value="{{ ingredient.ingredient.id }}" data-price="{{ ingredient.price }}" {% if not ingredient.is_optional %} checked {% endif %}>
+                            {% else %}
+                                <input type="checkbox" id="ingredient_{{ ingredient.id }}" name="extra_{{ ingredient.id }}" value="{{ ingredient.ingredient.id }}" data-price="{{ ingredient.price }}">
+                            {% endif %}
                         </div>
-                        {% endfor %}
+                    {% endfor %}
                     </div>
                     {% endfor %}
                 </div>
@@ -82,7 +86,11 @@
                                     {% for ingredient in group.list %}
                                         <div>
                                             <label for="ingredient_{{ ingredient.id }}">{{ ingredient.ingredient.name }}{% if ingredient.price != 0 %} - {{ ingredient.price }} €{% endif %}</label>
-                                            <input type="radio" id="ingredient_{{ ingredient.id }}" name="option_{{ group.grouper.id }}" value="{{ ingredient.ingredient.id }}">
+                                            {% if group.grouper %}
+                                                <input type="radio" id="ingredient_{{ ingredient.id }}" name="option_{{ included_item.id }}_{{ group.grouper.id }}" value="{{ ingredient.ingredient.id }}" data-price="{{ ingredient.price }}"  {% if not ingredient.is_optional %} checked {% endif %}>
+                                            {% else %}
+                                                <input type="checkbox" id="ingredient_{{ ingredient.id }}" name="extra_{{ ingredient.id }}" value="{{ ingredient.ingredient.id }}" data-price="{{ ingredient.price }}">
+                                            {% endif %}
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -90,14 +98,15 @@
                         </div>
                     </div>
                 {% endfor %}
-
                 
                         <div class="d-flex justify-content-center mt-2">
                             <button class="bg-brand-color white rounded-pill mb-2 w-50">Add to Cart  {{ item.price }} € </button>
                         </div>
 
+                        
+
+                 {% endif %}
                 </form>
-                {% endif %}
             </div>
         </div>    
 
@@ -108,6 +117,9 @@
 
 {% block extra_js %}
 <script>
+
+    var inputs = document.querySelectorAll('input[data-price]');
+
     function showIngredients(includedItemId) {
     // Hide all ingredient divs
     var ingredientDivs = document.querySelectorAll('[id^="ingredients_"]');
@@ -123,6 +135,9 @@
 
         }
 }
+
+    
+
     // Call showIngredients on page load for the initially selected included item
     window.onload = function() {
         var initialIncludedItemId = document.getElementById('included_item').value;
