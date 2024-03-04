@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from .models import MenuCategory, MenuItem, MenuItemIngredient, IngredientOption, MenuItemIncludedItem
-# Create your views here.
+from django.shortcuts import render, get_object_or_404,redirect
+from .models import MenuCategory, MenuItem, MenuItemIngredient, IngredientOption, MenuItemIncludedItem , Ingredient
+from django.contrib import messages
+
 
 def order_online(request):
     """ A view to return the order online page """

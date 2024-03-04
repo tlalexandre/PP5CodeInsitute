@@ -34,9 +34,10 @@
             <div class="item-info w-100">
                 <p class="card-text my-2 ">Ingredients : {{ item.description }}</p>
                 
-                <form method="post">
+                <form method="POST" action="{% url 'add_to_cart' %}">
                     {% csrf_token %}
 
+                <input type="hidden" name="item_id" value="{{ item.id }}"> 
                 <div class="row">
 
                     <!-- Displays the option to the user to choose between two ingredients included in the item for free. -->
@@ -99,13 +100,13 @@
                     </div>
                 {% endfor %}
                 
-                        <div class="d-flex justify-content-center mt-2">
-                            <button class="bg-brand-color white rounded-pill mb-2 w-50 add-to-cart-button">Add to Cart  {{ item.price }} € </button>
-                        </div>
-
-                        
-
-                 {% endif %}
+                
+                
+                
+                {% endif %}
+                <div class="d-flex justify-content-center mt-2">
+                    <button class="bg-brand-color white rounded-pill mb-2 w-50 add-to-cart-button" type="submit">Add to Cart  {{ item.price }} € </button>
+                </div>
                 </form>
             </div>
         </div>    
