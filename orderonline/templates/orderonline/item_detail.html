@@ -54,33 +54,18 @@
 {% block extra_js %}
 <script src="{% static 'orderonline/js/itemDetail.js' %}"></script>
 <script>
-    window.onload = function() {
-        console.log('Script started');
-
-        // Select all checkbox and radio inputs
-        var inputs = document.querySelectorAll('input[type="checkbox"], input[type="radio"]');
-        console.log('Inputs selected:', inputs);
-
-        // Function to calculate total price
-        function calculateTotalPrice() {
-            var totalPrice = parseFloat({{ item.price }});
-            var selectedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
-            for (var i = 0; i < selectedInputs.length; i++) {
-                totalPrice += parseFloat(selectedInputs[i].dataset.price);
+    $(document).ready(function() {
+        $("#id_included_item option").each(function() {
+            var label = $(this).text();
+            var label_parts = label.split(' - ');
+            if (label_parts.length > 1) {
+                var price = label_parts[1].replace('€', '');
+                $(this).attr('data-price', price);
             }
-            document.querySelector('.add-to-cart-button').textContent = 'Add to Cart ' + totalPrice.toFixed(2) + ' €';
-        }
-
-        // Add change event listener to each input
-        for (var i = 0; i < inputs.length; i++) {
-            inputs[i].addEventListener('change', calculateTotalPrice);
-        }
-
-        // Calculate total price on page load
-        calculateTotalPrice();
-
-        console.log('Script ended');
-    };
+        });
+    });
 </script>
+<script src="{% static 'orderonline/js/updatePrice.js' %}"></script>
+
 
 {% endblock %}
