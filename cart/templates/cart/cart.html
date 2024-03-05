@@ -13,28 +13,38 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row flex-column mx-auto w-75">
-        {% for cart_item in cart %}
-        <div class="card h-50">
+    <h1>Cart</h1>
 
-            <h2>{{ cart_item.name }}</h2>
-            {% if cart_item.image_url %}
-            <img src="{{ cart_item.image_url }}" alt="{{ cart_item.name }}" class="card-img-top card-img-top-fixed rounded-right">
-            {% endif %}
-            <p>Price: {{ cart_item.price }}</p>
-            <p>Options:</p>
-            <ul>
-                {% for option in cart_item.options %}
-                <li>{{ option }}</li>
-                {% endfor %}
-            </ul>
-            <p>Extras:</p>
-            <ul>
-                {% for extra in cart_item.extras %}
-                <li>{{ extra }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-            {% endfor %}
-        </div>
+    <div class="row flex-column mx-auto w-75">
+        {% for item in cart %}
+            <div class="card mb-3">
+                <div class="row no-gutters">
+                    {% if item.image_url %}
+                        <div class="col-md-4">
+                            <img src="{{ item.image_url }}" class="card-img" alt="{{ item.name }}">
+                        </div>
+                    {% endif %}
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.name }}</h5>
+                            <p class="card-text">
+                                <strong>Price:</strong> {{ item.price }}<br>
+                                <strong>Options:</strong> {{ item.options|join:", " }}<br>
+                                <strong>Extras:</strong> {{ item.extras|join:", " }}<br>
+                            </p>
+                            {% if item.included_item %}
+                                <h6>Included Item: {{ item.included_item.name }}</h6>
+                                <p>
+                                    <strong>Options:</strong> {{ item.included_item.options|join:", " }}<br>
+                                    <strong>Extras:</strong> {{ item.included_item.extras|join:", " }}<br>
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Your cart is empty.</p>
+        {% endfor %}
+    </div>
 {% endblock %}
