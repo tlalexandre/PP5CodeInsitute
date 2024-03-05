@@ -16,7 +16,7 @@
 {% block content %}
 <div class="row">
     <div class="col-sm-2 mb-5">
-        <ul class="pl-0 navbar-menu">
+        <ul class="navbar-menu">
             {% for category in categories %}
                 <li class="no-bullets mb-2"><a href="/orderonline/#{{ category.friendly_name }}" class="nav-link">{{ category.friendly_name }}</a></li>
             {% endfor %}
@@ -37,7 +37,7 @@
                 
                 <form method="POST" action="{% url 'add_to_cart' %}">
                     {% csrf_token %}
-                    {{ form}}
+                    {{ form }}
                 <div id="options-extras"></div>
                 <div class="d-flex justify-content-center mt-2">
                     <button class="bg-brand-color white rounded-pill mb-2 w-50 add-to-cart-button" type="submit">Add to Cart  {{ item.price }} € </button>
@@ -53,4 +53,34 @@
 
 {% block extra_js %}
 <script src="{% static 'orderonline/js/itemDetail.js' %}"></script>
+<script>
+    window.onload = function() {
+        console.log('Script started');
+
+        // Select all checkbox and radio inputs
+        var inputs = document.querySelectorAll('input[type="checkbox"], input[type="radio"]');
+        console.log('Inputs selected:', inputs);
+
+        // Function to calculate total price
+        function calculateTotalPrice() {
+            var totalPrice = parseFloat({{ item.price }});
+            var selectedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
+            for (var i = 0; i < selectedInputs.length; i++) {
+                totalPrice += parseFloat(selectedInputs[i].dataset.price);
+            }
+            document.querySelector('.add-to-cart-button').textContent = 'Add to Cart ' + totalPrice.toFixed(2) + ' €';
+        }
+
+        // Add change event listener to each input
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('change', calculateTotalPrice);
+        }
+
+        // Calculate total price on page load
+        calculateTotalPrice();
+
+        console.log('Script ended');
+    };
+</script>
+
 {% endblock %}

@@ -18,12 +18,33 @@ class MenuItemIncludedItemChoiceField(forms.ModelChoiceField):
             return f"{obj.included_item.name}"  # If the price is 0, only display the name
         else:
             return f"{obj.included_item.name} - {obj.price}€"  # If the price is not 0, display the name and the price
+        
+
 class IngredientChoiceField(forms.ModelChoiceField):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.prices = {}
+
     def label_from_instance(self, obj):
+        self.prices[obj.id] = obj.price
         if obj.price == 0:
             return f"{obj.ingredient.name}"  # If the price is 0, only display the name
         else:
             return f"{obj.ingredient.name} - {obj.price}€"  # If the price is not 0, display the name and the price
+
+class CustomCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        option_dict = super().create_option(name, value, label, selected, index, subindex=subindex, attrs=attrs)
+        # Add 'data-price' attribute to the option
+        option_dict['attrs']['data-price'] = self.choices.field.prices[value.value]
+        return option_dict
+
+class CustomRadioSelect(forms.RadioSelect):
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        option_dict = super().create_option(name, value, label, selected, index, subindex=subindex, attrs=attrs)
+        # Add 'data-price' attribute to the option
+        option_dict['attrs']['data-price'] = self.choices.field.prices[value.value]
+        return option_dict
 
 class AddToCartForm(forms.Form):
     item_id = forms.ModelChoiceField(queryset=MenuItem.objects.all(), widget=forms.HiddenInput())
@@ -38,11 +59,21 @@ class AddToCartForm(forms.Form):
             ingredients = MenuItemIngredient.objects.filter(menu_item=item)
             ingredient_options = self.get_options(ingredients)
             for option_name, items in ingredient_options.items():
-                self.fields[option_name] = IngredientChoiceField(
-                    queryset=MenuItemIngredient.objects.filter(id__in=[i.id for i in items]),
-                    widget=forms.RadioSelect,
-                    required=False
-                )
+                if option_name == 'Extras':
+                    self.fields[option_name] = IngredientChoiceField(
+                        queryset=MenuItemIngredient.objects.filter(id__in=[i.id for i in items]),
+                        widget=CustomCheckboxSelectMultiple,
+                        required=False,
+                        empty_label=None
+                    )
+                else:
+                    self.fields[option_name] = IngredientChoiceField(
+                        queryset=MenuItemIngredient.objects.filter(id__in=[i.id for i in items]),
+                        widget=CustomRadioSelect,
+                        required=True
+                    )
+
+                    self.fields[option_name].initial = items[-1].id if items else None
 
     def get_options(self, items):
         options = {}

@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         input.type = 'checkbox';
                         input.name = 'option';
                         input.value = extras[i].id;
+                        input.dataset.price = extras[i].price; // Add data-price attribute
                         optionsExtrasDiv.appendChild(input);
                         var label = document.createElement('label');
                         label.innerHTML = extras[i].price == 0 ? extras[i].ingredient__name : extras[i].ingredient__name + " - €" + extras[i].price;
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                             input.type = 'radio';
                             input.name = optionName; // Use optionName as name to ensure only one option can be selected
                             input.value = options[optionName][i].id;
+                            input.dataset.price = options[optionName][i].price; // Add data-price attribute
                             optionDiv.appendChild(input);
                             var label = document.createElement('label');
                             label.innerHTML = options[optionName][i].price == 0 ? options[optionName][i].ingredient__name : options[optionName][i].ingredient__name + " - €" + options[optionName][i].price;

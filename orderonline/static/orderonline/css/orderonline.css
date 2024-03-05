@@ -94,7 +94,8 @@ html{
         overflow-x: auto;
         position: fixed;
         z-index: 1000;
-        width: 95%;
+        width: 100%;
+        margin-left: -12px;
         background-color: #F3F7F5;
         
     }
