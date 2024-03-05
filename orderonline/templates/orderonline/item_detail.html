@@ -33,77 +33,12 @@
         <div class="d-flex mx-4">
             <div class="item-info w-100">
                 <p class="card-text my-2 ">Ingredients : {{ item.description }}</p>
+                {{ options_extras|json_script:"optionsExtras" }}
                 
                 <form method="POST" action="{% url 'add_to_cart' %}">
                     {% csrf_token %}
-
-                <input type="hidden" name="item_id" value="{{ item.id }}"> 
-                <div class="row">
-
-                    <!-- Displays the option to the user to choose between two ingredients included in the item for free. -->
-                    {% regroup menu_item_ingredients by option as ingredient_groups %}
-                    {% for group in ingredient_groups %}
-                    <div class="col-12 col-md-4">
-                        {% if group.grouper %}
-                        <h3>{{ group.grouper.name }}</h3>
-                        {% else %}
-                        <h3>Extras</h3>
-                        {% endif %}
-                        {% for ingredient in group.list %}
-                        <div>
-                            <label for="ingredient_{{ ingredient.id }}">{{ ingredient.ingredient.name }}{% if ingredient.price != 0 %} - {{ ingredient.price }} €{% endif %}</label>
-                            {% if group.grouper %}
-                                <input type="radio" id="ingredient_{{ ingredient.id }}" onchange="updatePrice()" name="option_{{ group.grouper.id }}" value="{{ ingredient.ingredient.id }}" data-price="{{ ingredient.price }}" {% if not ingredient.is_optional %} checked {% endif %}>
-                            {% else %}
-                                <input type="checkbox" id="ingredient_{{ ingredient.id }}" onchange="updatePrice()" name="extra_{{ ingredient.id }}" value="{{ ingredient.ingredient.id }}" data-price="{{ ingredient.price }}">
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                    </div>
-                    {% endfor %}
-                </div>
-
-
-                {% if included_items %}
-                <h3 class="text-center mt-5"><u>Included Items</u></h3>
-                    <select id="included_item" name="included_item" class="col-12 col-md-6" onchange="showIngredients(this.value); updatePrice();">
-                        {% for included_item in included_items %}
-                            <option value="{{ included_item.id }}">
-                                {{ included_item.included_item.name }} - {{ included_item.price }} €
-                            </option>
-                        {% endfor %}
-                    </select>
-                {% for included_item in included_items %}
-                    <div id="ingredients_{{ included_item.id }}" style="display: none;">
-                        <div class="row">
-                            {% regroup included_item.ingredients by option as ingredient_groups %}
-                            {% for group in ingredient_groups %}
-                                <div class="col-12 col-md-4">
-                                    {% if group.grouper %}
-                                        <h3>{{ group.grouper.name }}</h3>
-                                    {% else %}
-                                        <h3>Extras</h3>
-                                    {% endif %}
-                                    {% for ingredient in group.list %}
-                                        <div>
-                                            <label for="ingredient_{{ ingredient.id }}">{{ ingredient.ingredient.name }}{% if ingredient.price != 0 %} - {{ ingredient.price }} €{% endif %}</label>
-                                            {% if group.grouper %}
-                                                <input type="radio" id="ingredient_{{ ingredient.id }}" onchange="updatePrice()" name="option_{{ included_item.id }}_{{ group.grouper.id }}" value="{{ ingredient.ingredient.id }}" data-price="{{ ingredient.price }}"  {% if not ingredient.is_optional %} checked {% endif %}>
-                                            {% else %}
-                                                <input type="checkbox" id="ingredient_{{ ingredient.id }}" onchange="updatePrice()" name="extra_{{ ingredient.id }}" value="{{ ingredient.ingredient.id }}" data-price="{{ ingredient.price }}">
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endfor %}
-                
-                
-                
-                
-                {% endif %}
+                    {{ form}}
+                <div id="options-extras"></div>
                 <div class="d-flex justify-content-center mt-2">
                     <button class="bg-brand-color white rounded-pill mb-2 w-50 add-to-cart-button" type="submit">Add to Cart  {{ item.price }} € </button>
                 </div>
@@ -117,50 +52,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-    function showIngredients(includedItemId) {
-        // Hide all ingredient divs
-        var ingredientDivs = document.querySelectorAll('[id^="ingredients_"]');
-        for (var i = 0; i < ingredientDivs.length; i++) {
-            ingredientDivs[i].style.display = 'none';
-        }
-
-        // Show the selected ingredient div
-        var selectedIngredientDiv = document.getElementById('ingredients_' + includedItemId);
-        if (selectedIngredientDiv) {
-            selectedIngredientDiv.style.display = 'block';
-        }
-    }
-
-    function updatePrice() {
-        var originalPrice = {{ item.price }};
-        var total = originalPrice;
-
-        // Check if the included_item select element exists and has a selected option
-        var selectElement = document.getElementById('included_item');
-        if (selectElement && selectElement.selectedIndex != -1) {
-            var selectedOption = selectElement.options[selectElement.selectedIndex];
-            var selectedIncludedItemPrice = parseFloat(selectedOption.textContent.split(' - ')[1].split(' €')[0]);
-            total += selectedIncludedItemPrice;
-        }
-
-        // Select all checked radio buttons and checkboxes
-        var inputs = document.querySelectorAll('input[type=radio]:checked, input[type=checkbox]:checked');
-
-        // Add the price of each selected option or extra to the total
-        for (var i = 0; i < inputs.length; i++) {
-            total += parseFloat(inputs[i].dataset.price);
-        }
-
-        document.querySelector('.add-to-cart-button').textContent = 'Add to Cart ' + total.toFixed(2) + ' €';
-    }
-
-    window.onload = function() {
-        var initialIncludedItemId = document.getElementById('included_item') ? document.getElementById('included_item').value : null;
-        if (initialIncludedItemId) {
-            showIngredients(initialIncludedItemId);
-        }
-        updatePrice();
-    }
-</script>
+<script src="{% static 'orderonline/js/itemDetail.js' %}"></script>
 {% endblock %}

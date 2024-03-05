@@ -14,41 +14,27 @@
 
 {% block content %}
     <div class="row flex-column mx-auto w-75">
-        {% for item in cart %}
-            <div class="cart-item ">
-                <h2>{{ item.name }}</h2>
-                <p>Price: {{ item.price }}</p>
-                <p>Options:</p>
-                <ul>
-                    {% for option in item.options %}
-                        <li>{{ option.name }}</li>
-                    {% endfor %}
-                </ul>
-                <p>Extras:</p>
-                <ul>
-                    {% for extra in item.extras %}
-                        <li>{{ extra.name }}</li>
-                    {% endfor %}
-                </ul>
-                {% if item.included_item %}
-                    <p>Included Item: {{ item.included_item }}</p>
-                    <p>Options:</p>
-                    <ul>
-                        {% for option in item.included_item_options %}
-                            <li>{{ option.name }}</li>
-                        {% endfor %}
-                    </ul>
-                    <p>Extras:</p>
-                    <ul>
-                        {% for extra in item.included_item_extras %}
-                            <li>{{ extra.name }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
-        {% empty %}
-            <p>Your cart is empty.</p>
-        {% endfor %}
-    </div>
-{% endblock %}
+        {% for cart_item in cart %}
+        <div class="card h-50">
 
+            <h2>{{ cart_item.name }}</h2>
+            {% if cart_item.image_url %}
+            <img src="{{ cart_item.image_url }}" alt="{{ cart_item.name }}" class="card-img-top card-img-top-fixed rounded-right">
+            {% endif %}
+            <p>Price: {{ cart_item.price }}</p>
+            <p>Options:</p>
+            <ul>
+                {% for option in cart_item.options %}
+                <li>{{ option }}</li>
+                {% endfor %}
+            </ul>
+            <p>Extras:</p>
+            <ul>
+                {% for extra in cart_item.extras %}
+                <li>{{ extra }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+            {% endfor %}
+        </div>
+{% endblock %}
