@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load enumerate %}
 
 {% block extra_css %}
 {% endblock %}
@@ -13,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Cart</h1>
+    <h1 class="text-center">Cart</h1>
 
     <div class="row flex-column mx-auto w-75">
         {% for item in cart %}
@@ -28,41 +29,49 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ item.name }}</h5>
                             <p class="card-text">
-                                <strong>Price:</strong> {{ item.price }}<br>
+                                <strong>Original Price:</strong> {{ item.original_price }}<br>
                                 {% if item.options %}
                                 <strong>Options:</strong> 
-                                {% for option in item.options %}
-                                    {{ option.name }}: {{ option.price }},
+                                {% if item.options %}
+                                <ul>
+                                    {% for option in item.options %}
+                                    <li>{{ option.name }}{% if option.price != "0.00" %}: +{{ option.price }}€{% endif %}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                                <strong>Extras:</strong> 
+                                {% if item.extras %}
+                                <ul>
+                                    {% for extra in item.extras %}
+                                    <li>{{ extra.name }}{% if extra.price != "0.00" %}: +{{ extra.price }}€{% endif %}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                                {% endif %}
+                            </p>
+                            {% if item.included_item %}
+                            <h6>Included Item: {{ item.included_item.name }} : {{item.included_item.price}}</h6>
+                            <p>
+                                {% if item.included_item.options %}
+                                <strong>Options:</strong> 
+                                {% for option in item.included_item.options %}
+                                {{ option.name }}{% if option.price != "0.00" %}: +{{ option.price }}€{% endif %},
                                 {% endfor %}
                                 <br>
                                 {% endif %}
-                                {% if item.extras %}
+                                {% if item.included_item.extras %}
                                 <strong>Extras:</strong> 
-                                {% for extra in item.extras %}
-                                    {{ extra.name }}: {{ extra.price }},
+                                {% for extra in item.included_item.extras %}
+                                {{ extra.name }}{% if extra.price != "0.00" %}: +{{ extra.price }}€{% endif %},
                                 {% endfor %}
                                 <br>
                                 {% endif %}
                             </p>
-                            {% if item.included_item %}
-                                <h6>Included Item: {{ item.included_item.name }} : {{item.included_item.price}}</h6>
-                                <p>
-                                    {% if item.included_item.options %}
-                                    <strong>Options:</strong> 
-                                    {% for option in item.included_item.options %}
-                                        {{ option.name }}: {{ option.price }},
-                                    {% endfor %}
-                                    <br>
-                                    {% endif %}
-                                    {% if item.included_item.extras %}
-                                    <strong>Extras:</strong> 
-                                    {% for extra in item.included_item.extras %}
-                                        {{ extra.name }}: {{ extra.price }},
-                                    {% endfor %}
-                                    <br>
-                                    {% endif %}
-                                </p>
                             {% endif %}
+                            <strong>Total Price:</strong> {{ item.price }}<br>
+                            <a href="{% url 'delete_from_cart' forloop.counter0 %}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
                         </div>
                     </div>
                 </div>

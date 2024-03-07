@@ -78,18 +78,19 @@ def add_to_cart(request):
 
         cart_item = {
             'name': item.name,
-            'price': float(calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras)),
-            'extras': [{'name': get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).ingredient.name, 'price': float(get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).price)} for extra_id in selected_extras if is_int(extra_id[0]) and MenuItemIngredient.objects.filter(id=int(extra_id[0])).exists()],
+            'original_price': "{:.2f}".format(float(item.price)),
+            'price': "{:.2f}".format(float(calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras))),
+            'options': [{'name': get_object_or_404(MenuItemIngredient, id=int(option_id[0])).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(option_id[0])).price))} for option_id in selected_options if is_int(option_id[0]) and MenuItemIngredient.objects.filter(id=int(option_id[0])).exists()],
+            'extras': [{'name': get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).price))} for extra_id in selected_extras if is_int(extra_id[0]) and MenuItemIngredient.objects.filter(id=int(extra_id[0])).exists()],
             'image_url': item.image.url if item.image else None,
         }
         if included_item is not None:
             cart_item['included_item'] = {
                 'name': included_item.included_item.name,
-                'price': float(included_item.price),
-                'options': [{'name': get_object_or_404(MenuItemIngredient, id=int(option_id[0])).ingredient.name, 'price': float(get_object_or_404(MenuItemIngredient, id=int(option_id[0])).price)} for option_id in selected_included_options if is_int(option_id[0]) and MenuItemIngredient.objects.filter(id=int(option_id[0])).exists()],
-                'extras': [{'name': get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).ingredient.name, 'price': float(get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).price)} for extra_id in selected_included_extras if is_int(extra_id[0]) and extra_id[0] != 'undefined' and MenuItemIngredient.objects.filter(id=int(extra_id[0])).exists()],
+                'price': "{:.2f}".format(float(included_item.price)),
+                'options': [{'name': get_object_or_404(MenuItemIngredient, id=int(option_id[0])).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(option_id[0])).price))} for option_id in selected_included_options if is_int(option_id[0]) and MenuItemIngredient.objects.filter(id=int(option_id[0])).exists()],
+                'extras': [{'name': get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).price))} for extra_id in selected_included_extras if is_int(extra_id[0]) and extra_id[0] != 'undefined' and MenuItemIngredient.objects.filter(id=int(extra_id[0])).exists()],
             }
-
 
         # Get the cart from the session
         cart = request.session.get('cart', [])
@@ -104,3 +105,22 @@ def add_to_cart(request):
         messages.success(request, f'{item.name} has been added to cart')
 
         return redirect('cart')
+    
+
+
+def delete_from_cart(request, item_index):
+    # Get the cart from the session
+    cart = request.session.get('cart', [])
+
+    # Check if the item index is valid
+    if 0 <= item_index < len(cart):
+        # Remove the item at the given index from the cart
+        del cart[item_index]
+
+        # Save the cart back to the session
+        request.session['cart'] = cart
+
+        # Display a success message
+        messages.success(request, 'Item has been removed from cart')
+
+    return redirect('cart')
