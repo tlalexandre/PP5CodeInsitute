@@ -29,14 +29,38 @@
                             <h5 class="card-title">{{ item.name }}</h5>
                             <p class="card-text">
                                 <strong>Price:</strong> {{ item.price }}<br>
-                                <strong>Options:</strong> {{ item.options|join:", " }}<br>
-                                <strong>Extras:</strong> {{ item.extras|join:", " }}<br>
+                                {% if item.options %}
+                                <strong>Options:</strong> 
+                                {% for option in item.options %}
+                                    {{ option.name }}: {{ option.price }},
+                                {% endfor %}
+                                <br>
+                                {% endif %}
+                                {% if item.extras %}
+                                <strong>Extras:</strong> 
+                                {% for extra in item.extras %}
+                                    {{ extra.name }}: {{ extra.price }},
+                                {% endfor %}
+                                <br>
+                                {% endif %}
                             </p>
                             {% if item.included_item %}
-                                <h6>Included Item: {{ item.included_item.name }}</h6>
+                                <h6>Included Item: {{ item.included_item.name }} : {{item.included_item.price}}</h6>
                                 <p>
-                                    <strong>Options:</strong> {{ item.included_item.options|join:", " }}<br>
-                                    <strong>Extras:</strong> {{ item.included_item.extras|join:", " }}<br>
+                                    {% if item.included_item.options %}
+                                    <strong>Options:</strong> 
+                                    {% for option in item.included_item.options %}
+                                        {{ option.name }}: {{ option.price }},
+                                    {% endfor %}
+                                    <br>
+                                    {% endif %}
+                                    {% if item.included_item.extras %}
+                                    <strong>Extras:</strong> 
+                                    {% for extra in item.included_item.extras %}
+                                        {{ extra.name }}: {{ extra.price }},
+                                    {% endfor %}
+                                    <br>
+                                    {% endif %}
                                 </p>
                             {% endif %}
                         </div>

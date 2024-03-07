@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from orderonline.models import MenuItem, MenuItemIngredient, MenuItemIncludedItem
 from orderonline.forms import AddToCartForm
+from decimal import Decimal
+
 
 def cart(request):
     # Get the cart from the session
@@ -10,6 +12,33 @@ def cart(request):
     # Render the cart template
     return render(request, 'cart/cart.html', {'cart': cart})
 
+
+def is_int(value):
+    try:
+        int(value)
+        return True
+    except ValueError:
+        return False
+    
+def calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras):
+    total_price = Decimal(item.price)
+    for option_id in selected_options:
+        option = get_object_or_404(MenuItemIngredient, id=int(option_id[0]))
+        total_price += Decimal(option.price)
+    for extra_id in selected_extras:
+        extra = get_object_or_404(MenuItemIngredient, id=int(extra_id[0]))
+        total_price += Decimal(extra.price)
+    included_item_id = request.POST.get('included_item')
+    if included_item_id:
+        included_item = get_object_or_404(MenuItemIncludedItem, id=int(included_item_id))
+        total_price += Decimal(included_item.price)
+        for option_id in selected_included_options:
+            option = get_object_or_404(MenuItemIngredient, id=int(option_id[0]))
+            total_price += Decimal(option.price)
+        for extra_id in selected_included_extras:
+            extra = get_object_or_404(MenuItemIngredient, id=int(extra_id[0]))
+            total_price += Decimal(extra.price)
+    return total_price
 
 def add_to_cart(request):
     if request.method == 'POST':
@@ -46,19 +75,21 @@ def add_to_cart(request):
                 selected_options.append(value)
             elif is_int(value[0]) and MenuItemIngredient.objects.filter(id=int(value[0]), option__isnull=True, menu_item=item).exists():
                 selected_extras.append(value)
+
         cart_item = {
             'name': item.name,
-            'price': float(item.price),
-            'options': [get_object_or_404(MenuItemIngredient, id=int(option_id[0])).ingredient.name for option_id in selected_options if is_int(option_id[0]) and MenuItemIngredient.objects.filter(id=int(option_id[0])).exists()],
-            'extras': [get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).ingredient.name for extra_id in selected_extras if is_int(extra_id[0]) and MenuItemIngredient.objects.filter(id=int(extra_id[0])).exists()],
+            'price': float(calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras)),
+            'extras': [{'name': get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).ingredient.name, 'price': float(get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).price)} for extra_id in selected_extras if is_int(extra_id[0]) and MenuItemIngredient.objects.filter(id=int(extra_id[0])).exists()],
             'image_url': item.image.url if item.image else None,
         }
         if included_item is not None:
             cart_item['included_item'] = {
                 'name': included_item.included_item.name,
-                'options': [get_object_or_404(MenuItemIngredient, id=int(option_id[0])).ingredient.name for option_id in selected_included_options if MenuItemIngredient.objects.filter(id=int(option_id[0])).exists()],
-                'extras': [get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).ingredient.name for extra_id in selected_included_extras if MenuItemIngredient.objects.filter(id=int(extra_id[0])).exists()],
+                'price': float(included_item.price),
+                'options': [{'name': get_object_or_404(MenuItemIngredient, id=int(option_id[0])).ingredient.name, 'price': float(get_object_or_404(MenuItemIngredient, id=int(option_id[0])).price)} for option_id in selected_included_options if is_int(option_id[0]) and MenuItemIngredient.objects.filter(id=int(option_id[0])).exists()],
+                'extras': [{'name': get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).ingredient.name, 'price': float(get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).price)} for extra_id in selected_included_extras if is_int(extra_id[0]) and extra_id[0] != 'undefined' and MenuItemIngredient.objects.filter(id=int(extra_id[0])).exists()],
             }
+
 
         # Get the cart from the session
         cart = request.session.get('cart', [])

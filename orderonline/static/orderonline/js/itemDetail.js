@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         for (var i = 0; i < options[optionName].length; i++) {
                             var input = document.createElement('input');
                             input.type = 'radio';
-                            input.name = 'included_item_option_' + options[optionName][i].option_id;  // Use optionName as name to ensure only one option can be selected
+                            input.name = 'included_item_option_' + options[optionName][i].id;  // Use optionName as name to ensure only one option can be selected
                             input.value = options[optionName][i].id;
                             input.dataset.price = options[optionName][i].price; // Add data-price attribute
                             optionDiv.appendChild(input);
