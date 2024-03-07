@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'orderonline/css/orderonline.css' %}">
+{% endblock %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-2 mb-5">
+        <ul class="navbar-menu">
+            {% for category in categories %}
+                <li class="no-bullets mb-2"><a href="/orderonline/#{{ category.friendly_name }}" class="nav-link">{{ category.friendly_name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="w-75 item-card-body mx-auto rounded justify-content-center">
+        <div class="position-relative">
+            <a href="{% url 'order_online' %}" class="rounded p-2 position-absolute bg-white brand-color" style="top: 10px; left: 10px;">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <img src="{{ item.image.url }}" class="card-img-top item-detail-img rounded" alt="{{ item.name }}">
+        </div>
+            <h2 class="card-title ml-2">{{ item.name }}</h2>  
+        <div class="d-flex mx-4">
+            <div class="item-info w-100">
+                <p class="card-text my-2 ">Ingredients : {{ item.description }}</p>
+                {{ options_extras|json_script:"optionsExtras" }}
+                
+                <form method="POST" action="{% url 'update_cart_item' item_index %}">
+                    {% csrf_token %}
+                    {{ form }}
+                    <div id="options-extras"></div>
+                    <div class="d-flex justify-content-center mt-2">
+                        <button class="bg-brand-color white rounded-pill mb-2 w-50 add-to-cart-button" type="submit">Update Item {{ item.price }} €</button>
+                    </div>
+                </form>
+            </div>
+        </div>    
+
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'orderonline/js/itemDetail.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $("#id_included_item option").each(function() {
+            var label = $(this).text();
+            var label_parts = label.split(' - ');
+            if (label_parts.length > 1) {
+                var price = label_parts[1].replace('€', '');
+                $(this).attr('data-price', price);
+            }
+        });
+    });
+</script>
+<script src="{% static 'orderonline/js/updatePrice.js' %}"></script>
+
+
+{% endblock %}

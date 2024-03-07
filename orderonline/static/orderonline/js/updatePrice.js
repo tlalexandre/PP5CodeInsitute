@@ -1,7 +1,8 @@
 window.onload = function() {
     // Get the initial total price from the button's text content
     var button = document.querySelector('.add-to-cart-button');
-    var originalPrice = parseFloat(button.textContent.replace('Add to Cart ', '').replace(' €', ''));
+    var originalText = button.textContent;
+    var originalPrice = parseFloat(originalText.replace('Add to Cart ', '').replace(' €', ''));
     var totalPrice = originalPrice;
 
     // Function to calculate total price
@@ -23,7 +24,11 @@ window.onload = function() {
             totalPrice += parseFloat(selectedIncludedItem.options[selectedIncludedItem.selectedIndex].dataset.price);
         }
 
-        button.textContent = 'Add to Cart ' + totalPrice.toFixed(2) + ' €';
+        // Get the original text without the price
+        var originalTextWithoutPrice = originalText.replace(originalPrice.toFixed(2) + ' €', '').trim();
+
+        // Update the button text with the new price
+        button.textContent = originalTextWithoutPrice + ' ' + totalPrice.toFixed(2) + ' €';
 
         // Add change event listener to each input
         for (var i = 0; i < inputs.length; i++) {

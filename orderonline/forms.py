@@ -49,7 +49,7 @@ class CustomRadioSelect(forms.RadioSelect):
 class AddToCartForm(forms.Form):
     item_id = forms.ModelChoiceField(queryset=MenuItem.objects.all(), widget=forms.HiddenInput())
 
-    def __init__(self, *args, item=None, **kwargs):
+    def __init__(self, *args, item=None, adding=True,**kwargs):
         super().__init__(*args, **kwargs)
         if item is not None:
             included_items = MenuItemIncludedItem.objects.filter(menu_item=item)
@@ -72,8 +72,8 @@ class AddToCartForm(forms.Form):
                         widget=CustomRadioSelect,
                         required=True
                     )
-
-                    self.fields[option_name].initial = items[-1].id if items else None
+                    if adding:
+                        self.fields[option_name].initial = items[-1].id if items else None
 
     def get_options(self, items):
         options = {}
