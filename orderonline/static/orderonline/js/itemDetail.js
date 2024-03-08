@@ -1,20 +1,33 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    console.log('Script is running');
     var optionsExtrasDataElement = document.getElementById('optionsExtras');
-    if (optionsExtrasDataElement) {
-        var optionsExtras = JSON.parse(optionsExtrasDataElement.textContent);
-        var form = document.getElementById('id_included_item');
-        console.log('form:', form);
-        if (form) {
-            form.addEventListener('change', function() {
-                console.log('form change event triggered');
-                var selectedIncludedItem = this.value;
-                console.log('selectedIncludedItem:', selectedIncludedItem);
-                if (selectedIncludedItem in optionsExtras) {
+    console.log('optionsExtrasDataElement:', optionsExtrasDataElement);
+    console.log('optionsExtrasDataElement.textContent:', optionsExtrasDataElement.textContent);
+    var parsedOptionsExtras;
+    if (optionsExtrasDataElement && optionsExtrasDataElement.textContent.trim() !== "") {
+        parsedOptionsExtras = JSON.parse(optionsExtrasDataElement.textContent);
+    }
+    console.log('parsedOptionsExtras:', parsedOptionsExtras);
+    var form = document.getElementById('id_included_item');
+    console.log('form:', form);
+
+    if (form) {
+        form.addEventListener('change', function() {
+            console.log('form change event triggered');
+            var selectedIncludedItem = Number(this.value);
+            console.log('selectedIncludedItem:', selectedIncludedItem);
+            var optionsExtrasToUse;
+            if (optionsExtras instanceof HTMLElement) {
+                optionsExtrasToUse = parsedOptionsExtras;
+            } else {
+                optionsExtrasToUse = optionsExtras;
+            }
+            if (optionsExtrasToUse && selectedIncludedItem in optionsExtrasToUse) {
+                var selectedOptionsExtras = optionsExtrasToUse[selectedIncludedItem];
+                if (selectedOptionsExtras) {
                     var optionsExtrasDiv = document.getElementById('options-extras');
                     optionsExtrasDiv.innerHTML = '';
-                    var extras = optionsExtras[selectedIncludedItem]['Extras'];
-                    var options = optionsExtras[selectedIncludedItem]['Options'];
+                    var extras = selectedOptionsExtras['Extras'];
+                    var options = selectedOptionsExtras['Options'];
                     var extrasTitle = document.createElement('h3');
                     extrasTitle.innerHTML = 'Extras';
                     optionsExtrasDiv.appendChild(extrasTitle);
@@ -22,7 +35,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     for (var i = 0; i < extras.length; i++) {
                         var input = document.createElement('input');
                         input.type = 'checkbox';
-                        input.name = 'included_item_extra_' + extras[i].group_id; // Replace 'group_id' with the actual property name 
+                        input.name = 'included_item_extra_' + extras[i].id; // Use the actual ID of the extra
                         input.value = extras[i].id;
                         input.dataset.price = extras[i].price; // Add data-price attribute
                         optionsExtrasDiv.appendChild(input);
@@ -52,12 +65,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         optionsExtrasDiv.appendChild(optionDiv);
                     }
                 }
-            });
-            // Trigger the change event manually
-            var event = new Event('change');
-            form.dispatchEvent(event);
-        }
-    } else {
-        console.log('optionsExtrasDataElement is null');
+                }
+        });
+        // Trigger the change event manually
+        var event = new Event('change');
+        form.dispatchEvent(event);
     }
 });

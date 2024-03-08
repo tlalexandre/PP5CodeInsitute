@@ -3,8 +3,8 @@ from django.contrib import messages
 from orderonline.models import MenuItem, MenuItemIngredient, MenuItemIncludedItem, IngredientOption
 from orderonline.forms import AddToCartForm
 from decimal import Decimal
-from django.db import models
-from django.db.models import QuerySet
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 def cart(request):
@@ -14,6 +14,12 @@ def cart(request):
     # Render the cart template
     return render(request, 'cart/cart.html', {'cart': cart})
 
+
+class DecimalEncoder(DjangoJSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return str(obj)
+        return super().default(obj)
 
 def is_int(value):
     try:
@@ -25,20 +31,25 @@ def is_int(value):
 def calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras):
     total_price = Decimal(item.price)
     for option_id in selected_options:
+        print(f"Option ID: {option_id}")
         option = get_object_or_404(MenuItemIngredient, id=int(option_id))
         total_price += Decimal(option.price)
     for extra_id in selected_extras:
+        print(f"Extra ID: {extra_id}")
         extra = get_object_or_404(MenuItemIngredient, id=int(extra_id))
         total_price += Decimal(extra.price)
     included_item_id = request.POST.get('included_item')
     if included_item_id:
+        print(f"Included Item ID: {included_item_id}")
         included_item = get_object_or_404(MenuItemIncludedItem, id=int(included_item_id))
         total_price += Decimal(included_item.price)
         for option_id in selected_included_options:
-            option = get_object_or_404(MenuItemIngredient, id=int(option_id[0]))
+            print(f"Included Option ID: {option_id}")
+            option = get_object_or_404(MenuItemIngredient, id=int(option_id))
             total_price += Decimal(option.price)
         for extra_id in selected_included_extras:
-            extra = get_object_or_404(MenuItemIngredient, id=int(extra_id[0]))
+            print(f"Included Extra ID: {extra_id}")
+            extra = get_object_or_404(MenuItemIngredient, id=int(extra_id))
             total_price += Decimal(extra.price)
     return total_price
 
@@ -47,13 +58,16 @@ def add_to_cart(request):
         print(request.POST)
         # Get the selected item
         item_id = request.POST.get('item_id')
+        print("Item ID: ", item_id)
         item = get_object_or_404(MenuItem, id=item_id)
 
         # Get the selected included item
         included_item_id = request.POST.get('included_item')
         included_item = None
+        print("Included item ID: ", included_item_id)
         if included_item_id:
             included_item = get_object_or_404(MenuItemIncludedItem, id=included_item_id)
+            print("Included item: ", included_item.included_item.name)
 
         # Get the selected options and extras
         selected_options = []
@@ -63,34 +77,44 @@ def add_to_cart(request):
 
 
         for key, values in request.POST.lists():
+            print(f"Key: {key}, Values: {values}")
             if 'included_item_option_' in key:
                 selected_included_options.extend(values)
             elif 'included_item_extra_' in key:
-                selected_included_extras.extend(values)
+                selected_included_extras.extend(values)  # No need to check if it's an int or if the MenuItemIngredient exists here
             elif 'Extras' in key:
-                for value in values:
-                    if is_int(value) and MenuItemIngredient.objects.filter(id=int(value), option__isnull=True, menu_item=item).exists():
-                        selected_extras.extend([value])
+                selected_extras.extend(values)  # No need to check if it's an int or if the MenuItemIngredient exists here
             else:
                 for value in values:
                     if is_int(value) and MenuItemIngredient.objects.filter(id=int(value), option__isnull=False, menu_item=item).exists():
                         selected_options.extend([value])
 
-        cart_item = {
-            'name': item.name,
-            'original_price': "{:.2f}".format(float(item.price)),
-            'price': "{:.2f}".format(float(calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras))),
-            'options': [{'id': int(option_id), 'name': get_object_or_404(MenuItemIngredient, id=int(option_id)).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(option_id)).price))} for option_id in selected_options if is_int(option_id) and MenuItemIngredient.objects.filter(id=int(option_id)).exists()],
-            'extras': [{'id': int(extra_id), 'name': get_object_or_404(MenuItemIngredient, id=int(extra_id)).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(extra_id)).price))} for extra_id in selected_extras if is_int(extra_id) and MenuItemIngredient.objects.filter(id=int(extra_id)).exists()],
-            'image_url': item.image.url if item.image else None,
-        }
-        if included_item is not None:
-            cart_item['included_item'] = {
-                'name': included_item.included_item.name,
-                'price': "{:.2f}".format(float(included_item.price)),
-                'options': [{'name': get_object_or_404(MenuItemIngredient, id=int(option_id[0])).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(option_id[0])).price))} for option_id in selected_included_options if is_int(option_id[0]) and MenuItemIngredient.objects.filter(id=int(option_id[0])).exists()],
-                'extras': [{'name': get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(extra_id[0])).price))} for extra_id in selected_included_extras if is_int(extra_id[0]) and extra_id[0] != 'undefined' and MenuItemIngredient.objects.filter(id=int(extra_id[0])).exists()],
+        print(f"Selected options: {selected_options}")
+        print(f"Selected extras: {selected_extras}")
+        print(f"Selected included options: {selected_included_options}")
+        print(f"Selected included extras: {selected_included_extras}")
+
+        try:
+            cart_item = {
+                'name': item.name,
+                'original_price': "{:.2f}".format(float(item.price)),
+                'price': "{:.2f}".format(float(calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras))),
+                'options': [{'id': int(option_id), 'name': MenuItemIngredient.objects.get(id=int(option_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(option_id)).price))} for option_id in selected_options if is_int(option_id) and MenuItemIngredient.objects.filter(id=int(option_id)).exists()],
+                'extras': [{'id': int(extra_id), 'name': MenuItemIngredient.objects.get(id=int(extra_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(extra_id)).price))} for extra_id in selected_extras if is_int(extra_id) and MenuItemIngredient.objects.filter(id=int(extra_id)).exists()],
+                'image_url': item.image.url if item.image else None,
             }
+            if included_item is not None:
+                print("Included item: ", included_item.menu_item.name)
+                cart_item['included_item'] = {
+                    'name': included_item.included_item.name,
+                    'price': "{:.2f}".format(float(included_item.price)),
+                    'options': [{'name': MenuItemIngredient.objects.get(id=int(option_id[0])).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(option_id[0])).price))} for option_id in selected_included_options if is_int(option_id[0]) and MenuItemIngredient.objects.filter(id=int(option_id[0])).exists()],
+                    'extras': [{'name': MenuItemIngredient.objects.get(id=int(extra_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(extra_id)).price))} for extra_id in selected_included_extras if is_int(extra_id) and MenuItemIngredient.objects.filter(id=int(extra_id)).exists()],
+                }
+        except MenuItemIngredient.DoesNotExist as e:
+            print(f"MenuItemIngredient with id does not exist: {e}")
+            messages.error(request, 'An error occurred while adding the item to the cart. Please try again.')
+            return redirect('cart')
 
         # Get the cart from the session
         cart = request.session.get('cart', [])
@@ -177,16 +201,18 @@ def update_cart_item(request, item_index):
 
             return redirect('cart')
 
-        # The rest of your code remains the same...
 
         # If the form has not been submitted, display the form with the current item data
         initial_data = {
             'item_id': item.id,
         }
+        
+        included_items = MenuItemIncludedItem.objects.none()  # Initialize an empty queryset
 
         if 'included_item' in cart_item:
-            included_item = MenuItemIncludedItem.objects.get(included_item__name=cart_item['included_item']['name'])
-            initial_data['included_item'] = str(included_item.id)
+            included_items = MenuItemIncludedItem.objects.filter(included_item__name=cart_item['included_item']['name'])
+            for included_item in included_items:
+                initial_data['included_item'] = str(included_item.id)
 
         for option in cart_item['options']:
             menu_item_ingredients = MenuItemIngredient.objects.filter(ingredient__name=option['name'])
@@ -208,4 +234,37 @@ def update_cart_item(request, item_index):
         for extra in cart_item['extras']:
             item_price += Decimal(extra['price'])
 
-        return render(request, 'orderonline/update_item.html', {'form': form, 'item_index': item_index, 'item': item, 'item_price': item_price})
+        # Get the optionsExtras data
+        optionsExtras = {}
+        for included_item in MenuItemIncludedItem.objects.filter(menu_item=item):
+            optionsExtras[included_item.id] = {
+                'Extras': [
+                    {
+                        'id': extra.id,
+                        'ingredient__name': extra.ingredient.name,
+                        'price': "{:.2f}".format(float(extra.price)),
+                    }
+                    for extra in MenuItemIngredient.objects.filter(menu_item=included_item.included_item, option__isnull=True)
+                ],
+                'Options': {},
+            }
+            for option in MenuItemIngredient.objects.filter(menu_item=included_item.included_item, option__isnull=False):
+                option_name = option.option.name
+                if option_name not in optionsExtras[included_item.id]['Options']:
+                    optionsExtras[included_item.id]['Options'][option_name] = []
+                optionsExtras[included_item.id]['Options'][option_name].append({
+                    'id': option.id,
+                    'ingredient__name': option.ingredient.name,
+                    'price': "{:.2f}".format(float(option.price)),
+                })
+
+        optionsExtras_json = json.dumps(optionsExtras)
+
+        # Pass the optionsExtras data to the template
+        return render(request, 'orderonline/update_item.html', {
+            'form': form,
+            'item_index': item_index,
+            'item': item,
+            'item_price': item_price,
+            'optionsExtras': optionsExtras_json,  # Pass optionsExtras as a Python object
+        })
