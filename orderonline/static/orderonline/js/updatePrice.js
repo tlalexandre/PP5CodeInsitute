@@ -2,8 +2,16 @@ window.onload = function() {
     // Get the initial total price from the button's text content
     var button = document.querySelector('.add-to-cart-button');
     var originalText = button.textContent;
-    var originalPrice = parseFloat(originalText.replace('Add to Cart ', '').replace(' €', ''));
+    var originalPrice;
+
+    if (originalText.startsWith('Add to Cart ')) {
+        originalPrice = parseFloat(originalText.replace('Add to Cart ', '').replace(' €', ''));
+    } else if (originalText.startsWith('Update Item ')) {
+        originalPrice = parseFloat(originalText.replace('Update Item ', '').replace(' €', ''));
+    }
     var totalPrice = originalPrice;
+
+    console.log("Original Price: ", originalPrice);
 
     // Function to calculate total price
     function calculateTotalPrice() {
@@ -15,12 +23,14 @@ window.onload = function() {
 
         var selectedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
         for (var i = 0; i < selectedInputs.length; i++) {
+            console.log("Selected Input Price: ", selectedInputs[i].dataset.price);
             totalPrice += parseFloat(selectedInputs[i].dataset.price);
         }
 
         // Add the price of the selected includeditem
         var selectedIncludedItem = document.querySelector('select[name="included_item"]');
         if (selectedIncludedItem) {
+            console.log("Selected Included Item Price: ", selectedIncludedItem.options[selectedIncludedItem.selectedIndex].dataset.price);
             totalPrice += parseFloat(selectedIncludedItem.options[selectedIncludedItem.selectedIndex].dataset.price);
         }
 

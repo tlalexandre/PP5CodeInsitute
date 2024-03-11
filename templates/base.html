@@ -125,17 +125,15 @@
     {% block content %}
     {% endblock %}
 
-    <!-- NEED TO ADD CONDITION TO DISPLAY IT EVERYWHERE except on pages that contain 'orderonline' in the URL -->
-    {% if 'orderonline' not in request.path %}
-    <div class="text-center">
-        <a href="{% url 'order_online'%}" class="btn btn-primary mb-2 floating-button">Order Here 
-            <span class="icon white">
-                <i class="fa-solid fa-angles-right"></i>
-            </span>
-        </a>
-    </div>
-    {% endif %}
-
+{% if 'orderonline' not in request.path and 'cart' not in request.path %}
+<div class="text-center">
+    <a href="{% url 'order_online'%}" class="btn btn-primary mb-2 floating-button">Order Here 
+        <span class="icon white">
+            <i class="fa-solid fa-angles-right"></i>
+        </span>
+    </a>
+</div>
+{% endif %}
 
     {% block postloadjs %}
     <script>

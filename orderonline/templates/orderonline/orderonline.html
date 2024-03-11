@@ -42,10 +42,6 @@
                                                         <p class="card-text my-0">Ingredients : {{ item.description | truncatechars:50 }}</p>
                                                         <p class="card-text price">{{ item.price }} € </p>
                                                     </div>
-                                                    <div class="quantity-container">
-                                                        <button class="quantity-button" id="increase">+</button>
-                                                        <button class="quantity-button" id="decrease">-</button>
-                                                    </div>
                                                 </div>    
                                             </div>
                                             <img src="{{ item.image.url }}" class="card-img-top card-img-top-fixed rounded-right" alt="{{ item.name }}">
