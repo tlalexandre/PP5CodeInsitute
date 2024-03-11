@@ -48,14 +48,11 @@ class CustomRadioSelect(forms.RadioSelect):
 
 class AddToCartForm(forms.Form):
     item_id = forms.ModelChoiceField(queryset=MenuItem.objects.all(), widget=forms.HiddenInput())
+    quantity = forms.IntegerField(min_value=1, initial=1, widget=forms.NumberInput(attrs={'class': 'form-control'}))
 
     def __init__(self, *args, item=None, adding=True,**kwargs):
         super().__init__(*args, **kwargs)
         if item is not None:
-            included_items = MenuItemIncludedItem.objects.filter(menu_item=item)
-            if included_items.exists():
-                self.fields['included_item'] = MenuItemIncludedItemChoiceField(queryset=included_items, required=False, widget=forms.Select(attrs={'class': 'd-block'}))
-                self.fields['included_item'].initial = included_items.first()
             ingredients = MenuItemIngredient.objects.filter(menu_item=item)
             ingredient_options = self.get_options(ingredients)
             for option_name, items in ingredient_options.items():
@@ -74,6 +71,11 @@ class AddToCartForm(forms.Form):
                     )
                     if adding:
                         self.fields[option_name].initial = items[-1].id if items else None
+
+            included_items = MenuItemIncludedItem.objects.filter(menu_item=item)
+            if included_items.exists():
+                self.fields['included_item'] = MenuItemIncludedItemChoiceField(queryset=included_items, required=False, widget=forms.Select(attrs={'class': 'd-block'}))
+                self.fields['included_item'].initial = included_items.first()
 
     def get_options(self, items):
         options = {}

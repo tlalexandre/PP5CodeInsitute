@@ -35,13 +35,14 @@ def is_int(value):
         return True
     except ValueError:
         return False
-
-
+    
 def get_cart_total_price(request):
     cart = request.session.get('cart', [])
     cart_total_price = Decimal(0)
     for item_data in cart:
-        item_total_price = Decimal(item_data.get('price', 0))
+        item_price = Decimal(item_data.get('price', 0))
+        item_quantity = item_data.get('quantity', 1)  # Get the quantity, default to 1 if not provided
+        item_total_price = item_price * item_quantity  # Calculate the total price for this item
         cart_total_price += item_total_price
     return cart_total_price
 
@@ -65,11 +66,55 @@ def calculate_total_price(request, item, selected_options, selected_extras, sele
             total_price += Decimal(extra.price)
     return total_price
 
+def get_cart_items(request):
+    from orderonline.models import MenuItem, MenuItemIngredient, MenuItemIncludedItem, IngredientOption
+
+    # Get the cart from the session
+    cart = request.session.get('cart', [])
+
+    # Create a list to hold all cart items with their details
+    cart_items = []
+
+    # Loop through each item in the cart
+    for item_data in cart:
+        # Check if 'name' is in the dictionary
+        if 'name' in item_data:
+            # Get the item from the database
+            item = MenuItem.objects.get(name=item_data['name'])
+
+            # Get the included items, options, and extras for the item
+            included_items = [MenuItemIncludedItem.objects.get(id=included_item['id']) for included_item in item_data.get('included_items', [])]
+            options = [MenuItemIngredient.objects.get(id=option['id']) for option in item_data.get('options', [])]
+            extras = []
+            for extra in item_data.get('extras', []):
+                try:
+                    extras.append(IngredientOption.objects.get(id=extra['id']))
+                except IngredientOption.DoesNotExist:
+                    pass
+
+            # Create a dictionary to hold the item details
+            item_details = {
+                'item': item,
+                'included_items': included_items,
+                'options': options,
+                'extras': extras,
+                'quantity': item_data.get('quantity', 1),
+                'total_price': Decimal(item_data.get('price', 0)),
+            }
+
+            # Add the item details to the cart_items list
+            cart_items.append(item_details)
+    print(cart_items)
+    # Return the cart_items list
+    return cart_items
+
+
 def add_to_cart(request):
     if request.method == 'POST':
         # Get the selected item
         item_id = request.POST.get('item_id')
         item = get_object_or_404(MenuItem, id=item_id)
+        quantity = int(request.POST.get('quantity', 1))
 
         # Get the selected included item
         included_item_id = request.POST.get('included_item')
@@ -99,6 +144,7 @@ def add_to_cart(request):
         try:
             cart_item = {
                 'name': item.name,
+                'quantity': quantity,
                 'original_price': "{:.2f}".format(float(item.price)),
                 'price': "{:.2f}".format(float(calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras))),
                 'options': [{'id': int(option_id), 'name': MenuItemIngredient.objects.get(id=int(option_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(option_id)).price))} for option_id in selected_options if is_int(option_id) and MenuItemIngredient.objects.filter(id=int(option_id)).exists()],
@@ -120,8 +166,16 @@ def add_to_cart(request):
         # Get the cart from the session
         cart = request.session.get('cart', [])
 
-        # Add the cart item to the cart
-        cart.append(cart_item)
+        # Check if the item is already in the cart
+        for existing_item in cart:
+            if existing_item['name'] == item.name:
+                # If the item is already in the cart, update the quantity
+                existing_item['quantity'] += quantity
+                break
+        else:
+            if 'quantity' not in cart_item:
+                cart_item['quantity'] = 1
+            cart.append(cart_item)
 
         # Save the cart in the session
         request.session['cart'] = cart
@@ -139,9 +193,6 @@ def delete_from_cart(request, item_index):
 
     # Check if the item index is valid
     if 0 <= item_index < len(cart):
-        # Store the item in a variable
-        item = cart[item_index]
-
         # Remove the item at the given index from the cart
         del cart[item_index]
 
@@ -149,7 +200,7 @@ def delete_from_cart(request, item_index):
         request.session['cart'] = cart
 
         # Display a success message
-        messages.success(request, f'{item["name"]} has been removed from cart')
+        messages.success(request, 'Item has been removed from cart')
 
     return redirect('cart')
 
@@ -174,6 +225,9 @@ def update_cart_item(request, item_index):
             selected_extras = []
             selected_included_options = []
             selected_included_extras = []
+
+            # Get the quantity from the POST data
+            quantity = int(request.POST.get('quantity', 1))  # Get the quantity from the POST data, default to 1 if not provided
 
             # Get the selected included item
             included_item_id = request.POST.get('included_item')
@@ -200,6 +254,7 @@ def update_cart_item(request, item_index):
                 cart_item['price'] = "{:.2f}".format(float(calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras)))
                 cart_item['options'] = [{'id': int(option_id), 'name': get_object_or_404(MenuItemIngredient, id=int(option_id)).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(option_id)).price))} for option_id in selected_options if is_int(option_id) and MenuItemIngredient.objects.filter(id=int(option_id)).exists()]
                 cart_item['extras'] = [{'id': int(extra_id), 'name': get_object_or_404(MenuItemIngredient, id=int(extra_id)).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(extra_id)).price))} for extra_id in selected_extras if is_int(extra_id) and MenuItemIngredient.objects.filter(id=int(extra_id)).exists()]
+                cart_item['quantity'] = quantity
 
                 if included_item is not None:
                     cart_item['included_item'] = {
@@ -223,6 +278,7 @@ def update_cart_item(request, item_index):
         # If the form has not been submitted, display the form with the current item data
         initial_data = {
             'item_id': item.id,
+            'quantity': cart_item['quantity'],
         }
         
         included_items = MenuItemIncludedItem.objects.none()  # Initialize an empty queryset

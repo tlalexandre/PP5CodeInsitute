@@ -37,10 +37,22 @@
                 
                 <form method="POST" action="{% url 'update_cart_item' item_index %}">
                     {% csrf_token %}
-                    {{ form }}
-                    <div id="options-extras">{{ options_extras|json_script:"optionsExtras" }}</div>
+                    {{ form.item_id }}  <!-- Render the item_id field here -->
+                    <!-- Render the rest of the fields here -->
+                    {% for field in form %}
+                    {% if not field.is_hidden and field.name != 'quantity' %}
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }}
+                    {% endif %}
+                    {% endfor %}
+                    <div id="options-extras"></div>
+                    <div class="d-flex justify-content-around">
+                        <button type="button" id="decrease-id_quantity" class="bg-brand-color white rounded-pill mb-2 w-25 add-to-cart-button">-</button>
+                        {{ form.quantity }}  <!-- Render the quantity field here -->
+                        <button type="button" id="increase-id_quantity" class="bg-brand-color white rounded-pill mb-2 w-25 add-to-cart-button">+</button>
+                    </div>
                     <div class="d-flex justify-content-center mt-2">
-                        <button class="bg-brand-color white rounded-pill mb-2 w-50 add-to-cart-button" type="submit">Update Item {{ item.price }} €</button>
+                        <button class="bg-brand-color white rounded-pill mb-2 w-50 add-to-cart-button" type="submit">Add to Cart  {{ item.price }} € </button>
                     </div>
                 </form>
             </div>
@@ -64,6 +76,21 @@
             if (label_parts.length > 1) {
                 var price = label_parts[1].replace('€', '');
                 $(this).attr('data-price', price);
+            }
+        });
+        $('#increase-id_quantity').click(function(event) {
+            event.preventDefault();
+            var quantityInput = $('#id_quantity');
+            var quantity = parseInt(quantityInput.val());
+            quantityInput.val(quantity + 1);
+        });
+
+        $('#decrease-id_quantity').click(function(event) {
+            event.preventDefault();
+            var quantityInput = $('#id_quantity');
+            var quantity = parseInt(quantityInput.val());
+            if (quantity > 1) {
+                quantityInput.val(quantity - 1);
             }
         });
     });
