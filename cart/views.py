@@ -10,9 +10,17 @@ from django.core.serializers.json import DjangoJSONEncoder
 def cart(request):
     # Get the cart from the session
     cart = request.session.get('cart', [])
+    cart_total_price= get_cart_total_price(request)
 
     # Render the cart template
-    return render(request, 'cart/cart.html', {'cart': cart})
+    return render(request, 'cart/cart.html', {'cart': cart, 'cart_total_price': cart_total_price})
+
+def some_other_view(request):
+    # Get the cart total price
+    cart_total_price = get_cart_total_price(request)
+
+    # Render some other template and pass the cart total price
+    return render(request, 'base.html', {'cart_total_price': cart_total_price})
 
 
 class DecimalEncoder(DjangoJSONEncoder):
@@ -27,47 +35,47 @@ def is_int(value):
         return True
     except ValueError:
         return False
-    
+
+
+def get_cart_total_price(request):
+    cart = request.session.get('cart', [])
+    cart_total_price = Decimal(0)
+    for item_data in cart:
+        item_total_price = Decimal(item_data.get('price', 0))
+        cart_total_price += item_total_price
+    return cart_total_price
+
 def calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras):
     total_price = Decimal(item.price)
     for option_id in selected_options:
-        print(f"Option ID: {option_id}")
         option = get_object_or_404(MenuItemIngredient, id=int(option_id))
         total_price += Decimal(option.price)
     for extra_id in selected_extras:
-        print(f"Extra ID: {extra_id}")
         extra = get_object_or_404(MenuItemIngredient, id=int(extra_id))
         total_price += Decimal(extra.price)
     included_item_id = request.POST.get('included_item')
     if included_item_id:
-        print(f"Included Item ID: {included_item_id}")
         included_item = get_object_or_404(MenuItemIncludedItem, id=int(included_item_id))
         total_price += Decimal(included_item.price)
         for option_id in selected_included_options:
-            print(f"Included Option ID: {option_id}")
             option = get_object_or_404(MenuItemIngredient, id=int(option_id))
             total_price += Decimal(option.price)
         for extra_id in selected_included_extras:
-            print(f"Included Extra ID: {extra_id}")
             extra = get_object_or_404(MenuItemIngredient, id=int(extra_id))
             total_price += Decimal(extra.price)
     return total_price
 
 def add_to_cart(request):
     if request.method == 'POST':
-        print(request.POST)
         # Get the selected item
         item_id = request.POST.get('item_id')
-        print("Item ID: ", item_id)
         item = get_object_or_404(MenuItem, id=item_id)
 
         # Get the selected included item
         included_item_id = request.POST.get('included_item')
         included_item = None
-        print("Included item ID: ", included_item_id)
         if included_item_id:
             included_item = get_object_or_404(MenuItemIncludedItem, id=included_item_id)
-            print("Included item: ", included_item.included_item.name)
 
         # Get the selected options and extras
         selected_options = []
@@ -77,7 +85,6 @@ def add_to_cart(request):
 
 
         for key, values in request.POST.lists():
-            print(f"Key: {key}, Values: {values}")
             if 'included_item_option_' in key:
                 selected_included_options.extend(values)
             elif 'included_item_extra_' in key:
@@ -89,11 +96,6 @@ def add_to_cart(request):
                     if is_int(value) and MenuItemIngredient.objects.filter(id=int(value), option__isnull=False, menu_item=item).exists():
                         selected_options.extend([value])
 
-        print(f"Selected options: {selected_options}")
-        print(f"Selected extras: {selected_extras}")
-        print(f"Selected included options: {selected_included_options}")
-        print(f"Selected included extras: {selected_included_extras}")
-
         try:
             cart_item = {
                 'name': item.name,
@@ -104,11 +106,10 @@ def add_to_cart(request):
                 'image_url': item.image.url if item.image else None,
             }
             if included_item is not None:
-                print("Included item: ", included_item.menu_item.name)
                 cart_item['included_item'] = {
                     'name': included_item.included_item.name,
                     'price': "{:.2f}".format(float(included_item.price)),
-                    'options': [{'name': MenuItemIngredient.objects.get(id=int(option_id[0])).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(option_id[0])).price))} for option_id in selected_included_options if is_int(option_id[0]) and MenuItemIngredient.objects.filter(id=int(option_id[0])).exists()],
+                    'options': [{'name': MenuItemIngredient.objects.get(id=int(option_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(option_id)).price))} for option_id in selected_included_options if is_int(option_id) and MenuItemIngredient.objects.filter(id=int(option_id)).exists()],
                     'extras': [{'name': MenuItemIngredient.objects.get(id=int(extra_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(extra_id)).price))} for extra_id in selected_included_extras if is_int(extra_id) and MenuItemIngredient.objects.filter(id=int(extra_id)).exists()],
                 }
         except MenuItemIngredient.DoesNotExist as e:
@@ -128,7 +129,7 @@ def add_to_cart(request):
         # Display a success message
         messages.success(request, f'{item.name} has been added to cart')
 
-        return redirect('cart')
+        return redirect('order_online')
     
 
 
@@ -138,6 +139,9 @@ def delete_from_cart(request, item_index):
 
     # Check if the item index is valid
     if 0 <= item_index < len(cart):
+        # Store the item in a variable
+        item = cart[item_index]
+
         # Remove the item at the given index from the cart
         del cart[item_index]
 
@@ -145,7 +149,7 @@ def delete_from_cart(request, item_index):
         request.session['cart'] = cart
 
         # Display a success message
-        messages.success(request, 'Item has been removed from cart')
+        messages.success(request, f'{item["name"]} has been removed from cart')
 
     return redirect('cart')
 
@@ -171,6 +175,12 @@ def update_cart_item(request, item_index):
             selected_included_options = []
             selected_included_extras = []
 
+            # Get the selected included item
+            included_item_id = request.POST.get('included_item')
+            included_item = None
+            if included_item_id:
+                included_item = get_object_or_404(MenuItemIncludedItem, id=included_item_id)
+
             for key, values in request.POST.lists():
                 if 'included_item_option_' in key:
                     selected_included_options.extend(values)
@@ -190,6 +200,14 @@ def update_cart_item(request, item_index):
                 cart_item['price'] = "{:.2f}".format(float(calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras)))
                 cart_item['options'] = [{'id': int(option_id), 'name': get_object_or_404(MenuItemIngredient, id=int(option_id)).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(option_id)).price))} for option_id in selected_options if is_int(option_id) and MenuItemIngredient.objects.filter(id=int(option_id)).exists()]
                 cart_item['extras'] = [{'id': int(extra_id), 'name': get_object_or_404(MenuItemIngredient, id=int(extra_id)).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(extra_id)).price))} for extra_id in selected_extras if is_int(extra_id) and MenuItemIngredient.objects.filter(id=int(extra_id)).exists()]
+
+                if included_item is not None:
+                    cart_item['included_item'] = {
+                        'name': included_item.included_item.name,
+                        'price': "{:.2f}".format(float(included_item.price)),
+                        'options': [{'name': MenuItemIngredient.objects.get(id=int(option_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(option_id)).price))} for option_id in selected_included_options if is_int(option_id) and MenuItemIngredient.objects.filter(id=int(option_id)).exists()],
+                        'extras': [{'name': MenuItemIngredient.objects.get(id=int(extra_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(extra_id)).price))} for extra_id in selected_included_extras if is_int(extra_id) and MenuItemIngredient.objects.filter(id=int(extra_id)).exists()],
+                    }
             except Exception as e:
                 print("An error occurred: ", str(e))
 
@@ -197,7 +215,7 @@ def update_cart_item(request, item_index):
             request.session['cart'] = cart
 
             # Display a success message
-            messages.success(request, 'Item has been updated')
+            messages.success(request, f'{item.name} has been updated')
 
             return redirect('cart')
 

@@ -4,10 +4,10 @@
         <div class="text-center">
             <div><i class="fas fa-shopping-bag fa-lg"></i></div>
             <p class="my-0">
-                {% if grand_total %}
-                ${{ grand_total|floatformat:2 }}
+                {% if cart_total_price %}
+                {{ cart_total_price }}€
                 {% else %}
-                $0.00
+                0.00€
                 {% endif %}
             </p>
         </div>

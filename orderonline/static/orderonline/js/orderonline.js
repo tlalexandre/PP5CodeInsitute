@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // Get the nav-link associated with this entry
             var navLink = document.querySelector('a[href="#' + entry.target.id + '"]');
 
-            if (entry.isIntersecting) {
+            if (navLink && entry.isIntersecting) {
                 // If there's a currently active nav-link, remove the classes from it
                 if (currentActiveNavLink) {
                     currentActiveNavLink.classList.remove('bg-brand-color', 'white', 'rounded');

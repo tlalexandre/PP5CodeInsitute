@@ -49,6 +49,10 @@ body{
     z-index: 1000;
 }
 
+.modal-backdrop {
+    z-index: 1020 !important;
+}
+
 /* from Bulma */
 .icon {
     align-items: center;

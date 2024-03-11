@@ -1,21 +1,19 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    var optionsExtrasDataElement = document.getElementById('optionsExtras');
-    console.log('optionsExtrasDataElement:', optionsExtrasDataElement);
-    console.log('optionsExtrasDataElement.textContent:', optionsExtrasDataElement.textContent);
-    var parsedOptionsExtras;
+    let optionsExtrasDataElement = document.getElementById('optionsExtras');
+    let parsedOptionsExtras;
     if (optionsExtrasDataElement && optionsExtrasDataElement.textContent.trim() !== "") {
         parsedOptionsExtras = JSON.parse(optionsExtrasDataElement.textContent);
     }
-    console.log('parsedOptionsExtras:', parsedOptionsExtras);
-    var form = document.getElementById('id_included_item');
-    console.log('form:', form);
+
+    let form = document.getElementById('id_included_item');
+
 
     if (form) {
         form.addEventListener('change', function() {
             console.log('form change event triggered');
-            var selectedIncludedItem = Number(this.value);
+            let selectedIncludedItem = Number(this.value);
             console.log('selectedIncludedItem:', selectedIncludedItem);
-            var optionsExtrasToUse;
+            let optionsExtrasToUse;
             if (optionsExtras instanceof HTMLElement) {
                 optionsExtrasToUse = parsedOptionsExtras;
             } else {
@@ -24,40 +22,44 @@ document.addEventListener('DOMContentLoaded', (event) => {
             if (optionsExtrasToUse && selectedIncludedItem in optionsExtrasToUse) {
                 var selectedOptionsExtras = optionsExtrasToUse[selectedIncludedItem];
                 if (selectedOptionsExtras) {
-                    var optionsExtrasDiv = document.getElementById('options-extras');
+                    let optionsExtrasDiv = document.getElementById('options-extras');
                     optionsExtrasDiv.innerHTML = '';
-                    var extras = selectedOptionsExtras['Extras'];
-                    var options = selectedOptionsExtras['Options'];
-                    var extrasTitle = document.createElement('h3');
+                    let extras = selectedOptionsExtras['Extras'];
+                    let options = selectedOptionsExtras['Options'];
+                    let extrasTitle = document.createElement('h3');
                     extrasTitle.innerHTML = 'Extras';
                     optionsExtrasDiv.appendChild(extrasTitle);
                     // Create checkboxes for extras
-                    for (var i = 0; i < extras.length; i++) {
-                        var input = document.createElement('input');
+                    for (let i = 0; i < extras.length; i++) {
+                        let input = document.createElement('input');
                         input.type = 'checkbox';
                         input.name = 'included_item_extra_' + extras[i].id; // Use the actual ID of the extra
                         input.value = extras[i].id;
                         input.dataset.price = extras[i].price; // Add data-price attribute
                         optionsExtrasDiv.appendChild(input);
-                        var label = document.createElement('label');
+                        let label = document.createElement('label');
                         label.innerHTML = extras[i].price == 0 ? extras[i].ingredient__name : extras[i].ingredient__name + " - €" + extras[i].price;
                         optionsExtrasDiv.appendChild(label);
                         optionsExtrasDiv.appendChild(document.createElement('br'));
                     }
                     // Create radio buttons for options
-                    for (var optionName in options) {
-                        var optionDiv = document.createElement('div');
-                        var optionTitle = document.createElement('h3');
+                    for (let optionName in options) {
+                        let optionDiv = document.createElement('div');
+                        let optionTitle = document.createElement('h3');
                         optionTitle.innerHTML = optionName;
                         optionDiv.appendChild(optionTitle);
-                        for (var i = 0; i < options[optionName].length; i++) {
-                            var input = document.createElement('input');
+                        for (let i = 0; i < options[optionName].length; i++) {
+                            let input = document.createElement('input');
                             input.type = 'radio';
-                            input.name = 'included_item_option_' + options[optionName][i].id;  // Use optionName as name to ensure only one option can be selected
+                            input.name = 'included_item_option_' + optionName;  // Use optionName as name to ensure only one option can be selected
                             input.value = options[optionName][i].id;
                             input.dataset.price = options[optionName][i].price; // Add data-price attribute
+                            // Check if it's the last element in the array
+                            if (i === options[optionName].length - 1) {
+                                input.checked = true;  // Set the checked property to true
+                            }
                             optionDiv.appendChild(input);
-                            var label = document.createElement('label');
+                            let label = document.createElement('label');
                             label.innerHTML = options[optionName][i].price == 0 ? options[optionName][i].ingredient__name : options[optionName][i].ingredient__name + " - €" + options[optionName][i].price;
                             optionDiv.appendChild(label);
                             optionDiv.appendChild(document.createElement('br'));
@@ -68,7 +70,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 }
         });
         // Trigger the change event manually
-        var event = new Event('change');
+        let event = new Event('change');
         form.dispatchEvent(event);
     }
 });

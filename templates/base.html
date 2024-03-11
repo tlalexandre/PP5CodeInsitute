@@ -73,10 +73,10 @@
                             <div class="text-center">
                                 <div><i class="fas fa-shopping-bag fa-lg"></i></div>
                                 <p class="my-0">
-                                    {% if grand_total %}
-                                    ${{ grand_total|floatformat:2 }}
+                                    {% if cart_total_price %}
+                                    {{ cart_total_price }}€
                                     {% else %}
-                                    $0.00
+                                    0.00€
                                     {% endif %}
                                 </p>
                             </div>
@@ -94,12 +94,30 @@
                 </button>
             </nav>
         </div>
-    </header>
-    {% if messages %}
-    <div class="alert alert-{{ message.tags }}">
-        {{ message }}
+<!-- Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="messageModalLabel">Message</h5>
+          <button type="button" class="btn-close bg-brand-color white rounded border-none" data-bs-dismiss="modal" aria-label="Close">X</button>
+        </div>
+        <div class="modal-body">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
-    {% endif %}
+  </div>
+    </header>
 
     {% block page_header %}
     {% endblock %}
@@ -120,6 +138,36 @@
 
 
     {% block postloadjs %}
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            {% if messages %}
+            var messageModalElement = document.getElementById('messageModal');
+            var messageModal = new bootstrap.Modal(messageModalElement, {
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            messageModal.show();
+
+            // Move the modal-backdrop behind the modal
+            var modalBackdrop = document.querySelector('.modal-backdrop');
+            messageModalElement.parentNode.insertBefore(modalBackdrop, messageModalElement);
+
+            // Close the modal after 5 seconds
+            setTimeout(function() {
+                messageModal.hide();
+            }, 5000);
+
+            // Close the modal when the Close button is clicked
+            document.querySelector('#messageModal .btn-close').addEventListener('click', function() {
+                messageModal.hide();
+            });
+            document.querySelector('#messageModal .btn-secondary').addEventListener('click', function() {
+                messageModal.hide();
+            });
+            {% endif %}
+        });
+    </script>
     {% endblock %}
 
   </body>
