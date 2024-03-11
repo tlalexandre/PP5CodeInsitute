@@ -10,12 +10,16 @@ from django.core.serializers.json import DjangoJSONEncoder
 def cart(request):
     # Get the cart from the session
     cart = request.session.get('cart', [])
-    cart_total_price= get_cart_total_price(request)
+    cart_total_price = get_cart_total_price(request)
+
+    # Calculate subtotal for each item in the cart
+    for item in cart:
+        item['subtotal'] = float(item['price']) * item['quantity']
 
     # Render the cart template
     return render(request, 'cart/cart.html', {'cart': cart, 'cart_total_price': cart_total_price})
 
-def some_other_view(request):
+def price_header(request):
     # Get the cart total price
     cart_total_price = get_cart_total_price(request)
 
@@ -46,7 +50,7 @@ def get_cart_total_price(request):
         cart_total_price += item_total_price
     return cart_total_price
 
-def calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras):
+def calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras, quantity):
     total_price = Decimal(item.price)
     for option_id in selected_options:
         option = get_object_or_404(MenuItemIngredient, id=int(option_id))
@@ -64,7 +68,8 @@ def calculate_total_price(request, item, selected_options, selected_extras, sele
         for extra_id in selected_included_extras:
             extra = get_object_or_404(MenuItemIngredient, id=int(extra_id))
             total_price += Decimal(extra.price)
-    return total_price
+    subtotal = total_price * quantity
+    return total_price, subtotal
 
 def get_cart_items(request):
     from orderonline.models import MenuItem, MenuItemIngredient, MenuItemIncludedItem, IngredientOption
@@ -142,11 +147,13 @@ def add_to_cart(request):
                         selected_options.extend([value])
 
         try:
+            total_price , subtotal = calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras, quantity)
             cart_item = {
                 'name': item.name,
                 'quantity': quantity,
                 'original_price': "{:.2f}".format(float(item.price)),
-                'price': "{:.2f}".format(float(calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras))),
+                'price': "{:.2f}".format(float(total_price)),
+                'subtotal': "{:.2f}".format(float(subtotal)),
                 'options': [{'id': int(option_id), 'name': MenuItemIngredient.objects.get(id=int(option_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(option_id)).price))} for option_id in selected_options if is_int(option_id) and MenuItemIngredient.objects.filter(id=int(option_id)).exists()],
                 'extras': [{'id': int(extra_id), 'name': MenuItemIngredient.objects.get(id=int(extra_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(extra_id)).price))} for extra_id in selected_extras if is_int(extra_id) and MenuItemIngredient.objects.filter(id=int(extra_id)).exists()],
                 'image_url': item.image.url if item.image else None,
@@ -211,6 +218,7 @@ def update_cart_item(request, item_index):
     # Get the cart from the session
     cart = request.session.get('cart', [])
 
+
     # Check if the item index is valid
     if 0 <= item_index < len(cart):
         # Get the item at the given index from the cart
@@ -220,6 +228,8 @@ def update_cart_item(request, item_index):
         item = MenuItem.objects.get(name=cart_item['name'])
 
         if request.method == 'POST':
+
+
             # Get the selected options and extras
             selected_options = []
             selected_extras = []
@@ -234,6 +244,12 @@ def update_cart_item(request, item_index):
             included_item = None
             if included_item_id:
                 included_item = get_object_or_404(MenuItemIncludedItem, id=included_item_id)
+
+            # Get the selected options and extras
+            selected_options = request.POST.getlist('options', [])
+            selected_extras = request.POST.getlist('extras', [])
+            selected_included_options = request.POST.getlist('included_options', [])
+            selected_included_extras = request.POST.getlist('included_extras', [])
 
             for key, values in request.POST.lists():
                 if 'included_item_option_' in key:
@@ -251,7 +267,8 @@ def update_cart_item(request, item_index):
 
             try:
                 # Update the cart item
-                cart_item['price'] = "{:.2f}".format(float(calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras)))
+                total_price, _ = calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras, quantity)
+                cart_item['price'] = "{:.2f}".format(float(total_price))
                 cart_item['options'] = [{'id': int(option_id), 'name': get_object_or_404(MenuItemIngredient, id=int(option_id)).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(option_id)).price))} for option_id in selected_options if is_int(option_id) and MenuItemIngredient.objects.filter(id=int(option_id)).exists()]
                 cart_item['extras'] = [{'id': int(extra_id), 'name': get_object_or_404(MenuItemIngredient, id=int(extra_id)).ingredient.name, 'price': "{:.2f}".format(float(get_object_or_404(MenuItemIngredient, id=int(extra_id)).price))} for extra_id in selected_extras if is_int(extra_id) and MenuItemIngredient.objects.filter(id=int(extra_id)).exists()]
                 cart_item['quantity'] = quantity
@@ -268,6 +285,7 @@ def update_cart_item(request, item_index):
 
             # Save the cart back to the session
             request.session['cart'] = cart
+
 
             # Display a success message
             messages.success(request, f'{item.name} has been updated')
@@ -301,6 +319,9 @@ def update_cart_item(request, item_index):
             initial_data['Extras'].extend([str(mii.id) for mii in menu_item_ingredients])
 
         form = AddToCartForm(initial=initial_data, item=item, adding=False)
+
+
+
 
         item_price = item.price
         for option in cart_item['options']:
