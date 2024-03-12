@@ -45,3 +45,8 @@ def item_detail(request, item_id):
         'included_items': included_items,
         'options_extras': options_extras,
     })
+
+
+def product_management(request):
+    """ A view to return the product management page """
+    return render(request, 'orderonline/product_management.html')
