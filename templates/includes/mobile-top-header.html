@@ -21,7 +21,16 @@
         </div>
     </a>
     <div class="dropdown-menu border-0" aria-labelledby="user-options">
-        
+        {% if user.is_authenticated %}
+                                <a class="dropdown-item" href="{% url 'account_logout' %}">Sign Out</a>
+                                <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                                {% if user.is_superuser %}
+                                    <a class="dropdown-item" href="{% url 'product_management' %}">Product Management</a>
+                                {% endif %}
+                            {% else %}
+                                <a class="dropdown-item" href="{% url 'account_login' %}">Sign In</a>
+                                <a class="dropdown-item" href="{% url 'account_signup' %}">Register</a>
+                            {% endif %}
     </div>
 </li>
 <li class="list-inline-item dropdown">

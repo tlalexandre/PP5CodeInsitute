@@ -87,20 +87,29 @@ def get_cart_items(request):
             # Get the item from the database
             item = MenuItem.objects.get(name=item_data['name'])
 
-            # Get the included items, options, and extras for the item
-            included_items = [MenuItemIncludedItem.objects.get(id=included_item['id']) for included_item in item_data.get('included_items', [])]
-            options = [MenuItemIngredient.objects.get(id=option['id']) for option in item_data.get('options', [])]
-            extras = []
-            for extra in item_data.get('extras', []):
-                try:
-                    extras.append(IngredientOption.objects.get(id=extra['id']))
-                except IngredientOption.DoesNotExist:
-                    pass
+            # Get the included item, options, and extras for the item
+            included_item_data = item_data.get('included_item')
+            if included_item_data:
+
+                included_item = MenuItem.objects.get(name=included_item_data['name'])
+                included_item_option_names = [option['name'] for option in included_item_data.get('options', [])]
+                included_item_extra_names = [extra['name'] for extra in included_item_data.get('extras', [])]
+                included_item_options = MenuItemIngredient.objects.filter(menu_item=included_item, ingredient__name__in=included_item_option_names)
+                included_item_extras = MenuItemIngredient.objects.filter(menu_item=included_item, ingredient__name__in=included_item_extra_names)
+            else:
+                included_item = None
+                included_item_options = MenuItemIngredient.objects.none()
+                included_item_extras = MenuItemIngredient.objects.none()
+
+            options = MenuItemIngredient.objects.filter(id__in=[option['id'] for option in item_data.get('options', [])])
+            extras = MenuItemIngredient.objects.filter(id__in=[extra['id'] for extra in item_data.get('extras', [])])
 
             # Create a dictionary to hold the item details
             item_details = {
                 'item': item,
-                'included_items': included_items,
+                'included_item': included_item,
+                'included_item_options': included_item_options,
+                'included_item_extras': included_item_extras,
                 'options': options,
                 'extras': extras,
                 'quantity': item_data.get('quantity', 1),
@@ -109,10 +118,9 @@ def get_cart_items(request):
 
             # Add the item details to the cart_items list
             cart_items.append(item_details)
-    print(cart_items)
+
     # Return the cart_items list
     return cart_items
-
 
 def add_to_cart(request):
     if request.method == 'POST':

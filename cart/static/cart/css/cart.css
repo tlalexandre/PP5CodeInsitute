@@ -3,3 +3,8 @@
     height: 250px;
     object-fit: cover;
 }
+.checkout-btn {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+}

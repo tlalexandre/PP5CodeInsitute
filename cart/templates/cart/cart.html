@@ -80,4 +80,9 @@
             <p>Your cart is empty.</p>
         </div>
         {% endfor %}
+        {% if cart %}
+        <div class="checkout-btn">
+            <a href="{% url 'checkout' %}" class="checkout-btn btn btn-primary">Proceed to Checkout</a>
+        </div>
+        {% endif %}
 {% endblock %}
