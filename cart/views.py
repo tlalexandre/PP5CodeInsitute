@@ -10,7 +10,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 def cart(request):
     # Get the cart from the session
     cart = request.session.get('cart', [])
-    cart_total_price = get_cart_total_price(request)
+    cart_total_price = get_cart_total_price(cart)
 
     # Calculate subtotal for each item in the cart
     for item in cart:
@@ -40,8 +40,7 @@ def is_int(value):
     except ValueError:
         return False
     
-def get_cart_total_price(request):
-    cart = request.session.get('cart', [])
+def get_cart_total_price(cart):
     cart_total_price = Decimal(0)
     for item_data in cart:
         item_price = Decimal(item_data.get('price', 0))
@@ -105,6 +104,9 @@ def get_cart_items(request):
             extras = MenuItemIngredient.objects.filter(id__in=[extra['id'] for extra in item_data.get('extras', [])])
 
             # Create a dictionary to hold the item details
+            total_price = get_cart_total_price(cart)  # Assuming current_cart is your cart
+            price = Decimal(item_data.get('price', 0))
+
             item_details = {
                 'item': item,
                 'included_item': included_item,
@@ -113,14 +115,15 @@ def get_cart_items(request):
                 'options': options,
                 'extras': extras,
                 'quantity': item_data.get('quantity', 1),
-                'total_price': Decimal(item_data.get('price', 0)),
+                'total_price': total_price,
+                'price': price,
             }
 
             # Add the item details to the cart_items list
             cart_items.append(item_details)
-            print(cart_items)
 
     # Return the cart_items list
+    print(cart_items)
     return cart_items
 
 def add_to_cart(request):
