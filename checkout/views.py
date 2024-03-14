@@ -39,3 +39,5 @@ def checkout(request):
 
     # Pass the form and the cart items to the template
     return render(request, 'checkout/checkout.html', {'form': form, 'cart_items': cart_items})
+
+

@@ -118,6 +118,7 @@ def get_cart_items(request):
 
             # Add the item details to the cart_items list
             cart_items.append(item_details)
+            print(cart_items)
 
     # Return the cart_items list
     return cart_items
