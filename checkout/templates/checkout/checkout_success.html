@@ -26,7 +26,130 @@
         </div>
 
         <div class="row">
-            <div class="col-12 col-lg-7"></div>
+            <div class="col-12 col-lg-7">
+                <div class="order-confirmation-wrapper p-2 border">
+                    <div class="row">
+                        <div class="col">
+                            <small class="text-muted">Order Info:</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <p class="mb-0 text-black font-weight-bold">Order Number: </p>
+                        </div>
+                        <div class="col-12 col-md-4 text-md-right">
+                            <p class="mb-0">{{order.order_number}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <p class="mb-0 text-black font-weight-bold">Order Date: </p>
+                        </div>
+                        <div class="col-12 col-md-4 text-md-right">
+                            <p class="mb-0">{{order.order_date}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <small class="text-muted">Order Details:</small>
+                        </div>
+                    </div>
+                    {% for item in order.lineitems.all %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><strong>{{ item.menu_item.name }}</strong> <small>x {{ item.quantity }}</small> </h5>
+                                <p class="card-text">
+                                    <strong>Total Price:</strong> {{ item.total_price }}€<br>
+
+                                    {% if item.options.all %}
+                                    <strong>Options:</strong> 
+                                        {% for option in item.options.all %}
+                                        {{ option.ingredient.name }}{% if option.price|stringformat:"s" != "0.00" %}: +{{ option.price }}€{% endif %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    <br>
+                                    {% if item.extras.all %}
+                                    <strong>Extras:</strong> 
+                                        {% for extra in item.extras.all %}
+                                        {{ extra.ingredient.name }}{% if extra.price|stringformat:"s" != "0.00" %}: +{{ extra.price }}€{% endif %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </p>
+                                {% if item.included_item %}
+                                <h6><strong>Included Item:</strong> {{ item.included_item.included_item.name }}</h6>
+                                    {% if item.included_item_options.all %}
+                                    <strong>Included Item Options:</strong>
+                                        {% for included_item_option in item.included_item_options.all %}
+                                        {{ included_item_option.ingredient.name }}{% if included_item_option.price|stringformat:"s" != "0.00" %}: +{{ included_item_option.price }}€{% endif %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    <br>
+                                    {% if item.included_item_extras.all %}
+                                    <strong>Included Item Extras:</strong>
+                                        {% for included_item_extra in item.included_item_extras.all %}
+                                        {{ included_item_extra.ingredient.name }}{% if included_item_extra.price|stringformat:"s" != "0.00" %}: +{{ included_item_extra.price }}€{% endif %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col">
+                            <small class="text-muted">Billing Info:</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <p class="mb-0 text-black font-weight-bold">Order Total: </p>
+                        </div>
+                        <div class="col-12 col-md-4 text-md-right">
+                            <p class="mb-0">{{order.order_total}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <p class="mb-0 text-black font-weight-bold">Full Name</p>
+                        </div>
+                        <div class="col-12 col-md-8 text-md-right">
+                            <p class="mb-0">{{ order.full_name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <p class="mb-0 text-black font-weight-bold">Address 1</p>
+                        </div>
+                        <div class="col-12 col-md-8 text-md-right">
+                            <p class="mb-0">{{ order.street_address1 }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <p class="mb-0 text-black font-weight-bold">Town or City</p>
+                        </div>
+                        <div class="col-12 col-md-8 text-md-right">
+                            <p class="mb-0">{{ order.town_or_city }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <p class="mb-0 text-black font-weight-bold">Country</p>
+                        </div>
+                        <div class="col-12 col-md-8 text-md-right">
+                            <p class="mb-0">{{ order.country }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <p class="mb-0 text-black font-weight-bold">Phone Number</p>
+                        </div>
+                        <div class="col-12 col-md-8 text-md-right">
+                            <p class="mb-0">{{ order.phone_number }}</p>
+                        </div>
+                    </div>       
+                </div>
+            </div>
         </div>
         
     </div>
