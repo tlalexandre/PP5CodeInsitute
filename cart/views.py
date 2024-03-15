@@ -123,7 +123,7 @@ def get_cart_items(request):
             cart_items.append(item_details)
 
     # Return the cart_items list
-    print(cart_items)
+    print('Cart Items:',cart_items)
     return cart_items
 
 def add_to_cart(request):

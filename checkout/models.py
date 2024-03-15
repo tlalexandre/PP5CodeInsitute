@@ -3,7 +3,7 @@ import uuid
 from django.db.models import Sum
 from django.conf import settings
 
-from orderonline.models import MenuItem, MenuItemIngredient
+from orderonline.models import MenuItem, MenuItemIngredient, MenuItemIncludedItem
 # Create your models here.
 
 
@@ -44,7 +44,7 @@ class Order(models.Model):
 class OrderLineItem(models.Model):
     order = models.ForeignKey(Order, null=False, on_delete=models.CASCADE, related_name='lineitems')
     menu_item = models.ForeignKey(MenuItem, null=False, on_delete=models.CASCADE)
-    included_item = models.ForeignKey(MenuItem, null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+    included_item = models.ForeignKey(MenuItemIncludedItem, null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
     included_item_options = models.ManyToManyField(MenuItemIngredient, related_name='+', blank=True)
     included_item_extras = models.ManyToManyField(MenuItemIngredient, related_name='+', blank=True)
     options = models.ManyToManyField(MenuItemIngredient, related_name='+', blank=True)
@@ -55,8 +55,45 @@ class OrderLineItem(models.Model):
     def __str__(self):
         return f'SKU {self.menu_item.sku} on order {self.order.order_number}'
     
-    def save(self, *args, **kwargs):
-        ''' Override the original save method to set the lineitem total and update the order total '''
+    def print_prices(self):
+            print(f"Menu item price: {self.menu_item.price}")
+            if self.included_item is not None:
+                print(f"Included item price: {self.included_item.price}")
+            for option in self.options.all():
+                print(f"Option price: {option.price}")
+            for extra in self.extras.all():
+                print(f"Extra price: {extra.price}")
+            if self.included_item is not None:
+                for option in self.included_item_options.all():
+                    print(f"Included item option price: {option.price}")
+                for extra in self.included_item_extras.all():
+                    print(f"Included item extra price: {extra.price}")
+            print(f"Line item total: {self.lineitem_total}")
 
+    
+    def save(self, *args, **kwargs):
+        """
+        Override the original save method to set the line item total
+        """
         self.lineitem_total = self.menu_item.price * self.quantity
-        super().save(*args, **kwargs)
+
+        # Add the price of the included item, if it exists
+        if self.included_item is not None:
+            self.lineitem_total += self.included_item.price * self.quantity
+
+        super().save(*args, **kwargs)  # Save the instance to generate an ID
+
+        # Add the prices of the options and extras
+        for option in self.options.all():
+            self.lineitem_total += option.price * self.quantity
+        for extra in self.extras.all():
+            self.lineitem_total += extra.price * self.quantity
+
+        # Add the prices of the included item options and extras, if the included item exists
+        if self.included_item is not None:
+            for option in self.included_item_options.all():
+                self.lineitem_total += option.price * self.quantity
+            for extra in self.included_item_extras.all():
+                self.lineitem_total += extra.price * self.quantity
+
+        super().save(*args, **kwargs)  # Save the instance again to update the lineitem_total
