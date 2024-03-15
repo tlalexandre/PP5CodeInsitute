@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extra_css %}
-<link href="{% static 'checkout/css/checkout.css'% }">
+<link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
 {% endblock %}
 
 {% block page_header %}
@@ -132,7 +132,14 @@
                     </form>
                 </div>
             </div>
-        </div>
+    </div>
+    <div id="loading-overlay">
+        <h1 class="text-light logo-font loading-spinner">
+            <div class="cup">
+                <div class="handle"></div>
+            </div>
+        </h1>
+    </div>
 {% endblock %}
 
 {% block postloadjs %}

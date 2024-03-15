@@ -51,11 +51,19 @@ form.addEventListener('submit', function(ev) {
     ev.preventDefault();
     card.update({ 'disabled': true});
     $('#submit-button').attr('disabled', true);
+    $('#payment-form').fadeToggle(100);
+    $('#loading-overlay').fadeToggle(100);
+
     stripe.confirmCardPayment(clientSecret, {
         payment_method: {
             card: card,
         }
     }).then(function(result) {
+        $('#payment-form').fadeToggle(100);
+        setTimeout(function() {
+            $('#loading-overlay').fadeToggle(100);
+            console.log($('#loading-overlay').css('display'));
+        }, 1000);
         if (result.error) {
             var errorDiv = document.getElementById('card-errors');
             var html = `
@@ -63,7 +71,7 @@ form.addEventListener('submit', function(ev) {
                 <i class="fas fa-times"></i>
                 </span>
                 <span>${result.error.message}</span>`;
-            $(errorDiv).html(html);
+            $(errorDiv).html(html);;
             card.update({ 'disabled': false});
             $('#submit-button').attr('disabled', false);
         } else {
