@@ -89,7 +89,6 @@ def get_cart_items(request):
             # Get the included item, options, and extras for the item
             included_item_data = item_data.get('included_item')
             if included_item_data:
-
                 included_item = MenuItem.objects.get(name=included_item_data['name'])
                 included_item_option_names = [option['name'] for option in included_item_data.get('options', [])]
                 included_item_extra_names = [extra['name'] for extra in included_item_data.get('extras', [])]
@@ -108,7 +107,7 @@ def get_cart_items(request):
             price = Decimal(item_data.get('price', 0))
 
             item_details = {
-                'item': item,
+                'item': item.id,  # Use the ID of the MenuItem
                 'included_item': included_item,
                 'included_item_options': included_item_options,
                 'included_item_extras': included_item_extras,
@@ -121,9 +120,7 @@ def get_cart_items(request):
 
             # Add the item details to the cart_items list
             cart_items.append(item_details)
-
     # Return the cart_items list
-    print('Cart Items:',cart_items)
     return cart_items
 
 def add_to_cart(request):
@@ -161,6 +158,7 @@ def add_to_cart(request):
         try:
             total_price , subtotal = calculate_total_price(request, item, selected_options, selected_extras, selected_included_options, selected_included_extras, quantity)
             cart_item = {
+                'id': item.id,
                 'name': item.name,
                 'quantity': quantity,
                 'original_price': "{:.2f}".format(float(item.price)),
@@ -172,6 +170,7 @@ def add_to_cart(request):
             }
             if included_item is not None:
                 cart_item['included_item'] = {
+                    'id': included_item.included_item.id,
                     'name': included_item.included_item.name,
                     'price': "{:.2f}".format(float(included_item.price)),
                     'options': [{'name': MenuItemIngredient.objects.get(id=int(option_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(option_id)).price))} for option_id in selected_included_options if is_int(option_id) and MenuItemIngredient.objects.filter(id=int(option_id)).exists()],
@@ -287,6 +286,7 @@ def update_cart_item(request, item_index):
 
                 if included_item is not None:
                     cart_item['included_item'] = {
+                        'id': included_item.included_item.id,
                         'name': included_item.included_item.name,
                         'price': "{:.2f}".format(float(included_item.price)),
                         'options': [{'name': MenuItemIngredient.objects.get(id=int(option_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(option_id)).price))} for option_id in selected_included_options if is_int(option_id) and MenuItemIngredient.objects.filter(id=int(option_id)).exists()],

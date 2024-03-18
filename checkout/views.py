@@ -3,13 +3,13 @@ from django.views.decorators.http import require_POST
 from .forms import OrderForm
 from django.contrib import messages
 from django.conf import settings
-from orderonline.models import MenuItem, MenuItemIncludedItem
-from cart.views import get_cart_items  # Import the get_cart_items function
+from orderonline.models import MenuItem, MenuItemIncludedItem, MenuItemIngredient
 from cart.context_processors import cart_total_price  # Import the cart_total_price function
 from .models import OrderLineItem, Order
 
 import stripe
 import json
+import time
 
 @require_POST
 def cache_checkout_data(request):
@@ -31,9 +31,6 @@ def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
-    current_cart= get_cart_items(request)
-    print(current_cart)
-
     if request.method == 'POST':
         cart = request.session.get('cart', {})
         
@@ -44,27 +41,31 @@ def checkout(request):
             'street_address1': request.POST['street_address1'],
             'street_address2': request.POST['street_address2'],
             'town_or_city': request.POST['town_or_city'],
-            'postcode': request.POST['postcode'],
             'country': request.POST['country'],
+            'county': request.POST['county'],
         }
         order_form = OrderForm(form_data)
         if order_form.is_valid():
-            order = order_form.save()
-            for item_data in current_cart:
-                print(item_data)
+            order = order_form.save(commit=False)
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            order.stripe_pid = pid
+            order.original_cart = json.dumps(cart)
+            total_price = sum(float(item['subtotal']) for item in cart)
+            order.total_price = total_price
+            order.save()
+            print('Order created by checkout view: ',order, 'Checkout PID',order.stripe_pid, order.total_price, order.original_cart,)
+            for item_data in cart:
+                print('Cart Checkout:', item_data)
                 try:
-                    menu_item = item_data.get('item')
-                    included_item = item_data.get('included_item')
+                    menu_item_id = item_data.get('id')
+                    menu_item = MenuItem.objects.get(id=menu_item_id)
                     quantity = item_data['quantity']
 
                     # Convert included_item to a MenuItemIncludedItem instance
-                    if included_item is not None:
-                        included_items = MenuItemIncludedItem.objects.filter(included_item__id=included_item.id)
-                        # Handle the case where multiple objects are returned
-                        if included_items.exists():
-                            included_item = included_items.first()
-                        else:
-                            included_item = None
+                    included_item_data = item_data.get('included_item')
+                    if included_item_data is not None:
+                        included_item_id = included_item_data['id']
+                        included_item = MenuItemIncludedItem.objects.get(id=included_item_id)
                     else:
                         included_item = None
 
@@ -78,21 +79,21 @@ def checkout(request):
                     order_line_item.print_prices()
 
                     # Now you can set the many-to-many fields
-                    included_item_options = item_data.get('included_item_options')
-                    if included_item_options is not None:
-                        order_line_item.included_item_options.set(included_item_options)
+                    included_item_options_data = item_data.get('included_item_options', [])
+                    included_item_options = [MenuItemIngredient.objects.get(id=option_data['id']) for option_data in included_item_options_data]
+                    order_line_item.included_item_options.set(included_item_options)
 
-                    included_item_extras = item_data.get('included_item_extras')
-                    if included_item_extras is not None:
-                        order_line_item.included_item_extras.set(included_item_extras)
+                    included_item_extras_data = item_data.get('included_item_extras', [])
+                    included_item_extras = [MenuItemIngredient.objects.get(id=extra_data['id']) for extra_data in included_item_extras_data]
+                    order_line_item.included_item_extras.set(included_item_extras)
 
-                    options = item_data.get('options')
-                    if options is not None:
-                        order_line_item.options.set(options)
+                    options_data = item_data.get('options', [])
+                    options = [MenuItemIngredient.objects.get(id=option_data['id']) for option_data in options_data]
+                    order_line_item.options.set(options)
 
-                    extras = item_data.get('extras')
-                    if extras is not None:
-                        order_line_item.extras.set(extras)
+                    extras_data = item_data.get('extras', [])
+                    extras = [MenuItemIngredient.objects.get(id=extra_data['id']) for extra_data in extras_data]
+                    order_line_item.extras.set(extras)
 
                     # Call save again to update the lineitem_total with the prices of the options and extras
                     order_line_item.save()
@@ -119,12 +120,10 @@ def checkout(request):
         total = cart_total_price_context['cart_total_price']
         stripe_total = round(total * 100)
         stripe.api_key = stripe_secret_key
-        print(stripe.api_key)
         intent = stripe.PaymentIntent.create(
             amount=stripe_total,
             currency=settings.STRIPE_CURRENCY,
         )
-        print(intent)
 
         order_form = OrderForm()
 
