@@ -48,7 +48,7 @@ class CustomRadioSelect(forms.RadioSelect):
 
 class AddToCartForm(forms.Form):
     item_id = forms.ModelChoiceField(queryset=MenuItem.objects.all(), widget=forms.HiddenInput())
-    quantity = forms.IntegerField(min_value=1, initial=1, widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    quantity = forms.IntegerField(min_value=1, initial=1, widget=forms.NumberInput(attrs={'class': 'form-control quantity'}))
 
     def __init__(self, *args, item=None, adding=True,**kwargs):
         super().__init__(*args, **kwargs)
@@ -74,7 +74,11 @@ class AddToCartForm(forms.Form):
 
             included_items = MenuItemIncludedItem.objects.filter(menu_item=item)
             if included_items.exists():
-                self.fields['included_item'] = MenuItemIncludedItemChoiceField(queryset=included_items, required=False, widget=forms.Select(attrs={'class': 'd-block'}))
+                self.fields['included_item'] = MenuItemIncludedItemChoiceField(
+                    queryset=included_items, 
+                    required=False, 
+                    widget=forms.Select(attrs={'class': 'd-block mx-auto w-100'})
+                )
                 self.fields['included_item'].initial = included_items.first()
 
     def get_options(self, items):

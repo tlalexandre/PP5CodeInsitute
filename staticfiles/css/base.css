@@ -37,7 +37,10 @@ body{
     border-radius: 1rem !important;
 }
 
-
+.mobile-title{
+    font-size: 2.5rem !important;
+    font-weight: 400;
+}
 
 /* Bootstrap */
 
@@ -61,7 +64,8 @@ body{
 /* pad the top a bit when navbar is collapsed on mobile */
 @media (max-width: 991px) {
     .header-container {
-        padding-top: 150px;
+        padding-top: 180px;
+        background-color: black;
     }
 
     body {
@@ -70,4 +74,5 @@ body{
     .coffeeCup{
         margin-top: 1.5rem;
     }
+
 }
