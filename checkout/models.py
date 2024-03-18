@@ -18,6 +18,7 @@ class Order(models.Model):
     street_address2 = models.CharField(max_length=40, blank=False)
     county = models.CharField(max_length=40, blank=True)
     date = models.DateField(auto_now_add=True)
+    pickup_time = models.TimeField(auto_now_add=False, blank=True, null=True)
     order_total = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
     original_cart = models.TextField(null=False, blank=False, default='')

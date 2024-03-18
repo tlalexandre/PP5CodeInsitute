@@ -43,6 +43,7 @@ def checkout(request):
             'town_or_city': request.POST['town_or_city'],
             'country': request.POST['country'],
             'county': request.POST['county'],
+            'pickup_time': request.POST['pickup_time'],
         }
         order_form = OrderForm(form_data)
         if order_form.is_valid():
@@ -115,7 +116,7 @@ def checkout(request):
         cart = request.session.get('cart', {})
         if not cart:
             messages.error(request, "There's nothing in your cart at the moment")
-            return redirect(reverse('orderonline'))
+            return redirect(reverse('cart'))
         cart_total_price_context = cart_total_price(request)
         total = cart_total_price_context['cart_total_price']
         stripe_total = round(total * 100)
@@ -131,6 +132,7 @@ def checkout(request):
         messages.warning(request, 'Stripe public key is missing. Did you forget to set it in your environment?')
 
     template = 'checkout/checkout.html'
+    print('Cart in checkout view:', cart)
     context = {
         'order_form': order_form,
         'cart': cart,

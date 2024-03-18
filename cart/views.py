@@ -70,58 +70,6 @@ def calculate_total_price(request, item, selected_options, selected_extras, sele
     subtotal = total_price * quantity
     return total_price, subtotal
 
-def get_cart_items(request):
-    from orderonline.models import MenuItem, MenuItemIngredient, MenuItemIncludedItem, IngredientOption
-
-    # Get the cart from the session
-    cart = request.session.get('cart', [])
-
-    # Create a list to hold all cart items with their details
-    cart_items = []
-
-    # Loop through each item in the cart
-    for item_data in cart:
-        # Check if 'name' is in the dictionary
-        if 'name' in item_data:
-            # Get the item from the database
-            item = MenuItem.objects.get(name=item_data['name'])
-
-            # Get the included item, options, and extras for the item
-            included_item_data = item_data.get('included_item')
-            if included_item_data:
-                included_item = MenuItem.objects.get(name=included_item_data['name'])
-                included_item_option_names = [option['name'] for option in included_item_data.get('options', [])]
-                included_item_extra_names = [extra['name'] for extra in included_item_data.get('extras', [])]
-                included_item_options = MenuItemIngredient.objects.filter(menu_item=included_item, ingredient__name__in=included_item_option_names)
-                included_item_extras = MenuItemIngredient.objects.filter(menu_item=included_item, ingredient__name__in=included_item_extra_names)
-            else:
-                included_item = None
-                included_item_options = MenuItemIngredient.objects.none()
-                included_item_extras = MenuItemIngredient.objects.none()
-
-            options = MenuItemIngredient.objects.filter(id__in=[option['id'] for option in item_data.get('options', [])])
-            extras = MenuItemIngredient.objects.filter(id__in=[extra['id'] for extra in item_data.get('extras', [])])
-
-            # Create a dictionary to hold the item details
-            total_price = get_cart_total_price(cart)  # Assuming current_cart is your cart
-            price = Decimal(item_data.get('price', 0))
-
-            item_details = {
-                'item': item.id,  # Use the ID of the MenuItem
-                'included_item': included_item,
-                'included_item_options': included_item_options,
-                'included_item_extras': included_item_extras,
-                'options': options,
-                'extras': extras,
-                'quantity': item_data.get('quantity', 1),
-                'total_price': total_price,
-                'price': price,
-            }
-
-            # Add the item details to the cart_items list
-            cart_items.append(item_details)
-    # Return the cart_items list
-    return cart_items
 
 def add_to_cart(request):
     if request.method == 'POST':

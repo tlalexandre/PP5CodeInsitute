@@ -4,7 +4,7 @@ from .models import Order
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ('full_name', 'email', 'phone_number', 'country', 'town_or_city', 'street_address1', 'street_address2', 'county')
+        fields = ('full_name', 'email', 'phone_number', 'country', 'town_or_city', 'street_address1', 'street_address2', 'county','pickup_time')
     
     def __init__(self, *args, **kwargs):
         ''' Add placeholders and classes, remove auto-generated labels and set autofocus on first field'''
@@ -18,6 +18,7 @@ class OrderForm(forms.ModelForm):
             'street_address1': 'Street Address 1',
             'street_address2': 'Street Address 2',
             'county': 'County',
+            'pickup_time': 'Pickup Time',
         }
         
         self.fields['full_name'].widget.attrs['autofocus'] = True

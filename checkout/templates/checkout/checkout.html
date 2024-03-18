@@ -6,144 +6,167 @@
 {% endblock %}
 
 {% block page_header %}
-    <div class="container header-container">
-        <div class="row">
-            <div class="col"></div>
-        </div>
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
     </div>
+</div>
 {% endblock %}
 
 {% block content %}
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <hr>
-                <h2 class="logo-font mb-4">Checkout</h2>
-                <hr>
-            </div>
+<div class="overlay"></div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <hr>
+            <h2 class="logo-font mb-4 text-center">Checkout</h2>
+            <hr>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                {% for item in cart_items %}
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title"><strong>{{ item.item.name }}</strong> <small>x {{ item.quantity }}</small> </h5>
-                            <p class="card-text">
-                                <strong>Total Price:</strong> {{ item.total_price }}€<br>
-
-                                {% if item.options %}
-                                <strong>Options:</strong> 
-                                    {% for option in item.options %}
-                                    {{ option.ingredient.name }}{% if option.price|stringformat:"s" != "0.00" %}: +{{ option.price }}€{% endif %}{% if not forloop.last %}, {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                <br>
-                                {% if item.extras %}
-                                <strong>Extras:</strong> 
-                                    {% for extra in item.extras %}
-                                    {{ extra.ingredient.name }}{% if extra.price|stringformat:"s" != "0.00" %}: +{{ extra.price }}€{% endif %}{% if not forloop.last %}, {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                            </p>
-                            {% if item.included_item %}
-                            <h6><strong>Included Item:</strong> {{ item.included_item.name }}</h6>
-                                {% if item.included_item_options %}
-                                <strong>Included Item Options:</strong>
-                                    {% for included_item_option in item.included_item_options %}
-                                    {{ included_item_option.ingredient.name }}{% if included_item_option.price|stringformat:"s" != "0.00" %}: +{{ included_item_option.price }}€{% endif %}{% if not forloop.last %}, {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                <br>
-                                {% if item.included_item_extras %}
-                                <strong>Included Item Extras:</strong>
-                                    {% for included_item_extra in item.included_item_extras %}
-                                    {{ included_item_extra.ingredient.name }}{% if included_item_extra.price|stringformat:"s" != "0.00" %}: +{{ included_item_extra.price }}€{% endif %}{% if not forloop.last %}, {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                            {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {% for item in cart %}
+                <div class="card mb-3">
+                    <div class="row no-gutters">
+                        {% if item.image_url %}
+                        <div class="col-md-4">
+                            <img src="{{ item.image_url }}" class="card-img" alt="{{ item.name }}">
                         </div>
-                    </div>
-                {% empty %}
-                    <p>Your cart is empty.</p>
-                {% endfor %}
-                <h2>Total Price : {{cart_total_price}}</h2>
-                <hr>
-            </div>
-                <div class="col-md-6">
-
-                    <form method="POST" action="{% url 'checkout' %}" id="payment-form">
-                        {% csrf_token %}
-                        <fieldset class="rounded px-3 mb-5">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
-                            {{ order_form.full_name | as_crispy_field }}
-                            {{ order_form.email | as_crispy_field }}
-                        </fieldset>
-                        <fieldset class="rounded px-3 mb-5">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Personal Information</legend>
-                            {{ order_form.phone_number | as_crispy_field }}
-                            {{ order_form.street_address1 | as_crispy_field }}
-                            {{ order_form.street_address2 | as_crispy_field }}
-                            {{ order_form.town_or_city | as_crispy_field }}
-                            {{ order_form.county | as_crispy_field }}
-                            {{ order_form.country | as_crispy_field }}
-                            <div class="form-check form-check-inline float-right mr-0">
-                                {% if user.is_authenticated %}
-                                    <label class="form-check-label" for="id-save-info">Save this information to my profile</label>
-                                    <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info" checked>
-                                {% else %}
-                                    <label class="form-check-label" for="id-save-info">
-                                        <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or 
-                                        <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </fieldset>
-                        <fieldset class="px-3">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
-                            <!-- A Stripe card element will go here -->
-                            <div class="mb-3" id="card-element"></div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title"><strong>{{ item.name }}</strong> <small>x {{ item.quantity }}</small> </h5>
+                                <p class="card-text">
+                                    <strong>Original Price:</strong> {{ item.original_price }}€<br>
+                                    <strong>Price:</strong> {{ item.price }}€<br>
     
-                            <!-- Used to display form errors -->
-                            <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
-                            <input type="hidden" value="{{client_secret}}" name="client_secret">
-                        </fieldset>
-                        <div class="submit-button text-right mt-5 mb-2">                    
-                            <a href="{% url 'cart' %}" class="btn btn-primary white rounded">
-                                <span class="icon">
-                                    <i class="fas fa-chevron-left"></i>
-                                </span>
-                                <span class="font-weight-bold">Adjust Bag</span>
-                            </a>
-                            <button id="submit-button" class="btn btn-primary white rounded">
-                                <span class="font-weight-bold">Complete Order</span>
-                                <span class="icon">
-                                    <i class="fas fa-lock"></i>
-                                </span>
-                            </button>
-                            <p class="small text-danger my-0">
-                                <span class="icon">
-                                    <i class="fas fa-exclamation-circle"></i>
-                                </span>
-                                <span>Your card will be charged <strong>${{ total_price|floatformat:2 }}</strong></span>
+                                    {% if item.options %}
+                                    <strong>Options:</strong> 
+                                        {% for option in item.options %}
+                                        {{ option.name }}{% if option.price != "0.00" %}: +{{ option.price }}€{% endif %},
+                                        {% endfor %}
+                                    {% endif %}
+                                    <br>
+                                    {% if item.extras %}
+                                    <strong>Extras:</strong> 
+                                        {% for extra in item.extras %}
+                                        {{ extra.name }}{% if extra.price != "0.00" %}: +{{ extra.price }}€{% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </p>
+                                {% if item.included_item %}
+                            <h6><strong> Included Item: </strong> {{ item.included_item.name }}{% if item.included_item.price != "0.00" %}: +{{ item.included_item.price }}€{% endif %}</h6>
+                            <p>
+                                {% if item.included_item.options %}
+                                <strong>Options:</strong> 
+                                {% for option in item.included_item.options %}
+                                {{ option.name }}{% if option.price != "0.00" %}: +{{ option.price }}€{% endif %},
+                                {% endfor %}
+                                <br>
+                                {% endif %}
+                                {% if item.included_item.extras %}
+                                <strong>Extras:</strong> 
+                                {% for extra in item.included_item.extras %}
+                                {{ extra.name }}{% if extra.price != "0.00" %}: +{{ extra.price }}€{% endif %},
+                                {% endfor %}
+                                <br>
+                                {% endif %}
                             </p>
+                            {% endif %}
+                            </div>
                         </div>
-                    </form>
+                    {% endif %}
+                    </div>
                 </div>
+                {% empty %}
+                <p>You have no items in your cart.</p>
+            {% endfor %}
+            <h2>Total Price : {{cart_total_price}}</h2>
+            <hr>
+            
+        </div>
+
+
+<div class="col-md-6">
+
+    <form method="POST" action="{% url 'checkout' %}" id="payment-form">
+        {% csrf_token %}
+        <fieldset class="rounded px-3 mb-5">
+            <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
+            {{ order_form.full_name | as_crispy_field }}
+            {{ order_form.email | as_crispy_field }}
+        </fieldset>
+        <fieldset class="rounded px-3 mb-5">
+            <legend class="fieldset-label small text-black px-2 w-auto">Personal Information</legend>
+            {{ order_form.phone_number | as_crispy_field }}
+            {{ order_form.street_address1 | as_crispy_field }}
+            {{ order_form.street_address2 | as_crispy_field }}
+            {{ order_form.town_or_city | as_crispy_field }}
+            {{ order_form.county | as_crispy_field }}
+            {{ order_form.country | as_crispy_field }}
+            <div class="form-check form-check-inline float-right mr-0">
+                {% if user.is_authenticated %}
+                <label class="form-check-label" for="id-save-info">Save this information to my profile</label>
+                <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info" checked>
+                {% else %}
+                <label class="form-check-label" for="id-save-info">
+                    <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or
+                    <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
+                </label>
+                {% endif %}
             </div>
-    </div>
-    <div id="loading-overlay">
-        <h1 class="text-light logo-font loading-spinner">
-            <div class="cup">
-                <div class="handle"></div>
+        </fieldset>
+        <fieldset>
+            <legend class="fieldset-label small text-black px-2 w-auto">Pickup Time</legend>
+            <div class="form-check-label">
+                {{ order_form.pickup_time | as_crispy_field }}
             </div>
-        </h1>
-    </div>
+        </fieldset>
+        <fieldset class="px-3">
+            <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
+            <!-- A Stripe card element will go here -->
+            <div class="mb-3" id="card-element"></div>
+
+            <!-- Used to display form errors -->
+            <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+            <input type="hidden" value="{{client_secret}}" name="client_secret">
+        </fieldset>
+        <div class="submit-button text-right mt-5 mb-2">
+            <a href="{% url 'cart' %}" class="btn btn-primary white rounded">
+                <span class="icon">
+                    <i class="fas fa-chevron-left"></i>
+                </span>
+                <span class="font-weight-bold">Adjust Bag</span>
+            </a>
+            <button id="submit-button" class="btn btn-primary white rounded">
+                <span class="font-weight-bold">Complete Order</span>
+                <span class="icon">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </button>
+            <p class="small text-danger my-0">
+                <span class="icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </span>
+                <span>Your card will be charged <strong>${{ total_price|floatformat:2 }}</strong></span>
+            </p>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+<div id="loading-overlay">
+    <h1 class="text-light logo-font loading-spinner">
+        <div class="cup">
+            <div class="handle"></div>
+        </div>
+    </h1>
+</div>
 {% endblock %}
 
 {% block postloadjs %}
-        {{ block.super }}
-        {{ stripe_public_key|json_script:"id_stripe_public_key" }}
-        {{ client_secret|json_script:"id_client_secret" }}
-        <script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
+{{ block.super }}
+{{ stripe_public_key|json_script:"id_stripe_public_key" }}
+{{ client_secret|json_script:"id_client_secret" }}
+<script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
+<script src="{% static 'checkout/js/pickupTime.js' %}"></script>
 {% endblock %}
