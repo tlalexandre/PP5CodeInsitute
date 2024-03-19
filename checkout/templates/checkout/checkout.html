@@ -80,7 +80,7 @@
                 {% empty %}
                 <p>You have no items in your cart.</p>
             {% endfor %}
-            <h2>Total Price : {{cart_total_price}}</h2>
+            <h3>Total Price : {{cart_total_price}}</h3>
             <hr>
             
         </div>
@@ -147,7 +147,7 @@
                 <span class="icon">
                     <i class="fas fa-exclamation-circle"></i>
                 </span>
-                <span>Your card will be charged <strong>${{ total_price|floatformat:2 }}</strong></span>
+                <span>Your card will be charged <strong>{{ cart_total_price|floatformat:2 }}€</strong></span>
             </p>
         </div>
     </form>

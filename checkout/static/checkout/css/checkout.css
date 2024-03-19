@@ -36,6 +36,18 @@
     border: 1px solid #000;
 }
 
+#id_country{
+  width: 36%;
+}
+
+select,select option{
+  color: #000;
+}
+
+select:invalid, select option[value=""]{
+  color: #aab7c4 !important;
+
+}
 
 /* Coffee Loader */
 
@@ -97,4 +109,11 @@
   left: 186px;
   top: 2px;
   border-radius: 0px 25px 80px 0px;
+}
+
+
+@media screen and (max-width: 992px) {
+  #id_country{
+    width: 59%;
+  }
 }
