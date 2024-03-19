@@ -6,6 +6,8 @@ from django.conf import settings
 from orderonline.models import MenuItem, MenuItemIncludedItem, MenuItemIngredient
 from cart.context_processors import cart_total_price  # Import the cart_total_price function
 from .models import OrderLineItem, Order
+from profiles.models import UserProfile
+from profiles.forms import UserProfileForm
 
 import stripe
 import json
@@ -16,13 +18,25 @@ def cache_checkout_data(request):
     try:
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        # Get the cart data from the session
+        cart = request.session.get('cart', {})
+
+        # Calculate the total quantity and total price of the items in the cart
+        total_quantity = sum(item['quantity'] for item in cart)
+        total_price = sum(float(item['price']) * item['quantity'] for item in cart)
+
+        # Store only the total quantity and total price in the PaymentIntent metadata
         stripe.PaymentIntent.modify(pid, metadata={
-            'cart': json.dumps(request.session.get('cart', {})),
+            'total_quantity': total_quantity,
+            'total_price': total_price,
             'save_info': request.POST.get('save_info'),
             'username': request.user,
         })
+
         return HttpResponse(status=200)
     except Exception as e:
+        print('Error in cache_checkout_data view:', e)
         messages.error(request, 'Sorry, your payment cannot be \
             processed right now. Please try again later.')
         return HttpResponse(content=e, status=400)
@@ -56,7 +70,7 @@ def checkout(request):
             order.save()
             print('Order created by checkout view: ',order, 'Checkout PID',order.stripe_pid, order.total_price, order.original_cart,)
             for item_data in cart:
-                print('Cart Checkout:', item_data)
+                print('Item data:', item_data)
                 try:
                     menu_item_id = item_data.get('id')
                     menu_item = MenuItem.objects.get(id=menu_item_id)
@@ -64,9 +78,12 @@ def checkout(request):
 
                     # Convert included_item to a MenuItemIncludedItem instance
                     included_item_data = item_data.get('included_item')
+                    print('Included item data:', included_item_data)
                     if included_item_data is not None:
                         included_item_id = included_item_data['id']
-                        included_item = MenuItemIncludedItem.objects.get(id=included_item_id)
+                        included_item_menu_item = MenuItem.objects.get(id=included_item_id)
+                        included_item = MenuItemIncludedItem.objects.get(menu_item=menu_item, included_item=included_item_menu_item)
+                        print('Included item:', included_item, included_item.price)
                     else:
                         included_item = None
 
@@ -79,13 +96,20 @@ def checkout(request):
                     order_line_item.save()  # Save the instance to generate an ID
                     order_line_item.print_prices()
 
-                    # Now you can set the many-to-many fields
-                    included_item_options_data = item_data.get('included_item_options', [])
-                    included_item_options = [MenuItemIngredient.objects.get(id=option_data['id']) for option_data in included_item_options_data]
-                    order_line_item.included_item_options.set(included_item_options)
+                    if included_item is not None:
+                        included_item_options_data = [option['name'] for option in included_item_data.get('options', [])]
+                        included_item_extras_data = [extra['name'] for extra in included_item_data.get('extras', [])]
 
-                    included_item_extras_data = item_data.get('included_item_extras', [])
-                    included_item_extras = [MenuItemIngredient.objects.get(id=extra_data['id']) for extra_data in included_item_extras_data]
+                        included_item_options = included_item.included_item.menuitemingredient_set.filter(ingredient__name__in=included_item_options_data)
+                        print('Included item options:', included_item_options, included_item_options_data)
+
+                        included_item_extras = included_item.included_item.menuitemingredient_set.filter(ingredient__name__in=included_item_extras_data)
+                        print('Included item extras:', included_item_extras, included_item_extras_data)
+                    else:
+                        included_item_options = []
+                        included_item_extras = []
+
+                    order_line_item.included_item_options.set(included_item_options)
                     order_line_item.included_item_extras.set(included_item_extras)
 
                     options_data = item_data.get('options', [])
@@ -126,7 +150,24 @@ def checkout(request):
             currency=settings.STRIPE_CURRENCY,
         )
 
-        order_form = OrderForm()
+        if request.user.is_authenticated:
+            try:
+                profile = UserProfile.objects.get(user=request.user)
+                order_form = OrderForm(initial={
+                    'full_name': profile.user.get_full_name(),
+                    'email': profile.user.email,
+                    'phone_number': profile.default_phone_number,
+                    'street_address1': profile.default_street_address1,
+                    'street_address2': profile.default_street_address2,
+                    'town_or_city': profile.default_town_or_city,
+                    'county': profile.default_county,
+                    'country': profile.default_country,
+                })
+            except UserProfile.DoesNotExist:
+                order_form = OrderForm()
+        else:
+
+            order_form = OrderForm()
 
     if not stripe_public_key:
         messages.warning(request, 'Stripe public key is missing. Did you forget to set it in your environment?')
@@ -149,6 +190,29 @@ def checkout_success(request, order_number):
     """
     save_info = request.session.get('save_info')
     order = get_object_or_404(Order, order_number=order_number)
+
+    order_line_items=OrderLineItem.objects.filter(order=order)
+
+    for line_item in order_line_items:
+        print('Order line item:', line_item.menu_item, line_item.included_item, line_item.quantity, line_item.lineitem_total, line_item.options.all(), line_item.extras.all(), line_item.included_item_options.all(), line_item.included_item_extras.all())
+
+    profile= UserProfile.objects.get(user=request.user)
+    order.user_profile = profile
+    order.save()
+
+    if save_info:
+        profile_data = {
+            'default_phone_number': order.phone_number,
+            'default_street_address1': order.street_address1,
+            'default_street_address2': order.street_address2,
+            'default_town_or_city': order.town_or_city,
+            'default_county': order.county,
+            'default_country': order.country,
+        }
+        user_profile_form = UserProfileForm(profile_data, instance=profile)
+        if user_profile_form.is_valid():
+            user_profile_form.save()
+    
     messages.success(request, f'Order successfully processed! \
         Your order number is {order_number}. A confirmation \
         email will be sent to {order.email}.')
@@ -159,6 +223,7 @@ def checkout_success(request, order_number):
     template = 'checkout/checkout_success.html'
     context = {
         'order': order,
+        'order_line_items':order_line_items,
     }
 
     return render(request, template, context)

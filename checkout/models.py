@@ -5,11 +5,13 @@ from django.conf import settings
 from django_countries.fields import CountryField
 
 from orderonline.models import MenuItem, MenuItemIngredient, MenuItemIncludedItem
+from profiles.models import UserProfile
 # Create your models here.
 
 
 class Order(models.Model):
     order_number = models.CharField(max_length=32, null=False, editable=False)
+    user_profile=models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
     full_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(max_length=254, blank=False)
     phone_number = models.CharField(max_length=20, blank=False)
@@ -100,3 +102,5 @@ class OrderLineItem(models.Model):
                 self.lineitem_total += extra.price * self.quantity
 
         super().save(*args, **kwargs)  # Save the instance again to update the lineitem_total
+
+

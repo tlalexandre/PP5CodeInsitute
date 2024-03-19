@@ -1,34 +1,46 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+
+from .models import UserProfile
 from .forms import UserProfileForm
-from .models import Profile
 
+from checkout.models import Order
 
-
-@login_required
 def profile(request):
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST)
-        if form.is_valid():
-            profile, created = Profile.objects.get_or_create(user=request.user)
-            profile.first_name = form.cleaned_data['first_name']
-            profile.last_name = form.cleaned_data['last_name']
-            profile.address = form.cleaned_data['address']
-            profile.city = form.cleaned_data['city']
-            profile.postal_code = form.cleaned_data['postal_code']
-            profile.country = form.cleaned_data['country']
-            profile.save()
-            return redirect('profile')
-    else:
-        profile, created = Profile.objects.get_or_create(user=request.user)
-        form = UserProfileForm(initial={
-            'first_name': profile.first_name,
-            'last_name': profile.last_name,
-            'address': profile.address,
-            'city': profile.city,
-            'postal_code': profile.postal_code,
-            'country': profile.country,
-        })
-    return render(request, 'profiles/profile.html', {'form': form})
+    """ Display the user's profile. """
+    profile = get_object_or_404(UserProfile, user=request.user)
 
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+
+    form = UserProfileForm(instance=profile)
+    orders = profile.orders.all()
+
+    template = 'profiles/profile.html'
+    context = {
+        'form': form,
+        'orders': orders,
+        'on_profile_page': True
+    }
+
+    return render(request, template, context)
+
+
+def order_history(request, order_number):
+    order = get_object_or_404(Order, order_number=order_number)
+
+    messages.info(request, (
+        f'This is a past confirmation for order number {order_number}. '
+        'A confirmation email was sent on the order date.'
+    ))
+
+    template = 'checkout/checkout_success.html'
+    context = {
+        'order': order,
+        'from_profile': True,
+    }
+
+    return render(request, template, context)
