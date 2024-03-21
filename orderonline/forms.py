@@ -1,6 +1,7 @@
 from django import forms
 from .models import MenuItem, MenuItemIncludedItem, MenuItemIngredient, IngredientOption, MenuCategory
 from django.forms import formset_factory
+from .widgets import CustomClearableFileInput
 
 class MenuItemIncludedItemOptionForm(forms.Form):
     option = forms.ModelChoiceField(queryset=MenuItemIngredient.objects.none(), widget=forms.RadioSelect, required=False)
@@ -102,6 +103,8 @@ class ItemForm(forms.ModelForm):
         model = MenuItem
         fields = '__all__'
     
+    image = forms.ImageField(label='Image', required=False, widget=CustomClearableFileInput)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         categories = MenuCategory.objects.all()
