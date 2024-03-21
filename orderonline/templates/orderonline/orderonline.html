@@ -44,7 +44,11 @@
                                                     </div>
                                                 </div>    
                                             </div>
+                                            {% if item.image %}
                                             <img src="{{ item.image.url }}" class="card-img-top card-img-top-fixed rounded-right" alt="{{ item.name }}">
+                                            {% else %}
+                                            <img src="{{ MEDIA_URL }}/menu_items/noimage.png" class="card-img-top card-img-top-fixed rounded-right" alt="{{ item.name }}">
+                                            {% endif %}
                                         </div>
                                 </div>
                             {% endif %}

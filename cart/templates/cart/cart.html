@@ -26,6 +26,10 @@
                         <div class="col-md-4">
                             <img src="{{ item.image_url }}" class="card-img" alt="{{ item.name }}">
                         </div>
+                    {% else %}
+                        <div class="col-md-4">
+                            <img src="{{ MEDIA_URL }}/menu_items/noimage.png" class="card-img" alt="{{ item.name }}">
+                        </div>
                     {% endif %}
                     <div class="col-md-8">
                         <div class="card-body">

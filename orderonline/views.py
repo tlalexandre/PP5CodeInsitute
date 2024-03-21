@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404,redirect
+from django.urls import reverse
 from .models import MenuCategory, MenuItem, MenuItemIngredient, IngredientOption, MenuItemIncludedItem , Ingredient
 from .forms import AddToCartForm, ItemForm
 from django.forms import formset_factory
@@ -54,7 +55,16 @@ def product_management(request):
 
 def add_item(request):
     """ Add a new item to the menu """
-    form = ItemForm()
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            item = form.save()
+            messages.success(request, 'Successfully added item!')
+            return redirect(reverse('add_item'))
+        else:
+            messages.error(request, 'Failed to add item. Please ensure the form is valid.')
+    else:
+        form = ItemForm()
     template = 'orderonline/add_item.html'
     context = {
         'form': form,
