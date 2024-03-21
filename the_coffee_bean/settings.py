@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import env
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +28,7 @@ SECRET_KEY = 'django-insecure-8x*7#bj9#wz-p6-0kld!q@mah3$jn)hd2fwm*vspq8#(yjz(oj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['9996-2a02-8084-d03-1100-65f8-5a83-a27-f8e8.ngrok-free.app','127.0.0.1']
+ALLOWED_HOSTS = ['the-coffee-bean.herokuapp.com','127.0.0.1']
 
 
 # Application definition
@@ -125,12 +126,18 @@ WSGI_APPLICATION = 'the_coffee_bean.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
+
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
+else:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+    }
 
 
 # Password validation
