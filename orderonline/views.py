@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404,redirect
 from .models import MenuCategory, MenuItem, MenuItemIngredient, IngredientOption, MenuItemIncludedItem , Ingredient
-from .forms import AddToCartForm
+from .forms import AddToCartForm, ItemForm
 from django.forms import formset_factory
 from django.contrib import messages
 from django.db.models import F
@@ -50,3 +50,13 @@ def item_detail(request, item_id):
 def product_management(request):
     """ A view to return the product management page """
     return render(request, 'orderonline/product_management.html')
+
+
+def add_item(request):
+    """ Add a new item to the menu """
+    form = ItemForm()
+    template = 'orderonline/add_item.html'
+    context = {
+        'form': form,
+    }
+    return render(request, template, context)
