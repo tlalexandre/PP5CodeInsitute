@@ -95,6 +95,41 @@ body{
     list-style-type: none;
 }
 
+
+/* Product form */
+
+.btn-file{
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file]{
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.custom-checkbox .custom-control-label::before {
+    border-radius: 0;
+    border-color: #f44336;
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #f44336;
+    border-color: #f44336;
+    border-radius: 0;
+}
+
+.img-form{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 /* fixed top navbar only on medium and up */
 @media (min-width: 992px) {
     .fixed-top-desktop-only {
