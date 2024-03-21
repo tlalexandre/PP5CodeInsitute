@@ -40,7 +40,15 @@
                                                 <div class="d-flex">
                                                     <div class="item-info">
                                                         <p class="card-text my-0">Ingredients : {{ item.description | truncatechars:50 }}</p>
-                                                        <p class="card-text price">{{ item.price }} € </p>
+                                                        <div class="d-flex">
+                                                            <p class="card-text price">{{ item.price }} € </p>
+                                                            {% if request.user.is_superuser %}
+                                                            <small class="ml-3">
+                                                                <a href="{% url 'edit_item' item.id %}">Edit</a> | 
+                                                                <a class="text-danger" href="{% url 'delete_item' item.id %}">Delete</a>
+                                                            </small>
+                                                            {% endif %}
+                                                        </div>
                                                     </div>
                                                 </div>    
                                             </div>
@@ -50,6 +58,7 @@
                                             <img src="{{ MEDIA_URL }}/menu_items/noimage.png" class="card-img-top card-img-top-fixed rounded-right" alt="{{ item.name }}">
                                             {% endif %}
                                         </div>
+                       
                                 </div>
                             {% endif %}
                         {% endfor %}

@@ -56,6 +56,12 @@
                         {{ form.quantity }}  <!-- Render the quantity field here -->
                         <button type="button" id="increase-id_quantity" class="bg-brand-color white rounded-pill mb-2 quantity">+</button>
                     </div>
+                    {% if request.user.is_superuser %}
+                    <small class="ml-3">
+                        <a href="{% url 'edit_item' item.id %}">Edit</a> | 
+                        <a class="text-danger" href="{% url 'delete_item' item.id %}">Delete</a>
+                    </small>
+                    {% endif %}
                     <div class="d-flex justify-content-center mt-2">
                         <button class="bg-brand-color white rounded-pill mb-2 add-to-cart-button" type="submit">Add to Cart  {{ item.price }} € </button>
                     </div>

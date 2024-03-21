@@ -93,3 +93,10 @@ def edit_item(request, item_id):
     }
 
     return render(request, template, context)
+
+def delete_item(request, item_id):
+    """ Delete a product from the store """
+    item = get_object_or_404(MenuItem, pk=item_id)
+    item.delete()
+    messages.success(request, 'Item deleted!')
+    return redirect(reverse('order_online'))
