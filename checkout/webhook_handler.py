@@ -6,6 +6,7 @@ import json
 from django.conf import settings
 from orderonline.models import MenuItem, MenuItemIncludedItem
 from profiles.models import UserProfile
+from smtplib import SMTPException
 
 import stripe
 import time
@@ -17,22 +18,26 @@ class StripeWH_Handler:
     def __init__(self, request):
         self.request = request
 
+
     def _send_confirmation_email(self, order):
         """Send the user a confirmation email"""
-        cust_email = order.email
-        subject = render_to_string(
-            'checkout/confirmation_emails/confirmation_email_subject.txt',
-            {'order': order})
-        body = render_to_string(
-            'checkout/confirmation_emails/confirmation_email_body.txt',
-            {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
-        
-        send_mail(
-            subject,
-            body,
-            settings.DEFAULT_FROM_EMAIL,
-            [cust_email]
-        )        
+        try:
+            cust_email = order.email
+            subject = render_to_string(
+                'checkout/confirmation_emails/confirmation_email_subject.txt',
+                {'order': order})
+            body = render_to_string(
+                'checkout/confirmation_emails/confirmation_email_body.txt',
+                {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
+            
+            send_mail(
+                subject,
+                body,
+                settings.DEFAULT_FROM_EMAIL,
+                [cust_email]
+            )
+        except SMTPException as e:
+            print(f"Error sending email: {e}")
 
     def handle_event(self, event):
         '''Handle a generic/unknown/unexpected webhook event'''
@@ -44,7 +49,6 @@ class StripeWH_Handler:
         '''Handle the payment_intent.succeeded webhook from Stripe'''
         intent = event.data.object
         pid = intent.id
-        print('Intent Metadata',intent.metadata)
         cart = intent.metadata.cart
         save_info = intent.metadata.save_info
         stripe_charge = stripe.Charge.retrieve(intent.latest_charge)
@@ -84,13 +88,14 @@ class StripeWH_Handler:
                     street_address1__iexact=billing_details.address.line1,
                     street_address2__iexact=billing_details.address.line2,
                     county__iexact=billing_details.address.state,
-                    total_price__iexact=total_price,
+                    total_price__exact=total_price,
                     original_cart=cart,
                     stripe_pid=pid,
                 )
                 order_exists = True
                 break
             except Order.DoesNotExist:
+                    print('Orders with same payment intent ID:', Order.objects.filter(stripe_pid=pid))
                     attempt += 1
                     time.sleep(1)
 
@@ -116,6 +121,7 @@ class StripeWH_Handler:
                     original_cart=cart,
                     stripe_pid=pid,
                 )
+                print('Order retrieved by webhook handler: ',order, order.stripe_pid, order.total_price, order.original_cart)
                 for item_data in json.loads(cart):
                     menu_item_id = item_data.get('id')
                     menu_item = MenuItem.objects.get(id=menu_item_id)

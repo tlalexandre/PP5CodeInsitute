@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY','')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['the-coffee-bean.herokuapp.com', 'the-coffee-bean-1b1bc662dda4.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['the-coffee-bean.herokuapp.com', 'the-coffee-bean-1b1bc662dda4.herokuapp.com', '7177-2a02-8084-d03-1100-2960-cfc8-8833-1b17.ngrok-free.app', '127.0.0.1']
 
 
 # Application definition

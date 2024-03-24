@@ -15,6 +15,7 @@ import time
 
 @require_POST
 def cache_checkout_data(request):
+    print(request.POST.get('client_secret'))
     try:
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -36,6 +37,7 @@ def cache_checkout_data(request):
 
         return HttpResponse(status=200)
     except Exception as e:
+        print('Error in cache_checkout_data view:', e)
         messages.error(request, 'Sorry, your payment cannot be \
             processed right now. Please try again later.')
         return HttpResponse(content=e, status=400)
@@ -67,7 +69,9 @@ def checkout(request):
             total_price = sum(float(item['subtotal']) for item in cart)
             order.total_price = total_price
             order.save()
+            print('Order created by checkout view: ',order, 'Checkout PID',order.stripe_pid, order.total_price, order.original_cart,)
             for item_data in cart:
+                print('Item data:', item_data)
                 try:
                     menu_item_id = item_data.get('id')
                     menu_item = MenuItem.objects.get(id=menu_item_id)
@@ -75,10 +79,12 @@ def checkout(request):
 
                     # Convert included_item to a MenuItemIncludedItem instance
                     included_item_data = item_data.get('included_item')
+                    print('Included item data:', included_item_data)
                     if included_item_data is not None:
                         included_item_id = included_item_data['id']
                         included_item_menu_item = MenuItem.objects.get(id=included_item_id)
                         included_item = MenuItemIncludedItem.objects.get(menu_item=menu_item, included_item=included_item_menu_item)
+                        print('Included item:', included_item, included_item.price)
                     else:
                         included_item = None
 
@@ -96,8 +102,10 @@ def checkout(request):
                         included_item_extras_data = [extra['name'] for extra in included_item_data.get('extras', [])]
 
                         included_item_options = included_item.included_item.menuitemingredient_set.filter(ingredient__name__in=included_item_options_data)
+                        print('Included item options:', included_item_options, included_item_options_data)
 
                         included_item_extras = included_item.included_item.menuitemingredient_set.filter(ingredient__name__in=included_item_extras_data)
+                        print('Included item extras:', included_item_extras, included_item_extras_data)
                     else:
                         included_item_options = []
                         included_item_extras = []
@@ -141,7 +149,10 @@ def checkout(request):
         intent = stripe.PaymentIntent.create(
             amount=stripe_total,
             currency=settings.STRIPE_CURRENCY,
-            metadata={'cart': json.dumps(cart)}
+            metadata={
+                'cart': json.dumps(cart),
+                'username': request.user,
+            }
         )
 
         if request.user.is_authenticated:
@@ -167,6 +178,7 @@ def checkout(request):
         messages.warning(request, 'Stripe public key is missing. Did you forget to set it in your environment?')
 
     template = 'checkout/checkout.html'
+    print('Cart in checkout view:', cart)
     context = {
         'order_form': order_form,
         'cart': cart,
@@ -186,9 +198,14 @@ def checkout_success(request, order_number):
 
     order_line_items=OrderLineItem.objects.filter(order=order)
 
-    profile= UserProfile.objects.get(user=request.user)
-    order.user_profile = profile
-    order.save()
+    for line_item in order_line_items:
+        print('Order line item:', line_item.menu_item, line_item.included_item, line_item.quantity, line_item.lineitem_total, line_item.options.all(), line_item.extras.all(), line_item.included_item_options.all(), line_item.included_item_extras.all())
+
+
+    if request.user.is_authenticated:
+        profile= UserProfile.objects.get(user=request.user)
+        order.user_profile = profile
+        order.save()
 
     if save_info:
         profile_data = {
