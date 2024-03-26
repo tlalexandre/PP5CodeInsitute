@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    var divsWithId = document.querySelectorAll('div[id]');
+    let divsWithId = document.querySelectorAll('div[id]');
     // Select all divs with an id
 
     // Keep track of the currently active nav-link
-    var currentActiveNavLink = null;
+    let currentActiveNavLink = null;
 
-    var navbar = document.querySelector('.navbar-menu');
+    let navbar = document.querySelector('.navbar-menu');
 
     // Create an intersection observer
-    var observer = new IntersectionObserver(function(entries) {
+    let observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
             // Get the nav-link associated with this entry
-            var navLink = document.querySelector('a[href="#' + entry.target.id + '"]');
+            let navLink = document.querySelector('a[href="#' + entry.target.id + '"]');
 
             if (navLink && entry.isIntersecting) {
                 // If there's a currently active nav-link, remove the classes from it
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 // Add the classes to the new active nav-link
                 navLink.classList.add('bg-brand-color', 'white', 'rounded');
 
-                var scrollPos = navLink.offsetLeft - navbar.offsetWidth/2 + navLink.offsetWidth/2;
+                let scrollPos = navLink.offsetLeft - navbar.offsetWidth/2 + navLink.offsetWidth/2;
 
                 navbar.scrollLeft = scrollPos;
                 

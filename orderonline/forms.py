@@ -14,7 +14,13 @@ class MenuItemIncludedItemOptionForm(forms.Form):
 MenuItemIncludedItemOptionFormSet = formset_factory(MenuItemIncludedItemOptionForm, extra=0)
 
 class MenuItemIncludedItemChoiceField(forms.ModelChoiceField):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.prices = {}
+
     def label_from_instance(self, obj):
+        self.prices[obj.id] = obj.price
+        print(self.prices)
         if obj.included_item.price == 0:
             return f"{obj.included_item.name}"  # If the price is 0, only display the name
         else:
@@ -47,6 +53,17 @@ class CustomRadioSelect(forms.RadioSelect):
         option_dict['attrs']['data-price'] = self.choices.field.prices[value.value]
         return option_dict
 
+
+class CustomSelect(forms.Select):
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        option_dict = super().create_option(name, value, label, selected, index, subindex=subindex, attrs=attrs)
+        # Skip options with an empty value
+        if value:
+            # Add 'data-price' attribute to the option
+            option_dict['attrs']['data-price'] = self.choices.field.prices[value]
+        return option_dict
+
+
 class AddToCartForm(forms.Form):
     item_id = forms.ModelChoiceField(queryset=MenuItem.objects.all(), widget=forms.HiddenInput())
     quantity = forms.IntegerField(min_value=1, initial=1, widget=forms.NumberInput(attrs={'class': 'form-control quantity'}))
@@ -78,7 +95,7 @@ class AddToCartForm(forms.Form):
                 self.fields['included_item'] = MenuItemIncludedItemChoiceField(
                     queryset=included_items, 
                     required=False, 
-                    widget=forms.Select(attrs={'class': 'd-block mx-auto w-100'})
+                    widget=CustomSelect(attrs={'class': 'd-block mx-auto w-100'})
                 )
                 self.fields['included_item'].initial = included_items.first()
 
@@ -95,7 +112,6 @@ class AddToCartForm(forms.Form):
             options[option_name].append(item)
         return options
     
-
 
 class ItemForm(forms.ModelForm):
 

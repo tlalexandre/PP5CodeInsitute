@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-    var now = new Date();
-    var minTime = new Date(now.getTime() + 15 * 60 * 1000); // 15 minutes from now
+    let now = new Date();
+    let minTime = new Date(now.getTime() + 15 * 60 * 1000); // 15 minutes from now
 
     flatpickr("#id_pickup_time", {
         enableTime: true,
