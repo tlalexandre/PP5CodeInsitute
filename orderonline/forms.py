@@ -60,7 +60,7 @@ class CustomSelect(forms.Select):
         # Skip options with an empty value
         if value:
             # Add 'data-price' attribute to the option
-            option_dict['attrs']['data-price'] = self.choices.field.prices[value]
+            option_dict['attrs']['data-price'] = self.choices.field.prices[value.value]
         return option_dict
 
 
