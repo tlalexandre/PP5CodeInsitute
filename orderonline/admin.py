@@ -4,7 +4,7 @@ from .models import MenuCategory, MenuItem, MenuItemIngredient, Ingredient, Menu
 class MenuItemAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'price')
     list_filter = ('category',)
-    filter_horizontal = ('ingredients',)
+    # filter_horizontal = ('ingredients',)
 
 
 
