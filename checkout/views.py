@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.conf import settings
 from orderonline.models import MenuItem, MenuItemIncludedItem, MenuItemIngredient
 from cart.context_processors import cart_total_price  # Import the cart_total_price function
-from .models import OrderLineItem, Order
+from .models import OrderLineItem, Order, Cart
 from profiles.models import UserProfile
 from profiles.forms import UserProfileForm
 
@@ -48,6 +48,7 @@ def checkout(request):
 
     if request.method == 'POST':
         cart = request.session.get('cart', {})
+        cart_obj= Cart.objects.create(items=json.dumps(cart))
         
         form_data = {
             'full_name': request.POST['full_name'],
@@ -142,15 +143,21 @@ def checkout(request):
         if not cart:
             messages.error(request, "There's nothing in your cart at the moment")
             return redirect(reverse('cart'))
+
+        # Create the Cart object
+        cart_obj = Cart.objects.create(items=json.dumps(cart))
+
         cart_total_price_context = cart_total_price(request)
         total = cart_total_price_context['cart_total_price']
         stripe_total = round(total * 100)
         stripe.api_key = stripe_secret_key
+
+        # Pass the Cart object's id to Stripe, not the entire cart data
         intent = stripe.PaymentIntent.create(
             amount=stripe_total,
             currency=settings.STRIPE_CURRENCY,
             metadata={
-                'cart': json.dumps(cart),
+                'cart_id': str(cart_obj.id),  # Make sure to convert the UUID to a string
                 'username': request.user,
             }
         )

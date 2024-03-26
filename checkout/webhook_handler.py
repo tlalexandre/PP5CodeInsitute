@@ -1,13 +1,14 @@
 from django.http import HttpResponse
-from .models import Order, OrderLineItem
+from .models import Order, OrderLineItem, Cart
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-import json
 from django.conf import settings
 from orderonline.models import MenuItem, MenuItemIncludedItem
 from profiles.models import UserProfile
 from smtplib import SMTPException
+import uuid
 
+import json
 import stripe
 import time
 
@@ -49,7 +50,10 @@ class StripeWH_Handler:
         '''Handle the payment_intent.succeeded webhook from Stripe'''
         intent = event.data.object
         pid = intent.id
-        cart = intent.metadata.cart
+        cart_obj = Cart.objects.get(id=uuid.UUID(intent.metadata['cart_id']))
+        print(type(cart_obj.items))
+        print(cart_obj.items)
+        cart = cart_obj.items
         save_info = intent.metadata.save_info
         stripe_charge = stripe.Charge.retrieve(intent.latest_charge)
         billing_details = stripe_charge.billing_details

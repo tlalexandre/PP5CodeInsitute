@@ -6,6 +6,8 @@ from django_countries.fields import CountryField
 
 from orderonline.models import MenuItem, MenuItemIngredient, MenuItemIncludedItem
 from profiles.models import UserProfile
+
+import uuid
 # Create your models here.
 
 
@@ -104,3 +106,11 @@ class OrderLineItem(models.Model):
         super().save(*args, **kwargs)  # Save the instance again to update the lineitem_total
 
 
+
+
+class Cart(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    items = models.TextField()  # Store the cart items as a JSON string
+    
+    def __str__(self):
+        return str(self.id)
