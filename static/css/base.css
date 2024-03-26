@@ -1,6 +1,6 @@
 /* General Settings */
 body{
-    height: calc(100vh - 164px);
+    height: 100%;
     font-family: "Jost", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -130,6 +130,10 @@ body{
     object-fit: cover;
 }
 
+.main-logo-link img{
+    height: 100px;
+}
+
 /* fixed top navbar only on medium and up */
 @media (min-width: 992px) {
     .fixed-top-desktop-only {
@@ -141,20 +145,22 @@ body{
     }
 
     .header-container {
-        padding-top: 250px;
+        padding-top: 164px;
     }
 }
 
 /* pad the top a bit when navbar is collapsed on mobile */
 @media (max-width: 991px) {
     .header-container {
-        padding-top: 240px;
+        padding-top: 210px;
     }
 
-    body {
-        height: calc(100vh - 116px);
-    }
     .coffeeCup{
         margin-top: 1.5rem;
     }
 }
+
+
+/* *{
+    border:1px solid red;
+} */
