@@ -30,34 +30,34 @@
         {% block extra_js %}
         {% endblock %}
 
-
         <title>The Coffee Bean {% block extra_title %}{% endblock %}</title>  
     </head>
     <body>
         {% include 'includes/header.html' %}   
-
+        
         {% block page_header %}
         {% endblock %}
         
+        {% block corejs %}
+            {% include 'includes/scripts.html' %}    
+        {% endblock %}
         {% block content %}
         {% endblock %}
-
+        
         {% if 'orderonline' not in request.path and 'cart' not in request.path and 'checkout' not in request.path %}
-            <div class="text-center">
-                <a href="{% url 'order_online'%}" class="btn btn-primary mb-2 floating-button">Order Here 
-                    <span class="icon white">
+        <div class="text-center">
+            <a href="{% url 'order_online'%}" class="btn btn-primary mb-2 floating-button">Order Here 
+                <span class="icon white">
                         <i class="fa-solid fa-angles-right"></i>
                     </span>
                 </a>
             </div>
-        {% endif %}
+            {% endif %}
             
-        {% block corejs %}
-            {% include 'includes/scripts.html' %}    
-        {% endblock %}
-
-        {% block postloadjs %}
-        {% endblock %}
-
-    </body>
-</html>
+            
+            {% block postloadjs %}
+            {% endblock %}
+            
+    
+        </body>
+        </html>
