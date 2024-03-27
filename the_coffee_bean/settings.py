@@ -82,7 +82,7 @@ MIDDLEWARE = [
 ]
 ROOT_URLCONF = 'the_coffee_bean.urls'
 
-CRISPY_TEMPLATE_PACK= 'bootstrap4'
+CRISPY_TEMPLATE= 'bootstrap4'
 
 TEMPLATES = [
     {
