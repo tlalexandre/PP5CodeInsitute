@@ -15,8 +15,36 @@
 {% block content %}
 <div class="container-fluid h-100 bg-white">
     <div class="row">
-    <h1>Menu</h1> 
-       
+        <h1 class="text-center w-100">Menu</h1> 
+        <div class="w-75 mx-auto">
+            <!-- Image 1 -->
+            <img src="{% static 'images/menu-1.png' %}" class="img-fluid" alt="Menu Front" data-toggle="modal" data-target="#modal1">
+
+            <!-- Modal 1 -->
+            <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <img src="{% static 'images/menu-1.png' %}" class="img-fluid" alt="Menu Front">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image 2 -->
+            <img src="{% static 'images/menu-2.png' %}" class="img-fluid" alt="Menu Back" data-toggle="modal" data-target="#modal2">
+
+            <!-- Modal 2 -->
+            <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <img src="{% static 'images/menu-2.png' %}" class="img-fluid" alt="Menu Back">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
