@@ -34,11 +34,14 @@ def contact(request):
             email = form.cleaned_data.get('email')
             message = form.cleaned_data.get('message')
 
+            # Include the user's email in the message
+            full_message = f"Message from {name} ({email}):\n\n{message}"
+
             try:
                 send_mail(
                     'Contact Form Submission from ' + name,
-                    message,
-                    email,
+                    full_message,
+                    settings.EMAIL_HOST_USER,
                     [settings.EMAIL_HOST_USER],
                     fail_silently=False,
                 )
@@ -55,7 +58,6 @@ def contact(request):
         form = ContactForm(user=request.user)
 
     return render(request, 'contact/contact.html', {'form': form})
-
 def contact_success(request):
     """ A view to return the contact success page """
     

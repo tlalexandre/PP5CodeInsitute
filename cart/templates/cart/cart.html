@@ -81,7 +81,8 @@
                 </div>
             </div>
         {% empty %}
-            <p>Your cart is empty.</p>
+        <img src="{% static 'images/emptyCart.svg' %}" class="img-fluid" alt="">
+        <p class="text-center mt-5">Your cart is empty.</p>
         </div>
         {% endfor %}
         {% if cart %}
