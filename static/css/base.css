@@ -12,6 +12,10 @@ body{
     background-color: #F3F7F5;
 }
 
+h1{
+    margin-top: 20px;
+}
+
 .brandLogo{
     background: url('/media/CoffeeBeanLogo.jpg') no-repeat center center fixed;
     background-color: brown;
@@ -138,6 +142,8 @@ body{
 .main-logo-link img{
     height: 100px;
 }
+
+
 
 /* fixed top navbar only on medium and up */
 @media (min-width: 992px) {
