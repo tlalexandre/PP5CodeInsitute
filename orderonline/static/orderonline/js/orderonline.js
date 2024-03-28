@@ -1,40 +1,58 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     let divsWithId = document.querySelectorAll('div[id]');
-    // Select all divs with an id
-
-    // Keep track of the currently active nav-link
     let currentActiveNavLink = null;
-
     let navbar = document.querySelector('.navbar-menu');
+    let isUserScrolling = false;
+    let isNavLinkClicked = false;  // Flag to indicate whether a navlink was clicked
 
-    // Create an intersection observer
     let observer = new IntersectionObserver(function(entries) {
+        if (isUserScrolling || isNavLinkClicked) return;
+
         entries.forEach(function(entry) {
-            // Get the nav-link associated with this entry
             let navLink = document.querySelector('a[href="#' + entry.target.id + '"]');
 
             if (navLink && entry.isIntersecting) {
-                // If there's a currently active nav-link, remove the classes from it
                 if (currentActiveNavLink) {
                     currentActiveNavLink.classList.remove('bg-brand-color', 'white', 'rounded');
                 }
 
-                // Add the classes to the new active nav-link
                 navLink.classList.add('bg-brand-color', 'white', 'rounded');
 
-                let scrollPos = navLink.offsetLeft - navbar.offsetWidth/2 + navLink.offsetWidth/2;
-
-                navbar.scrollLeft = scrollPos;
-                
-                // Update the currently active nav-link
                 currentActiveNavLink = navLink;
             }
         });
-    }, { threshold: 0.2 });  // Adjust the threshold value according to your needs
+    }, { threshold: 0.15 });
 
-    // Start observing each div
     divsWithId.forEach(function(div) {
         observer.observe(div);
     });
-});
 
+    let navLinks = document.querySelectorAll('.navbar-menu a');
+
+    navLinks.forEach((navLink) => {
+        let eventName = 'ontouchend' in window ? 'touchend' : 'click';
+
+        navLink.addEventListener(eventName, function(e) {
+            if (e.cancelable){
+                e.preventDefault();
+            }
+
+            isNavLinkClicked = true;  // Set the flag to true when a navlink is clicked
+
+            // Disconnect the observer
+            observer.disconnect();
+
+            let target = document.querySelector(this.getAttribute('href'));
+            let title = target.querySelector('h2');  // Change 'h1' to the selector of your title element
+            title.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Reconnect the observer and set the flag back to false after the scroll has completed
+            setTimeout(() => {
+                divsWithId.forEach(function(div) {
+                    observer.observe(div);
+                });
+                isNavLinkClicked = false;  // Set the flag back to false
+            }, 1000);  // Adjust the timeout according to your needs
+        });
+    });
+});

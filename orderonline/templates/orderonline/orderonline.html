@@ -19,14 +19,14 @@
         <div class="col-sm-2">
             <ul class="pl-0 navbar-menu">
                 {% for category in categories %}
-                    <li class="no-bullets mb-2"><a href="#{{ category.friendly_name }}" class="nav-link">{{ category.friendly_name }}</a></li>
+                    <li class="no-bullets mb-2"><a href="#{{ category.name }}" class="nav-link">{{ category.friendly_name }}</a></li>
                 {% endfor %}
             </ul>
         </div>
         <div class="col-sm-10 menu-items">
             <div class="row ">
                 {% for category in categories %}
-                <div id="{{ category.friendly_name }}" class="row category mx-auto">
+                <div id="{{ category.name }}" class="row category mx-auto">
                         <h2 class="w-100 text-center">{{category.friendly_name}}</h2>
                         <br>
                         {% for item in items %}
