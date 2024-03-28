@@ -143,7 +143,9 @@ h1{
     height: 100px;
 }
 
-
+footer a{
+    color: #6B2934;
+}
 
 /* fixed top navbar only on medium and up */
 @media (min-width: 992px) {

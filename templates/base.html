@@ -43,6 +43,8 @@
         {% endblock %}
         {% block content %}
         {% endblock %}
+
+        {% include 'includes/footer.html' %}
         
         {% if 'orderonline' not in request.path and 'cart' not in request.path and 'checkout' not in request.path %}
         <div class="text-center">
