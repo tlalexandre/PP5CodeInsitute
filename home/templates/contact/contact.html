@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+ <link rel="stylesheet" href="{% static 'home/css/home.css' %}">
+{% endblock %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid h-100 bg-white">
+    <div class="row">
+        <h1 class="text-center w-100">Menu</h1> 
+        <div class="w-75 mx-auto">
+            <form action="{% url 'contact' %}" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    {{ field.label_tag }}
+                    <br>
+                    {{ field }}
+                    <br>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Send us your message!</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

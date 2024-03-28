@@ -18,3 +18,7 @@
     background-size: 100%; /* Change this to zoom in or out */
     border-radius: 1rem;
 }
+
+textarea.non-resizable {
+    resize: none !important;
+}
