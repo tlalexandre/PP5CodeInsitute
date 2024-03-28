@@ -163,15 +163,20 @@ h1{
 /* pad the top a bit when navbar is collapsed on mobile */
 @media (max-width: 991px) {
     .header-container {
-        padding-top: 210px;
+        padding-top: 142px;
     }
 
     .coffeeCup{
         margin-top: 1.5rem;
     }
+
+    .allerta{
+        font-size: 1.2rem;
+    }
 }
 
-
-/* *{
-    border:1px solid red;
-} */
+@media (max-width: 360px) {
+    .header-container {
+        padding-top: 165px;
+    }
+}

@@ -21,7 +21,7 @@
     {% for item in cart %}
     <div class="row flex-column mx-auto w-75">
             <div class="card mb-3">
-                <div class="row no-gutters">
+                <div class="row no-gutters mb-5">
                     {% if item.image_url %}
                         <div class="col-md-4">
                             <img src="{{ item.image_url }}" class="card-img" alt="{{ item.name }}">
