@@ -5,9 +5,19 @@
 
 {% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
 
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
 
 {% block content %}
-<h1>{% trans "Confirm E-mail Address" %}</h1>
+<div class="row align-content-center flex-column mx-auto w-75">
+
+
+<h1 class="allerta text-uppercase brand-color">{% trans "Confirm E-mail Address" %}</h1>
 
 {% if confirmation %}
 
@@ -28,4 +38,5 @@
 
 {% endif %}
 
+</div>
 {% endblock %}
