@@ -125,7 +125,6 @@ def add_to_cart(request):
                     'extras': [{'name': MenuItemIngredient.objects.get(id=int(extra_id)).ingredient.name, 'price': "{:.2f}".format(float(MenuItemIngredient.objects.get(id=int(extra_id)).price))} for extra_id in selected_included_extras if is_int(extra_id) and MenuItemIngredient.objects.filter(id=int(extra_id)).exists()],
                 }
         except MenuItemIngredient.DoesNotExist as e:
-            print(f"MenuItemIngredient with id does not exist: {e}")
             messages.error(request, 'An error occurred while adding the item to the cart. Please try again.')
             return redirect('cart')
 

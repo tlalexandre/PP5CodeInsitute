@@ -49,8 +49,6 @@ class StripeWH_Handler:
         intent = event.data.object
         pid = intent.id
         cart_obj = Cart.objects.get(id=uuid.UUID(intent.metadata['cart_id']))
-        print(type(cart_obj.items))
-        print(cart_obj.items)
         cart = cart_obj.items
         save_info = intent.metadata.save_info
         stripe_charge = stripe.Charge.retrieve(intent.latest_charge)
@@ -97,7 +95,6 @@ class StripeWH_Handler:
                 order_exists = True
                 break
             except Order.DoesNotExist:
-                    print('Orders with same payment intent ID:', Order.objects.filter(stripe_pid=pid))
                     attempt += 1
                     time.sleep(1)
 
@@ -123,7 +120,6 @@ class StripeWH_Handler:
                     original_cart=cart,
                     stripe_pid=pid,
                 )
-                print('Order retrieved by webhook handler: ',order, order.stripe_pid, order.total_price, order.original_cart)
                 for item_data in json.loads(cart):
                     menu_item_id = item_data.get('id')
                     menu_item = MenuItem.objects.get(id=menu_item_id)
