@@ -55,13 +55,11 @@
                         </div>
                     </div>
                     {% for item in order.lineitems.all %}
-                        <p>Menu Item: {{item.menu_item.name}}</p>
-                        <p>Included Item : {{item.included_item.included_item.name}}</p>
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h5 class="card-title"><strong>{{ item.menu_item.name }}</strong> <small>x {{ item.quantity }}</small> </h5>
                                 <p class="card-text">
-                                    <strong>Total Price:</strong> {{ order.total_price }}€<br>
+                                    <strong>Total Price:</strong> {{ item.item_price }}€<br>
 
                                     {% if item.options.all %}
                                     <strong>Options:</strong> 

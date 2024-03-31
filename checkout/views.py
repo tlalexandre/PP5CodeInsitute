@@ -69,6 +69,7 @@ def checkout(request):
             order.total_price = total_price
             order.save()
             for item_data in cart:
+                
                 try:
                     menu_item_id = item_data.get('id')
                     menu_item = MenuItem.objects.get(id=menu_item_id)
@@ -83,11 +84,14 @@ def checkout(request):
                     else:
                         included_item = None
 
+                    item_price = item_data['price']
+                    print(f"Item price: {item_price}")
                     order_line_item = OrderLineItem(
                         order=order,
                         menu_item=menu_item,
                         included_item=included_item,
                         quantity=quantity,
+                        item_price=item_price,
                     )
                     order_line_item.save()  # Save the instance to generate an ID
                     order_line_item.print_prices()

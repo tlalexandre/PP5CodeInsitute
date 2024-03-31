@@ -56,6 +56,7 @@ class OrderLineItem(models.Model):
     included_item_extras = models.ManyToManyField(MenuItemIngredient, related_name='+', blank=True)
     options = models.ManyToManyField(MenuItemIngredient, related_name='+', blank=True)
     extras = models.ManyToManyField(MenuItemIngredient, related_name='+', blank=True)
+    item_price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     quantity = models.IntegerField(blank=False)
     lineitem_total = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, editable=False)
 
