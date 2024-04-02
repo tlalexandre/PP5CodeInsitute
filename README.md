@@ -408,13 +408,6 @@ The profile page is where users can easily update their user details such as edi
 <img src="./documentation/images/features/profile.png">
 </details>
 
-### My Courses Page
-
-The my courses page gives authenticated users quick access to view there total purchased courses. It shows a list of all program preview cards for courses that have been purchased in their order history.
-
-<details><summary>Profile</summary>
-<img src="./documentation/images/features/mycourses.png">
-</details>
 
 ### Privacy Policy Page
 
@@ -429,24 +422,27 @@ This page indicates the legal text of the website and informs users of the priva
 This page comprises a form with fields for entering a username and password. Beneath the form is the sign up button which submits the form. Below the form is a redirect to the register page if the user does not have an account. Click the remember me checkbox to remain logged in as a session.
 
 <details><summary>Sign In</summary>
-<img src="./documentation/images/features/login.png">
+<img src="./documentation/images/features/signin.png">
 </details>
+
 
 ### Sign Up page
 
 It features a form with fields for inputting name, email, username, password, and password confirmation. Underneath the form, there is a link to log in for users with existing accounts, followed by the signup button. After signup, users receive a welcome email at the provided email address and are then directed to the home page.
 
 <details><summary>Sign Up</summary>
-<img src="./documentation/images/features/register.png">
+<img src="./documentation/images/features/signup.png">
 </details>
+
 
 ### Sign out page
 
-Upon clicking the "log out" link in the navigation, users are directed to a confirmation page. This page includes a cautionary message and two buttons: one for returning and one for logging out.
+Upon clicking the "log out" link in the navigation, users are directed to a confirmation page. This page includes a cautionary message and a button for logging out.
 
 <details><summary>Sign Out</summary>
-<img src="./documentation/images/features/logout.png">
+<img src="./documentation/images/features/signout.png">
 </details>
+
 
 ### Newsletter
 
@@ -461,48 +457,9 @@ An area where users can input there email to sign up to a newsletter. Users dont
 Notification messages were user every time the user performs CRUD operation, sign in, and sign out.
 
 <details><summary>Notifications</summary>
-<img src="./documentation/images/features/notifications.png">
+<img src="./documentation/images/features/notification.png">
 </details>
 
-### Confirmation Modal
-
-This modal appears whenever a users is performing a delete CRUD operation. It ensures the user must confirm their action before the permanent deletion of a subscription
-
-<details><summary>Confirmation Modal</summary>
-<img src="./documentation/images/features/confirmmodal.png">
-</details>
-
-### Searchbar
-
-This reusable component allows for quick searching of products and programs. When searching it will search by category, description and title. It will only search within the category selected if you have pre filtered by category, hence narrowing the search. Blending filters and search queries gives the best results
-
-<details><summary>Searchbar </summary>
-<img src="./documentation/images/features/searchbar.png">
-</details>
-
-### Password Reset Page
-
-This page is for users that which to request a password reset verification link to an email
-
-<details><summary>Password Reset Page</summary>
-<img src="./documentation/images/features/passwordreset.png">
-</details>
-
-### Password Change Page
-
-This page is for users that clicked the verification link in their email to change a password. Once password is updated they are redirected to sign in again
-
-<details><summary>Password Change Page</summary>
-<img src="./documentation/images/features/changepassword.png">
-</details>
-
-### Account Deletion
-
-This Feature allows users to delete their accounts so that all there personal data can be removed from the website. This adheres to GDPR principles
-
-<details><summary>Account Deletion</summary>
-<img src="./documentation/images/features/accountdeletion.png">
-</details>
 
 ### Email Verification
 
@@ -520,68 +477,51 @@ An email is sent to both authnetication and non authenticated users upon the com
 <img src="./documentation/images/features/orderconfirmationemail.png">
 </details>
 
-### Password Reset Email
-
-The Email template sent to a users inbox when they used the forgot password reset feature
-
-<details><summary>Password Reset Email</summary>
-<img src="./documentation/images/features/passwordresetemail.png">
-</details>
-
 ### Error Pages
 
 Custom Error pages are rendered to show the user what went wrong with their request. These error pages allow the user to redirect to the home page.
 
-An Example below is the 400 page
+An Example below is the 404 page
 
 <details><summary>400</summary>
-<img src="./documentation/images/features/errorpage.png">
+<img src="./documentation/images/features/404.png">
 </details>
+
 
 ## Future Features
 
-### Add/Edit Programs
+### Reordering same items
 
-Enable administrators or moderators to add and update programs.
+Allowing users to buy again their previous cart, to facilitate their use of the website.
 
-### Product Review
+### Print orders in shop
 
-Enable users to share their experiences and feedback by writing reviews for products they have purchased. This feature enhances transparency and assists other users in making informed purchase decisions.
-
-### Updating Emails
-
-Allow users to easily update their email addresses associated with their accounts. This feature ensures that users can maintain accurate up to date information for ordering.
-
-### Course Tracker
-
-Implement a tracker that monitors users' progress through online courses based on completed modules. This feature provides users with a visual representation of their learning journey, helping them stay motivated and track their advancement towards course completion.
+Automatically print orders of customers in shop, to allow the owner to check on customers orders the easiest way possible.
 
 ## Marketing
 
-The B2C (Business-to-Consumer) ecommerce model is adopted for CISwag as it is an online merchandise and edu platform platform catering to individual consumers looking to purchase a wide array of coding related products or enroll in supplementary education courses.
+The B2C (Business-to-Consumer) ecommerce model is adopted for The Coffee Bean as it is an online  platform for this local coffee shop catering to individual consumers looking to purchase their food and coffee products.
 
-The main target audience will be software engineering students or existing developers.
+The main target audience will be local consumers as well as tourists.
 
-CI Swag's marketing strategy will focus on online channels to boost traffic and engagement. There will be an initial setup as seen in this project followed by the hypothesis of a marketing strategy that can be used when payments/business accounts are installed.
+The Coffee Bean's marketing strategy will focus on online channels to boost traffic and engagement. There will be an initial setup as seen in this project followed by the hypothesis of a marketing strategy that can be used when payments/business accounts are installed.
 
 ### Initial Plan
 
-Facebook will serve as the primary platform, with a dedicated business page promoting products and fostering customer interaction. Posts will be made on the business page as well as information pertaining to the website. A automated bot will be setup to answer FAQ questions.
+Facebook will serve as the primary platform, with a dedicated business page promoting products and fostering customer interaction. Posts will be made on the business page as well as information pertaining to the website.
 
-Additionally, Mailchimp will be utilized for weekly newsletters, updating subscribers on new offerings, promotions, and site enhancements. Emails of users can then be input into FB, google and other online providers to build an audience list.
+Additionally, Mailchimp will be utilized for weekly newsletters, updating subscribers on new offerings, promotions, and site enhancements.
 
-By combining social media outreach with targeted email marketing, CI Swag aims to effectively engage its audience, drive website traffic, and enhance brand visibility in the competitive ecommerce landscape.
+By combining social media outreach with targeted email marketing, The Coffee Bean aims to effectively engage its audience, drive website traffic, and enhance brand visibility in the competitive coffee shop landscape.
 
-![Facebook Banner](./documentation/images/fbbanner.png)
-![Facebook Page](./documentation/images/fbpage.png)
-![Facebook Banner](./documentation/images/fbfaq.png)
-![Facebook Banner](./documentation/images/fbreply.png)
+![Facebook Banner](./documentation/images/facebookbanner.png)
+![Facebook Page](./documentation/images/facebookpage.png)
 ![Newsletter](./documentation/images/features/newsletter.png)
 ![Email Marketing](./documentation/images/mailchimp.png)
 
 ### Paid Business Plan
 
-Hypthoesis of a marketing plan for paid business. This will be broken down into 3 keys online providers. This will required GDPR considerations as well as a verified business.
+Hypothesis is of a marketing plan for paid business. This will be broken down into 3 keys online providers. This will required GDPR considerations as well as a verified business.
 
 #### Facebook
 
@@ -601,10 +541,6 @@ Hypthoesis of a marketing plan for paid business. This will be broken down into 
 3. Analytics for understanding traffic and audience
 4. Installing pixel throughout the website for key metrics
 
-### Subscriptions
-
-A demo subscription model was used in this application, enabling users to subscribe for benefits. Subscribers are billed on a monthly basis. However, since the Stripe account used is for testing purposes, monthly billing is inactive in this iteration, and memberships require a one-time payment.
-
 ## Search Engine Optimization SEO
 
 1. Descriptive meta tags were added to the main template, including title, description and keywords.
@@ -616,26 +552,6 @@ Future creation of a Google business account will improve SEO performance and we
 ## Testing
 
 In depth testing documentation can be found [here.](./TESTING.md)
-
-## Bugs
-
-Here is a list of all the major bugs encountered throughout development. Links to specific issues provide a more in depth analysis of how they were identified and resolved. This can also be found documented in [TESTING.md](./TESTING.md)
-
-| Bug                                                                                                      | Status |
-| -------------------------------------------------------------------------------------------------------- | ------ |
-| [Bug: Negative Products #52](https://github.com/DarrachBarneveld/ci-swag/issues/52)                      | Closed |
-| [Bug: Adding Generic Items To Cart #59](https://github.com/DarrachBarneveld/ci-swag/issues/59)           | Closed |
-| [Bug: Checkout Form Error Context #60](https://github.com/DarrachBarneveld/ci-swag/issues/60)            | Closed |
-| [Bug: PhoneNumber Order Widget #63](https://github.com/DarrachBarneveld/ci-swag/issues/63)               | Closed |
-| [Bug: Stripe Autofill #66](https://github.com/DarrachBarneveld/ci-swag/issues/66)                        | Closed |
-| [Bug: Form Accessibiliy #67](https://github.com/DarrachBarneveld/ci-swag/issues/67)                      | Closed |
-| [Bug: Form Accessibiliy #67](https://github.com/DarrachBarneveld/ci-swag/issues/67)                      | Closed |
-| [Bug: LCP Page Performance #70](https://github.com/DarrachBarneveld/ci-swag/issues/70)                   | Open   |
-| [Bug: Stripe WH Order Creation #75](https://github.com/DarrachBarneveld/ci-swag/issues/75)               | Closed |
-| [Bug: Stripe WH fires on invalid order error #76](https://github.com/DarrachBarneveld/ci-swag/issues/76) | Closed |
-| [Bug: No Update Quantity On Added Products #80](https://github.com/DarrachBarneveld/ci-swag/issues/80)   | Closed |
-| [Bug: Query newly added product #81](https://github.com/DarrachBarneveld/ci-swag/issues/81)              | Open   |
-| [Bug: Message Overlay #82](https://github.com/DarrachBarneveld/ci-swag/issues/82)                        | Open   |
 
 ## Technologies And Languages
 
@@ -665,8 +581,6 @@ Here is a list of all the major bugs encountered throughout development. Links t
 
 [Pillow](https://pypi.org/project/pillow/) is a Python Imaging Library (PIL) fork that provides tools for working with images in various formats.
 
-[Django-phonenumber-field](https://pypi.org/project/django-phonenumber-field/) is a library to assist in verification of phonenumbers
-
 [Django Storages](https://pypi.org/project/django-storages/) Django Storages simplifies file storage management in Django apps by offering custom backends.
 
 [Django Embed Video](https://pypi.org/project/django-embed-video/) Django-embed-video is a Django app that simplifies embedding videos from various platforms, such as YouTube and Vimeo, into Django templates by providing template tags and model fields.
@@ -679,8 +593,7 @@ Here is a list of all the major bugs encountered throughout development. Links t
 - [JQuery](https://jquery.com/) was used to apply all javascript functionality in a more efficient manner
 - [Chat-GPT](https://chat.openai.com/) was used to create all written content and copy of the website
 - [VS Code](https://code.visualstudio.com/) was used to code the website locally
-- [Balsamiq - Wireframe](https://balsamiq.com/wireframes/) was used to create quick and precise wireframes
-- [Favicon Generator](https://favicon.io/favicon-converter/) was used to generate Favicon
+- [Figma](https://figma.com/) was used to create quick and precise wireframes
 - [Font Awesome](https://fontawesome.com/) was used for all icons on the website
 - [GitHub](https://github.com/) is the hosting site used to store the code for the website.
 - [Git](https://git-scm.com/) was used as a version control software to commit and push the code to the GitHub repository.
@@ -695,7 +608,6 @@ Here is a list of all the major bugs encountered throughout development. Links t
 - [Stripe](https://stripe.com/) was used to handle all payment processing
 - [AWS](https://aws.amazon.com/) was used host all static and media files for the site.
 - [Coolors.co](https://coolors.co/) was used to display the colour scheme.
-- [Pixelied](https://pixelied.com/convert/png-converter/png-to-webp) was used to convert images into nextgen formats
 - [DBDiagram](https://dbdiagram.io/) was used to visually create the database structure and schemas
 - [PostGresSQl](https://www.postgresql.org/) was used in development to store the database information locally
 - [ElephantSQL](https://www.elephantsql.com/) was the database hosting provider for the production app
