@@ -14,4 +14,12 @@
             <a href="tel:01 561 3011"><i class="fa-solid fa-phone"></i></a>
         </div>
     </ul>
+    <div class="text-center">
+        <h6 class="text-muted">Subscribe to our newsletter</h6>
+        <form action="{% url 'subscribe' %}" method="post">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+        </form>
+    </div>
 </footer>

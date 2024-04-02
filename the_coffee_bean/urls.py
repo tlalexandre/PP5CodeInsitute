@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import handler404
+from .views import handler404, subscribe_email
 
 
 urlpatterns = [
@@ -28,6 +28,7 @@ urlpatterns = [
     path('cart/', include('cart.urls')),
     path('profiles/', include('profiles.urls')),
     path('checkout/', include('checkout.urls')),
+    path('subscribe', subscribe_email, name='subscribe'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'the_coffee_bean.views.handler404'

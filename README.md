@@ -309,10 +309,6 @@ The project implemented a simple Kanban Board structure, comprising columns like
 </details>
 
 
-#### Late Design Changes
-
-A key late design change was to alter the Phonenumber field within the Profile model. This was both linked to orders and user profiles. An issue was dealing with accessibiliy of the country selector phone number code and the entry of the number in a standardised format to the Order model. The result was removing this feature and instead prompting the user to fill in an international number with error context rendered.
-
 ## Features
 
 ### Navigation Header
@@ -348,88 +344,68 @@ It contains a picture of the actual coffee shop and a picture of a coffee, as we
 
 ### Order Online Page
 
-The products page showcases preview cards of various products, each accompanied by basic descriptions and images, offering users a quick overview of available items. A filtering system based on categories, prices, sales, and ratings, so users can refine their search to find desired products. Additionally, a search bar enables users to explore specific items, enhancing their browsing experience and allowing them to refine very specific requests.
+The order online page showcases preview cards of various menu items, each accompanied by basic list of the ingredients and images, offering users a quick overview of available items. A filtering system based on categories so users can refine their search to find desired products. 
 
-<details><summary>Products</summary>
-<img src="./documentation/images/features/productspage.png">
+<details><summary>Order Online</summary>
+<img src="./documentation/images/features/orderonline.png">
 </details>
+
 
 ### Add/Edit Products Page
 
-The Add/Edit products page displays a simple form where moderators or admins can add products to the database. Exisiting products can be edited or deleted. This gives business owners the ability to adjust prices, images, sales and other fields so as to keep an up to date inventory and business model
-
-A design decision was made here to allow moderators to add and edit products as well as superusers/admins. This meant business owners could give potential employees powers to edit inventory but not directly have access to the secure admin portal that had full CRUD functionality.
+The Add/Edit products page displays a simple form where admins can add products to the database. Exisiting products can be edited or deleted. This gives business owners the ability to adjust prices, images, sales and other fields so as to keep an up to date inventory and business model.
 
 <details><summary>Add/Edit Products</summary>
-<img src="./documentation/images/features/addproducts.png">
+<img src="./documentation/images/features/add-editproduct.png">
 </details>
 
-### Programs Page
 
-Similar to the products page, the programs page presents preview cards of different educational programs, providing brief descriptions and images to offer users a glimpse into each program's content and offerings. Searchbar and filtering tools remain consistant with the products page
+### Item Detail Page
 
-<details><summary>Programs</summary>
-<img src="./documentation/images/features/programspage.png">
-</details>
-
-### Subscriptions Page
-
-The subscription page displays available membership packages, presenting users with a clear overview of the various subscription options offered. Users can easily identify their current membership package, allowing for seamless management and potential upgrades or downgrades as needed. This page provides transparency and accessibility for users to make informed decisions regarding their subscription preferences.
-
-<details><summary>Subscriptions</summary>
-<img src="./documentation/images/features/subscriptions.png">
-</details>
-
-### Product Detail Page
-
-The product detail page contains information about the selected product, including price, rating, sale status, and SKU. Featuring an image of the product, users can view it before making a purchase decision. Additionally, the page lists related products at the bottom, offering users additional options to explore. With the option to adjust the quantity and an "Add to Cart" button where users can update there cart with a product quantity.
+The product detail page contains information about the selected product, including price, ingredients, the different options and extras for that product, as well as the included items if the item has some. Whenever the user selects an included item, the options and extras for this included item are retrieved from the database, allowing the user to customize fully the product.  Depending on which options, extras and included items the user selects, the price displayed in the Add to Cart button changes to let the user know how much the product is gonna be. Featuring an image of the product, users can view it before making a purchase decision.  With the option to adjust the quantity and an "Add to Cart" button where users can update their cart with a product quantity.
 
 <details><summary>Product Detail</summary>
-<img src="./documentation/images/features/productdetail.png">
+<img src="./documentation/images/features/itemdetail.png">
 </details>
 
-### Program Detail Page
-
-The program detail page provides in-depth information about the selected program, including its name, duration, cost, and a breakdown of modules or sections covered. Users can gain an understanding of the program's content and structure before making a decision. Users must be authenticated before they can enroll in courses and users who have purchased the program, a related video is displayed, offering valuable insights or introductory content to enhance the learning experience.
-
-In the future users will have videos relating to the courses and can track progress, however for the initial build there is just the dummy education video loaded.
-
-<details><summary>Program Detail</summary>
-<img src="./documentation/images/features/programdetail.png">
-</details>
 
 ### Cart Page
 
-The cart page displays a summary of the items currently in the user's cart, presenting essential information such as product details and quantities. Additionally, users can view the total cost of all items in their cart as well as any discounts to certain items. This page serves as a hub users to review and manage their selected items before proceeding to checkout.
+The cart page displays a summary of the items currently in the user's cart, presenting essential information such as product details, quantities, the original price, the actual price of the item with the different options, extras, and included items. Additionally, users can view the total cost of all items on the cart button. 
+
+Users can also update or delete items from their cart.
+
+This page serves as a hub for users to review and manage their selected items before proceeding to checkout.
 
 <details><summary>Cart</summary>
-<img src="./documentation/images/features/cartpage.png">
+<img src="./documentation/images/features/cart.png">
 </details>
+
 
 ### Checkout Page
 
-The checkout page streamlines the purchasing process, guiding users through the final steps of completing their orders. Users can review their selected items, input shipping and payment information. Users can add email changes and name changes for orders, but this will only affect a singler purpose. The checkout page provides order summary details, ensuring transparency regarding the total cost, including discounts and shipping fees. Stripe payment elements are used to handle the payment processing.
-
-The checkout page is a two step processed. Verification of delivery address, and then payment verification. I allowed users to have alternate names and emails on orders so they could gift presents and emails with the correct name and email address would be reflected on a single order and not persisted to the database.
+The checkout page streamlines the purchasing process, guiding users through the final steps of completing their orders. Users can review their selected items, input shipping and payment information. Users can add email changes and name changes for orders, but this will only affect a singler purpose. The checkout page provides order summary details, ensuring transparency regarding the total cost. Stripe payment elements are used to handle the payment processing.
 
 <details><summary>Checkout</summary>
-<img src="./documentation/images/features/checkoutpage.png">
+<img src="./documentation/images/features/checkout.png">
 </details>
+
 
 ### Confirmation Page
 
-The thank you and order confirmation page serves as a final acknowledgment of the user's completed purchase, expressing gratitude for their patronage. It provides a summary of the order details, including items purchased, total cost, and shipping information. Additionally, users may receive confirmation numbers or order IDs for reference. This page also serves as the order history page so users can review all orders they have purchased.
+The thank you and order confirmation page serves as a final acknowledgment of the user's completed purchase, expressing gratitude for their patronage. It provides a summary of the order details, including items purchased and total cost. Additionally, users may receive confirmation numbers or order IDs for reference. This page also serves as the order history page so users can review all orders they have purchased.
 
 <details><summary>Confirmation</summary>
-<img src="./documentation/images/features/checkoutsuccess.png">
+<img src="./documentation/images/features/confirmation.png">
 </details>
+
 
 ### Profile Page
 
-The profile page is where users can easily update their user details such as name and username as well as and edit delivery information. Users can access a overview of their past orders, allowing them to track their purchase history and review previous transactions.
+The profile page is where users can easily update their user details such as edit delivery information. Users can access an overview of their past orders, allowing them to track their purchase history and review previous transactions.
 
 <details><summary>Profile</summary>
-<img src="./documentation/images/features/profilepage.png">
+<img src="./documentation/images/features/profile.png">
 </details>
 
 ### My Courses Page
