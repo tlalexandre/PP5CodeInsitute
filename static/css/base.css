@@ -156,14 +156,14 @@ footer a{
     }
 
     .header-container {
-        padding-top: 250px;
+        padding-top: 100px;
     }
 }
 
 /* pad the top a bit when navbar is collapsed on mobile */
 @media (max-width: 991px) {
     .header-container {
-        padding-top: 142px;
+        padding-top: 1px;
     }
 
     .coffeeCup{
@@ -177,6 +177,6 @@ footer a{
 
 @media (max-width: 360px) {
     .header-container {
-        padding-top: 165px;
+        padding-top: 15px;
     }
 }
