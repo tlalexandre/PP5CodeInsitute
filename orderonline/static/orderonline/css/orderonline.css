@@ -45,7 +45,7 @@ html{
     scroll-behavior: smooth;
 }
 .category{
-    margin-top: 70px;
+    
     width: 100%;
 }
 .quantity-button{
@@ -99,8 +99,9 @@ html{
         width: 100%;
         margin-left: -12px;
         background-color: #F3F7F5;
-        
-        
+    }
+    .category{
+        margin-top: 70px;
     }
     .navbar-menu .no-bullets {
         flex: 0 0 auto;

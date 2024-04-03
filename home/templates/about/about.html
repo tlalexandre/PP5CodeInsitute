@@ -13,10 +13,35 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid  h-100 bg-white">
+<div class="container-fluid h-100 bg-white mt-5">
     <div class="row">
-    <h1>About us</h1> 
-       
+        <h1 class="text-center">About us</h1> 
+            <div class="row mt-2 border my-3">
+                <div class="col-lg-10 col-12 d-flex flex-column justify-content-end">
+                    <p>At The Coffee Bean, we understand that a great day starts with a great breakfast or brunch. That's why alongside our carefully crafted coffees, teas, and specialty drinks, we proudly serve up delicious morning delights to fuel your day. From hearty breakfast sandwiches to fluffy pancakes and everything in between, our menu features an array of mouthwatering options to satisfy every craving.</p>
+                </div>
+                <div class="col-lg-2 col-12">
+                    <img class="img-fluid" src="{% static 'staticfiles/images/DiverseChoice.jpeg' %}" alt="">
+                </div>
+            </div>
+            </div>
+            <div class="row mt-2 border my-3">
+                <div class="col-lg-2 col-12 ">
+                    <img class="img-fluid" src="{% static 'staticfiles/images/AlmondCroissant.jpeg' %}" alt="">
+                </div>
+                <div class="col-lg-10 col-12 d-flex flex-column justify-content-end">
+                    <p>Step into our cozy shop, and you'll be greeted by the comforting aroma of freshly brewed coffee and the inviting sight of our bustling breakfast and brunch offerings. Our dedicated team is here to ensure that your dining experience is nothing short of exceptional, whether you're grabbing a quick bite on the go or settling in for a leisurely meal with loved ones.</p>
+                </div>
+            </div>
+            </div>
+            <div class="row mt-2 border my-3">
+                <div class="col-lg-10 col-12 d-flex flex-column justify-content-end">
+                    <p>At The Coffee Bean, we believe that good food and good company go hand in hand. So whether you're joining us for your morning caffeine fix or gathering with friends for a leisurely brunch, we invite you to make yourself at home and savor every moment with us. Come see why The Coffee Bean has been a beloved fixture in our community for nearly two decades – we can't wait to welcome you!</p>
+                </div>
+                <div class="col-lg-2 col-12">
+                    <img class="img-fluid" src="{% static 'staticfiles/images/Viennoiseries.jpeg' %}" alt="">
+                </div>
+            </div>
     </div>
 </div>
 {% endblock %}
