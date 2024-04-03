@@ -26,35 +26,25 @@ The Coffee Bean is an online ordering platform for a local coffee shop. Built us
     - [Overview](#overview)
     - [EPICS(Milestones)](#epics---milestones)
     - [User Stories Issues](#user-stories---issues)
-    - [MoSCoW prioritisation](#moscow-prioritisation)
     - [GitHub Projects](#github-projectskanban)
-    - [Late Design Changes](#late-design-changes)
 - [Features](#features)
   - [Navigation Header](#navigation-header)
   - [Footer](#footer)
   - [Home Page](#home-page)
-  - [Products Page](#products-page)
-  - [Programs Page](#programs-page)
-  - [Subscriptions Page](#subscriptions-page)
-  - [Product Detail Page](#product-detail-page)
-  - [Program Detail Page](#program-detail-page)
+  - [Order Online Page](#products-page)
+  - [Add/Edit Products Page](#add/edit-products-page)
+  - [Item Detail Page](#item-detail-page)
   - [Cart Page](#cart-page)
   - [Checkout Page](#checkout-page)
   - [Confirmation Page](#confirmation-page)
   - [Profile Page](#profile-page)
-  - [My Courses Page](#my-courses-page)
-  - [Privacy Policy Page](#privacy-policy-page)
   - [Sign In Page](#sign-in-page)
   - [Sign Up Page](#sign-up-page)
   - [Sign Out Page](#sign-out-page)
   - [Newsletter](#newsletter)
   - [Notification Messages](#notification-messages)
-  - [Confirmation Modal](#confirmation-modal)
-  - [Password Reset Page](#password-reset-page)
-  - [Password Change Page](#password-change-page)
   - [Email Verification](#email-verification)
   - [Order Confirmation Email](#order-confirmation-email)
-  - [Password Reset Email ](#password-reset-email)
   - [Error Pages](#error-pages)
   - [Future Features](#future-features)
 - [Marketing](#marketing)
@@ -62,7 +52,6 @@ The Coffee Bean is an online ordering platform for a local coffee shop. Built us
   - [Paid Business Plan](#paid-business-plan)
 - [Search Engine Optimization SEO](#search-engine-optimization-seo)
 - [Testing](#testing)
-- [Bugs](#bugs)
 - [Technologies and Languages](#technologies-and-languages)
   - [Languages](#languages-used)
   - [Python Modules](#python-modules-imported)
@@ -179,7 +168,7 @@ The website colour theme mimics The Coffee Bean colour theme. The use of red, bl
 
 ### Database Schema
 
-![Database schema](./documentation/images/lucidchart.png)
+![Database schema](./documentation/images/dbdiagram.png)
 
 ### Models
 
@@ -406,15 +395,6 @@ The profile page is where users can easily update their user details such as edi
 
 <details><summary>Profile</summary>
 <img src="./documentation/images/features/profile.png">
-</details>
-
-
-### Privacy Policy Page
-
-This page indicates the legal text of the website and informs users of the privacy and policies as they will be submitting personal data to the website upon checkout. This page was created using a policy generator.
-
-<details><summary>Privacy Policy Page</summary>
-<img src="./documentation/images/features/privacypolicypage.png">
 </details>
 
 ### Sign In page
