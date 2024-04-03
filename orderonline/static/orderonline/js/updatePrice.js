@@ -59,3 +59,24 @@ window.onload = function() {
     // Calculate total price on page load
     calculateTotalPrice();
 };
+
+$(document).ready(function() {
+
+    $('#increase-id_quantity').click(function(event) {
+        event.preventDefault();
+        var quantityInput = $('#id_quantity');
+        var quantity = parseInt(quantityInput.val());
+        if (!isNaN(quantity)) {
+            quantityInput.val(quantity + 1);
+        }
+    });
+
+    $('#decrease-id_quantity').click(function(event) {
+        event.preventDefault();
+        var quantityInput = $('#id_quantity');
+        var quantity = parseInt(quantityInput.val());
+        if (!isNaN(quantity) && quantity > 1) {
+            quantityInput.val(quantity - 1);
+        }
+    });
+});

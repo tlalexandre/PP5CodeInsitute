@@ -76,34 +76,5 @@
 
 {% block extra_js %}
 <script src="{% static 'orderonline/js/itemDetail.js' %}"></script>
-<script>
-    $(document).ready(function() {
-        $("#id_included_item option").each(function() {
-            var label = $(this).text();
-            var label_parts = label.split(' - ');
-            if (label_parts.length > 1) {
-                var price = label_parts[1].replace('€', '');
-                $(this).attr('data-price', price);
-            }
-        });
-        $('#increase-id_quantity').click(function(event) {
-            event.preventDefault();
-            var quantityInput = $('#id_quantity');
-            var quantity = parseInt(quantityInput.val());
-            quantityInput.val(quantity + 1);
-        });
-
-        $('#decrease-id_quantity').click(function(event) {
-            event.preventDefault();
-            var quantityInput = $('#id_quantity');
-            var quantity = parseInt(quantityInput.val());
-            if (quantity > 1) {
-                quantityInput.val(quantity - 1);
-            }
-        });
-    });
-</script>
 <script src="{% static 'orderonline/js/updatePrice.js' %}"></script>
-
-
 {% endblock %}

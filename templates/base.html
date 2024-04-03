@@ -27,30 +27,30 @@
         {% endblock %}
 
 
-        {% block extra_js %}
-        {% endblock %}
-
+        
         <title>The Coffee Bean {% block extra_title %}{% endblock %}</title>  
     </head>
     <body>
         {% include 'includes/header.html' %}
-
+        
         
         {% block page_header %}
         {% endblock %}
         
         {% block corejs %}
-            {% include 'includes/scripts.html' %}    
+        {% include 'includes/scripts.html' %}    
         {% endblock %}
         {% block content %}
         {% endblock %}
-
+        
         {% include 'includes/footer.html' %}
         
-            
-            
-            {% block postloadjs %}
-            {% endblock %}
+        
+        {% block extra_js %}
+        {% endblock %}
+        
+        {% block postloadjs %}
+        {% endblock %}
             
     
         </body>

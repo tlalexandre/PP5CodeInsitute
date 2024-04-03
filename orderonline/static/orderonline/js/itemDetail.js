@@ -74,3 +74,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
         form.dispatchEvent(event);
     }
 });
+
