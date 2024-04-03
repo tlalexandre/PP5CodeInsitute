@@ -145,6 +145,10 @@ footer a{
     color: #6B2934;
 }
 
+.header-container{
+    height: 20vh;
+}
+
 /* fixed top navbar only on medium and up */
 @media (min-width: 992px) {
     .fixed-top-desktop-only {
@@ -155,15 +159,12 @@ footer a{
         z-index: 1030;
     }
 
-    .header-container {
-        padding-top: 100px;
-    }
 }
 
 /* pad the top a bit when navbar is collapsed on mobile */
 @media (max-width: 991px) {
     .header-container {
-        padding-top: 1px;
+        padding-top: 111px;
     }
 
     .coffeeCup{
@@ -175,8 +176,3 @@ footer a{
     }
 }
 
-@media (max-width: 360px) {
-    .header-container {
-        padding-top: 15px;
-    }
-}
