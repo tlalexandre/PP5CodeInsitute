@@ -146,7 +146,7 @@ footer a{
 }
 
 .header-container{
-    height: 20vh;
+    height: 26vh;
 }
 
 /* fixed top navbar only on medium and up */
@@ -163,9 +163,6 @@ footer a{
 
 /* pad the top a bit when navbar is collapsed on mobile */
 @media (max-width: 991px) {
-    .header-container {
-        padding-top: 111px;
-    }
 
     .coffeeCup{
         margin-top: 1.5rem;
