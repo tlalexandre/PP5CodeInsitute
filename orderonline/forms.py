@@ -75,6 +75,7 @@ class AddToCartForm(forms.Form):
             ingredient_options = self.get_options(ingredients)
             for option_name, items in ingredient_options.items():
                 if option_name == 'Extras':
+                    option_name=option_name.replace(' ', '_')
                     self.fields[option_name] = IngredientChoiceField(
                         queryset=MenuItemIngredient.objects.filter(id__in=[i.id for i in items]),
                         widget=CustomCheckboxSelectMultiple,
@@ -82,6 +83,7 @@ class AddToCartForm(forms.Form):
                         empty_label=None
                     )
                 else:
+                    option_name=option_name.replace(' ', '_')
                     self.fields[option_name] = IngredientChoiceField(
                         queryset=MenuItemIngredient.objects.filter(id__in=[i.id for i in items]),
                         widget=CustomRadioSelect,

@@ -10,9 +10,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     if (form) {
         form.addEventListener('change', function() {
-            console.log('form change event triggered');
             let selectedIncludedItem = Number(this.value);
-            console.log('selectedIncludedItem:', selectedIncludedItem);
             let optionsExtrasToUse;
             if (optionsExtras instanceof HTMLElement) {
                 optionsExtrasToUse = parsedOptionsExtras;
