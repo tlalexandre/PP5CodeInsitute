@@ -71,7 +71,7 @@ html{
     .navbar-menu{
         position: fixed;
         left: 0;
-        top: 250px;
+        top: 280px;
         z-index: 1000;
         width: 15%;
     }
