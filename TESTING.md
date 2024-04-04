@@ -21,26 +21,24 @@ Go back to [README.md](/README.md)
 
 ### HTML
 
-| Page               | Validator                                                                            | Result            | Comment                                         |
-| ------------------ | ------------------------------------------------------------------------------------ | ----------------- | ----------------------------------------------- |
-| Home               | ![home](./documentation/images/testing/html/homepagehtml.png)                        | <mark>PASS<mark>  |                                                 |
-| Products           | ![products](./documentation/images/testing/html/productshtml.png)                    | <mark>PASS<mark>  |                                                 |
-| Product Detail     | ![product detail](./documentation/images/testing/html/productdetailhtml.png)         | <mark>PASS<mark>  |                                                 |
-| Add Product        | ![add product](./documentation/images/testing/html/addproducthtml.png)               | <mark>PASS<mark>  |                                                 |
-| Edit Product       | ![add product](./documentation/images/testing/html/editproducthtml.png)              | <mark>PASS<mark>  |                                                 |
-| Programs           | ![programs](./documentation/images/testing/html/programshtml.png)                    | <mark>PASS<mark>  |                                                 |
-| Program Detail     | ![program detail](./documentation/images/testing/html/programdetailhtml.png)         | <mark>Error<mark> | Youtube embed issue outdated property           |
-| Cart               | ![cart](./documentation/images/testing/html/carthtml.png)                            | <mark>PASS<mark>  |                                                 |
-| Checkout           | ![checkout](./documentation/images/testing/html/checkouthtml.png)                    | <mark>PASS<mark>  |                                                 |
-| Subscription       | ![subscription](./documentation/images/testing/html/subscriptionhtml.png)            | <mark>PASS<mark>  |                                                 |
-| Profile            | ![profile](./documentation/images/testing/html/profilehtml.png)                      | <mark>PASS<mark>  |                                                 |
-| Order Confirmation | ![order confirmation](./documentation/images/testing/html/orderconfirmationhtml.png) | <mark>PASS<mark>  |                                                 |
-| My Courses         | ![my courses](./documentation/images/testing/html/mycourseshtml.png)                 | <mark>PASS<mark>  |                                                 |
-| Logout             | ![logout](./documentation/images/testing/html/logouthtml.png)                        | <mark>PASS<mark>  |                                                 |
-| Login              | ![login](./documentation/images/testing/html/loginhtml.png)                          | <mark>PASS<mark>  |                                                 |
-| Register           | ![register](./documentation/images/testing/html/registerhtml.png)                    | <mark>Error<mark> | Prerendered all auth form - ul within small tag |
-| Errors             | ![errors](./documentation/images/testing/html/errorshtml.png)                        | <mark>PASS<mark>  |                                                 |
-| Privacy            | ![errors](./documentation/images/testing/html/privacyhtml.png)                       | <mark>PASS<mark>  |                                                 |
+| Page             | Validator                                                    | Result            | Comment                                         |
+| ---------------- | ------------------------------------------------------------ | ----------------- | ----------------------------------------------- |
+| Home             | ![home](./documentation/images/testing/html/homepage.png)    | <mark>PASS<mark>  |                                                 |
+| About            | ![products](./documentation/images/testing/html/about.png)   | <mark>PASS<mark>  |                                                 |
+| Menu             | ![product detail](./documentation/images/testing/html/menu.png) | <mark>PASS<mark>  |                                                 |
+| Order Online     | ![add product](./documentation/images/testing/html/orderonline.png) | <mark>PASS<mark>  |                                                 |
+| Item Detail      | ![add product](./documentation/images/testing/html/itemdetail.png) | <mark>PASS<mark>  |                                                 |
+| Profile          | ![programs](./documentation/images/testing/html/profile.png) | <mark>PASS<mark>  |                                                 |
+| Cart             | ![cart](./documentation/images/testing/html/cart.png)        | <mark>PASS<mark>  |                                                 |
+| Checkout         | ![checkout](./documentation/images/testing/html/checkout.png) | <mark>PASS<mark>  |                                                 |
+| Checkout Success | ![subscription](./documentation/images/testing/html/checkout_success.png) | <mark>PASS<mark>  |                                                 |
+| Add Item         | ![my courses](./documentation/images/testing/html/add_product.png) | <mark>PASS<mark>  |                                                 |
+| Edit Item        | ![edit](./documentation/images/testing/html/edit_product.png) | <mark>PASS<mark>  |                                                 |
+| Logout           | ![logout](./documentation/images/testing/html/logout.png)    | <mark>PASS<mark>  |                                                 |
+| Login            | ![login](./documentation/images/testing/html/loginhtml.png)  | <mark>PASS<mark>  |                                                 |
+| Register         | ![register](./documentation/images/testing/html/registerhtml.png) | <mark>Error<mark> | Prerendered all auth form - ul within small tag |
+| Errors           | ![errors](./documentation/images/testing/html/errorshtml.png) | <mark>PASS<mark>  |                                                 |
+| Privacy          | ![errors](./documentation/images/testing/html/privacyhtml.png) | <mark>PASS<mark>  |                                                 |
 
 ### CSS
 
