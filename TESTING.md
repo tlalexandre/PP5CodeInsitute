@@ -42,22 +42,24 @@ Go back to [README.md](/README.md)
 
 ### CSS
 
-| File     | Validator                                                       | Result           |
-| -------- | --------------------------------------------------------------- | ---------------- |
-| Base     | ![base](./documentation/images/testing/css/basecss.png)         | <mark>PASS<mark> |
-| Program  | ![program](./documentation/images/testing/css/programscss.png)  | <mark>PASS<mark> |
-| Profile  | ![profile](./documentation/images/testing/css/profilescss.png)  | <mark>PASS<mark> |
-| Product  | ![product](./documentation/images/testing/css/productscss.png)  | <mark>PASS<mark> |
-| Checkout | ![checkout](./documentation/images/testing/css/checkoutcss.png) | <mark>PASS<mark> |
-| Cart     | ![cart](./documentation/images/testing/css/cartcss.png)         | <mark>PASS<mark> |
+| File         | Validator                                                    | Result           |
+| ------------ | ------------------------------------------------------------ | ---------------- |
+| Base         | ![base](./documentation/images/testing/css/basecss.png)      | <mark>PASS<mark> |
+| Cart         | ![program](./documentation/images/testing/css/cartcss.png)   | <mark>PASS<mark> |
+| Checkout     | ![profile](./documentation/images/testing/css/checkoutcss.png) | <mark>PASS<mark> |
+| Home         | ![product](./documentation/images/testing/css/homecss.png)   | <mark>PASS<mark> |
+| Order Online | ![checkout](./documentation/images/testing/css/orderonlinecss.png) | <mark>PASS<mark> |
 
 ## JavaScript
 
-| File               | Validator                                                                   | Result           | Comment                          |
-| ------------------ | --------------------------------------------------------------------------- | ---------------- | -------------------------------- |
+| File               | Validator                                                    | Result           | Comment                          |
+| ------------------ | ------------------------------------------------------------ | ---------------- | -------------------------------- |
 | stripe_elements.js | ![stripe elements](./documentation/images/testing/js/stripe_elementsjs.png) | <mark>PASS<mark> | Global variables and es6 enabled |
-| mailchimp.js       | ![mailchimp](./documentation/images/testing/js/mailchimpjs.png)             | <mark>PASS<mark> | Global variable errors           |
-| toast.js           | ![toast](./documentation/images/testing/js/toastsjs.png)                    | <mark>PASS<mark> | Global variables and es6 enabled |
+| itemDetail.js      | ![mailchimp](./documentation/images/testing/js/itemDetailjs.png) | <mark>PASS<mark> | Global variable errors           |
+| modal.js           | ![toast](./documentation/images/testing/js/modaljs.png)      | <mark>PASS<mark> | Global variables and es6 enabled |
+| orderonline.js     | ![orderonline](./documentation/images/testing/js/orderonlinejs.png) | <mark>PASS<mark> | Global variables and es6 enabled |
+| pickupTime.js      | ![pickupTime](./documentation/images/testing/js/orderonlinejs.png) | <mark>PASS<mark> | Global variables and es6 enabled |
+| updatePrice.js     | ![updateprice](./documentation/images/testing/js/updatePricejs.png) | <mark>PASS<mark> | Global variables and es6 enabled |
 
 ## Python
 

@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 if (selectedOptionsExtras) {
                     let optionsExtrasDiv = document.getElementById('options-extras');
                     optionsExtrasDiv.innerHTML = '';
-                    let extras = selectedOptionsExtras['Extras'];
-                    let options = selectedOptionsExtras['Options'];
+                    let extras = selectedOptionsExtras.Extras;
+                    let options = selectedOptionsExtras.Options;
                     let extrasTitle = document.createElement('h3');
                     extrasTitle.innerHTML = 'Extras';
                     optionsExtrasDiv.appendChild(extrasTitle);

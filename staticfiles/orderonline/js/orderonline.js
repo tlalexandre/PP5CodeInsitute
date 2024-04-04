@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     let divsWithId = document.querySelectorAll('div[id]');
     let currentActiveNavLink = null;
-    let navbar = document.querySelector('.navbar-menu');
     let isUserScrolling = false;
     let isNavLinkClicked = false;  // Flag to indicate whether a navlink was clicked
 
