@@ -21,24 +21,24 @@ Go back to [README.md](/README.md)
 
 ### HTML
 
-| Page             | Validator                                                    | Result            | Comment                                         |
-| ---------------- | ------------------------------------------------------------ | ----------------- | ----------------------------------------------- |
-| Home             | ![home](./documentation/images/testing/html/homepage.png)    | <mark>PASS<mark>  |                                                 |
-| About            | ![products](./documentation/images/testing/html/about.png)   | <mark>PASS<mark>  |                                                 |
-| Menu             | ![product detail](./documentation/images/testing/html/menu.png) | <mark>PASS<mark>  |                                                 |
-| Order Online     | ![add product](./documentation/images/testing/html/orderonline.png) | <mark>PASS<mark>  |                                                 |
-| Item Detail      | ![add product](./documentation/images/testing/html/itemdetail.png) | <mark>PASS<mark>  |                                                 |
-| Profile          | ![programs](./documentation/images/testing/html/profile.png) | <mark>PASS<mark>  |                                                 |
-| Cart             | ![cart](./documentation/images/testing/html/cart.png)        | <mark>PASS<mark>  |                                                 |
-| Checkout         | ![checkout](./documentation/images/testing/html/checkout.png) | <mark>PASS<mark>  |                                                 |
-| Checkout Success | ![subscription](./documentation/images/testing/html/checkout_success.png) | <mark>PASS<mark>  |                                                 |
-| Add Item         | ![my courses](./documentation/images/testing/html/add_product.png) | <mark>PASS<mark>  |                                                 |
-| Edit Item        | ![edit](./documentation/images/testing/html/edit_product.png) | <mark>PASS<mark>  |                                                 |
-| Logout           | ![logout](./documentation/images/testing/html/logout.png)    | <mark>PASS<mark>  |                                                 |
-| Login            | ![login](./documentation/images/testing/html/loginhtml.png)  | <mark>PASS<mark>  |                                                 |
-| Register         | ![register](./documentation/images/testing/html/registerhtml.png) | <mark>Error<mark> | Prerendered all auth form - ul within small tag |
-| Errors           | ![errors](./documentation/images/testing/html/errorshtml.png) | <mark>PASS<mark>  |                                                 |
-| Privacy          | ![errors](./documentation/images/testing/html/privacyhtml.png) | <mark>PASS<mark>  |                                                 |
+| Page             | Validator                                                    | Result           | Comment |
+| ---------------- | ------------------------------------------------------------ | ---------------- | ------- |
+| Home             | ![home](./documentation/images/testing/html/homepage.png)    | <mark>PASS<mark> |         |
+| About            | ![products](./documentation/images/testing/html/about.png)   | <mark>PASS<mark> |         |
+| Menu             | ![product detail](./documentation/images/testing/html/menu.png) | <mark>PASS<mark> |         |
+| Order Online     | ![add product](./documentation/images/testing/html/orderonline.png) | <mark>PASS<mark> |         |
+| Item Detail      | ![add product](./documentation/images/testing/html/itemdetail.png) | <mark>PASS<mark> |         |
+| Profile          | ![programs](./documentation/images/testing/html/profile.png) | <mark>PASS<mark> |         |
+| Cart             | ![cart](./documentation/images/testing/html/cart.png)        | <mark>PASS<mark> |         |
+| Checkout         | ![checkout](./documentation/images/testing/html/checkout.png) | <mark>PASS<mark> |         |
+| Checkout Success | ![subscription](./documentation/images/testing/html/checkout_success.png) | <mark>PASS<mark> |         |
+| Add Item         | ![my courses](./documentation/images/testing/html/add_product.png) | <mark>PASS<mark> |         |
+| Edit Item        | ![edit](./documentation/images/testing/html/edit_product.png) | <mark>PASS<mark> |         |
+| Logout           | ![logout](./documentation/images/testing/html/logoutpage.png) | <mark>PASS<mark> |         |
+| Login            | ![login](./documentation/images/testing/html/login.png)      | <mark>PASS<mark> |         |
+| Register         | ![register](./documentation/images/testing/html/register.png) | <mark>PASS<mark> |         |
+| Errors           | ![errors](./documentation/images/testing/html/404.png)       | <mark>PASS<mark> |         |
+| Contact          | ![contact](./documentation/images/testing/html/contact.png)  | <mark>PASS<mark> |         |
 
 ### CSS
 
