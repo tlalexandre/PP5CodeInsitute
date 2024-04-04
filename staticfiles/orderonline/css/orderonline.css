@@ -1,0 +1,117 @@
+
+.card-fixed-height {
+    display: flex;
+    flex-direction: row;
+    height: 150px;
+}
+
+.card-fixed-height .card-body {
+    flex-grow: 1;
+}
+
+.card-img-top-fixed {
+    width: 150px;
+    object-fit: cover;  /* This will crop the image to fit the div */
+}
+
+.card-body{
+    padding: 0.5rem;
+}
+
+
+.card-title::after{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: #6B2934;
+    margin-top: 0.5rem;
+}
+.card-text{
+    font-size: 0.9rem;
+}
+.price{
+    font-size: 1.1rem;
+    font-weight: 400; 
+}
+.block-link{
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+html{
+    scroll-padding-top:280px;
+    scroll-behavior: smooth;
+}
+.category{
+    
+    width: 100%;
+}
+.quantity-button{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #6B2934;
+    color: #F3F7F5;
+    border: none;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 5px;
+    padding: 5px;
+}
+.nav-link{
+    color: inherit;
+}
+@media (min-width:576px) {
+    
+    .navbar-menu{
+        position: fixed;
+        left: 0;
+        top: 280px;
+        z-index: 1000;
+        width: 15%;
+    }
+}
+
+
+/* Item Detail */
+
+.item-detail-img{
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+.item-card-body{
+    border: 1px solid #6B2934;
+}
+
+@media (max-width: 576px) {
+    .navbar-menu {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        position: fixed;
+        z-index: 1000;
+        width: 100%;
+        margin-left: -12px;
+        background-color: #F3F7F5;
+    }
+    .category{
+        margin-top: 70px;
+    }
+    .navbar-menu .no-bullets {
+        flex: 0 0 auto;
+        margin-right:10px ;
+    }
+    .card-img-top-fixed {
+        width: 100px;
+    }
+}
+
+.quantity{
+    width: 50px;
+}
