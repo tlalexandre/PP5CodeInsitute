@@ -4,39 +4,31 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
 
-# Create your views here.
 
 def index(request):
     """ A view to return the index page """
-    
     return render(request, 'home/index.html')
 
 
 def about(request):
     """ A view to return the about page """
-    
     return render(request, 'about/about.html')
+
 
 def menu(request):
     """ A view to return the menu page """
-    
     return render(request, 'menu/menu.html')
-
 
 
 def contact(request):
     """ A view to return the contact page """
-
     if request.method == 'POST':
         form = ContactForm(request.POST, user=request.user)
         if form.is_valid():
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')
             message = form.cleaned_data.get('message')
-
-            # Include the user's email in the message
             full_message = f"Message from {name} ({email}):\n\n{message}"
-
             try:
                 send_mail(
                     'Contact Form Submission from ' + name,
@@ -47,10 +39,11 @@ def contact(request):
                 )
             except Exception as e:
                 print(e)
-                messages.error(request, 'There was an error sending the email.')
+                messages.error(
+                    request, 'There was an error sending the email.')
                 return render(request, 'contact/contact.html', {'form': form})
-
-            messages.success(request, 'Your message has been sent successfully!')
+            messages.success(
+                request, 'Your message has been sent successfully!')
             return render(request, 'contact/contact_success.html')
         else:
             print(form.errors)
@@ -58,7 +51,9 @@ def contact(request):
         form = ContactForm(user=request.user)
 
     return render(request, 'contact/contact.html', {'form': form})
+
+
 def contact_success(request):
     """ A view to return the contact success page """
-    
+
     return render(request, 'contact/contact_success.html')

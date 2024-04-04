@@ -7,7 +7,6 @@ from orderonline.models import MenuItem, MenuItemIncludedItem
 from profiles.models import UserProfile
 from smtplib import SMTPException
 import uuid
-
 import json
 import stripe
 import time
@@ -19,31 +18,30 @@ class StripeWH_Handler:
     def __init__(self, request):
         self.request = request
 
-
     def _send_confirmation_email(self, order):
-            """Send the user a confirmation email"""
-            cust_email = order.email
-            subject = render_to_string(
-                'checkout/confirmation_emails/confirmation_email_subject.txt',
-                {'order': order})
-            body = render_to_string(
-                'checkout/confirmation_emails/confirmation_email_body.txt',
-                {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
-            
-            send_mail(
-                subject,
-                body,
-                settings.DEFAULT_FROM_EMAIL,
-                [cust_email],
-                fail_silently=False,
-            )        
+        """Send the user a confirmation email"""
+        cust_email = order.email
+        subject = render_to_string(
+            'checkout/confirmation_emails/confirmation_email_subject.txt',
+            {'order': order})
+        body = render_to_string(
+            'checkout/confirmation_emails/confirmation_email_body.txt',
+            {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
+
+        send_mail(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            [cust_email],
+            fail_silently=False,
+        )
 
     def handle_event(self, event):
         '''Handle a generic/unknown/unexpected webhook event'''
         return HttpResponse(
             content=f'Unhandled Webhook received: {event["type"]}',
             status=200)
-    
+
     def handle_payment_intent_succeeded(self, event):
         '''Handle the payment_intent.succeeded webhook from Stripe'''
         intent = event.data.object
@@ -73,8 +71,7 @@ class StripeWH_Handler:
                 profile.default_street_address2 = billing_details.address.line2
                 profile.default_county = billing_details.address.state
                 profile.save()
-        
-        
+
         order_exists = False
         attempt = 1
         while attempt <= 5:
@@ -95,16 +92,18 @@ class StripeWH_Handler:
                 order_exists = True
                 break
             except Order.DoesNotExist:
-                    attempt += 1
-                    time.sleep(1)
+                attempt += 1
+                time.sleep(1)
 
         if order_exists:
             self._send_confirmation_email(order)
-            return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
-                status=200)
+            response_content = (
+                f'Webhook received: {event["type"]} | '
+                f'SUCCESS: Verified order already in database'
+            )
+            return HttpResponse(content=response_content, status=200)
         else:
-            order= None
+            order = None
             try:
                 order = Order.objects.create(
                     full_name=billing_details.name,
@@ -123,13 +122,14 @@ class StripeWH_Handler:
                 for item_data in json.loads(cart):
                     menu_item_id = item_data.get('id')
                     menu_item = MenuItem.objects.get(id=menu_item_id)
-                    
+
                     included_item = item_data.get('included_item')
                     quantity = item_data['quantity']
 
                     # Convert included_item to a MenuItemIncludedItem instance
                     if included_item is not None:
-                        included_items = MenuItemIncludedItem.objects.filter(included_item__id=included_item['id'])
+                        included_items = MenuItemIncludedItem.objects.filter(
+                            included_item__id=included_item['id'])
                         # Handle the case where multiple objects are returned
                         if included_items.exists():
                             included_item = included_items.first()
@@ -144,18 +144,22 @@ class StripeWH_Handler:
                         included_item=included_item,
                         quantity=quantity,
                     )
-                    order_line_item.save()  # Save the instance to generate an ID
-                    order_line_item.print_prices()
-
-                    included_item_options = item_data.get('included_item_options')
+                    order_line_item.save()
+                    included_item_options = item_data.get(
+                        'included_item_options')
                     if included_item_options is not None:
-                        included_item_option_ids = [option['id'] for option in included_item_options]
-                        order_line_item.included_item_options.set(included_item_option_ids)
+                        included_item_option_ids = [
+                            option['id'] for option in included_item_options]
+                        order_line_item.included_item_options.set(
+                            included_item_option_ids)
 
-                    included_item_extras = item_data.get('included_item_extras')
+                    included_item_extras = item_data.get(
+                        'included_item_extras')
                     if included_item_extras is not None:
-                        included_item_extra_ids = [extra['id'] for extra in included_item_extras]
-                        order_line_item.included_item_extras.set(included_item_extra_ids)
+                        included_item_extra_ids = [
+                            extra['id'] for extra in included_item_extras]
+                        order_line_item.included_item_extras.set(
+                            included_item_extra_ids)
 
                     options = item_data.get('options')
                     if options is not None:
@@ -175,15 +179,14 @@ class StripeWH_Handler:
                     content=f'Webhook received: {event["type"]} | ERROR: {e}',
                     status=500)
         self._send_confirmation_email(order)
-        return HttpResponse(
-            content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
-            status=200)
-    
+        response_content = (
+            f'Webhook received: {event["type"]} | '
+            f'SUCCESS: Created order in webhook'
+        )
+        return HttpResponse(content=response_content, status=200)
+
     def handle_payment_intent_payment_failed(self, event):
         '''Handle the payment_intent.payment_failed webhook from Stripe'''
         return HttpResponse(
             content=f'Webhook received: {event["type"]}',
             status=200)
-    
-
-    
