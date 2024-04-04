@@ -91,7 +91,6 @@ def checkout(request):
                         included_item = None
 
                     item_price = item_data['price']
-                    print(f"Item price: {item_price}")
                     order_line_item = OrderLineItem(
                         order=order,
                         menu_item=menu_item,
@@ -100,7 +99,7 @@ def checkout(request):
                         item_price=item_price,
                     )
                     order_line_item.save()
-                    order_line_item.print_prices()
+                    
 
                     if included_item is not None:
                         included_item_options_data = [
