@@ -76,18 +76,18 @@
                             <p> <strong>Subtotal :</strong>  {{ item.subtotal | floatformat:2 }} €</p>
                             <a href="{% url 'update_cart_item' forloop.counter0 %}" class="btn btn-primary">Update</a>
                             <a href="{% url 'delete_from_cart' forloop.counter0 %}" class="btn btn-danger">Delete</a>
-                        </div>
-                    </div>
-                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
             {% empty %}
             <div class="d-flex flex-column justify-content-center">
                 <img src="{% static 'images/emptyCart.svg' %}" class="img-fluid emptyCart" alt="">
                 <p class="text-center mt-5">Your cart is empty.</p>
             </div>
-        </div>
+        
         {% endfor %}
         {% if cart %}
         <div class="checkout-btn">
