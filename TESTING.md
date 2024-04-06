@@ -12,10 +12,8 @@ Go back to [README.md](/README.md)
 - [Lighthouse](#Lighthouse)
 - [CRUD](#crud)
 - [Manual Testing](#manual-testing)
-- [Automated Testing](#automated-testing)
 - [User Story Testing](#user-story-testing)
 - [Stripe](#stripe)
-- [Bugs](#bugs)
 
 ## Code Validation
 

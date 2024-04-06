@@ -777,29 +777,22 @@ To ensure the application is deployed correctly on Heroku it is mandatory to upd
 
 ### Content
 
-Additionaly copy for the website was prompted with use of [ChatGPT](https://chat.openai.com/)
-For Readme/Testing templates inspiration and guidance from [BookHeaven](https://github.com/Dayana-N/Book-Heaven-PP5/blob/main/README.md)
+About section for the website was prompted with use of [ChatGPT](https://chat.openai.com/)
+For Readme/Testing templates inspiration and guidance from [CI-Swag](https://github.com/DarrachBarneveld/ci-swag/blob/main/README.md)
 
 ### Media
 
-All Media images on this website were created using [Leondardo AI](https://leonardo.ai/)
-[Hero Image](https://www.linkedin.com/posts/melinda-zhang-2020_the-weekend-ended-with-a-blast-our-activity-6975486245997056001-W-_I/)
-[Default Product Image](https://nayemdevs.com/changing-the-default-thumbnail-placeholder-of-woocommerce-product-is-easy/)
-[Demo Course Video](https://www.youtube.com/watch?v=TjPFZaMe2yw&t=2s)
+- Illustrations were taken from [undraw.co](https://undraw.co/illustrations)
+- The coffee cup filling was taken from this [youtube video.](https://www.youtube.com/watch?v=TzjRcwKuXQs)
+- All the pictures were provided by the Coffee Bean.
 
 ### Code
 
 - Boutique Ado CI Walkthrough was used for the base of this project
-- [Content Type Framework](https://docs.djangoproject.com/en/5.0/ref/contrib/contenttypes/)
-- [Content Type Admin Crud](https://copyprogramming.com/howto/how-can-i-customize-the-display-of-a-model-using-contenttypes-in-the-admin)
-- [Bootstrap Templates](https://startbootstrap.com/templates/ecommerce)
-- [Local Stripe Webhook Testing](https://www.youtube.com/watch?v=q33qN2zz4E4&t=453s)
-- [Basic Automated Tests](https://learndjango.com/tutorials/django-testing-tutorial)
-- [Client Testing](https://docs.djangoproject.com/en/5.0/topics/testing/tools/)
-- [Custom Template Tags](https://realpython.com/django-template-custom-tags-filters/#:~:text=Custom%20tags%20and%20filters%20live,to%20load%20the%20tag%20library.)
 
 ### Acknowledgements
 
-I would personally like to thank all people who underwent testing for this website. The critial feedback was instrumental in providing a good user experience, finding edge case errors and generally keeping me motivated to improve the website. John Paul Larkin, Megan ODonohoe, Juan Boccia, Izabella Lopes, Gary Donlan, Alan Bushell and Dayana.
+I would personally like to thank all people who underwent testing for this website. The critical feedback was instrumental in providing a good user experience, finding edge case errors and generally keeping me motivated to improve the website. [Darrach Barneveld](https://github.com/DarrachBarneveld).
 
-I would finally like to thank my mentor Antonio Rodriguez who helped identify critical issues and bugs along the way.
+I would finally like to thank my mentor Simen Daehlin who helped identify critical issues and bugs along the way.
+
