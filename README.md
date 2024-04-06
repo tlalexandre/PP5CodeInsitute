@@ -18,6 +18,7 @@ The Coffee Bean is an online ordering platform for a local coffee shop. Built us
   - [Scope](#scope)
 - [Design](#design)
   - [Colour Scheme](#colour-scheme)
+  - [FlowChart](#flowchart)
   - [Database Schema](#database-schema)
   - [Models](#models)
   - [Fonts](#fonts)
@@ -143,26 +144,30 @@ The project is axed around an online platform for this local coffee shop. Users 
 
 6. [EPIC- Feedback and Communication](https://github.com/tlalexandre/PP5CodeInsitute/issues/6)
 
-   - Users can provide feedback or inquires through the website via the contact form. 
-   - Staff members can view users feedback and respond to it. 
+   - Users can provide feedback or inquiries through the website via the contact form. 
+   - Staff members can view users' feedback and respond to it. 
 
 ## Design
 
-The primary design goal of the CI Swag was to focus on clear categorization of menu items.
+The primary design goal of The Coffee Bean was to focus on clear categorization of menu items.
 
-The primary objective of our website design was to ensure an incredibly user-friendly and efficient navigation experience. This was achieved through an intuitive filtering system of menu items, rendering of related items, and a responsive and clean navigation menu. Links in various areas of pages also provide return navigation options.
+The primary objective of our website design was to ensure an incredibly user-friendly and efficient navigation experience. This was achieved through an intuitive navbar of categories, rendering related categories in a smooth and user-friendly experience, as well as a responsive and clean navigation menu. Links in various areas of pages also provide return navigation options.
 
-I wanted a clear separation between authenticated users and non-authenticated users. Users can access more content if authenticated and can view order history and update fields.
+I wanted to make access easier for all users by not prioritizing authenticated users, and by only making their experience quicker when they checkout, and to see their previous orders. This allows in my opinion, to let the user discover the website quicker than if he had to log in.
 
-I wanted the design to be consistant though each page to have a unique feel to it. This was acheived through resuable component cards and a consistancy of colour, buttons, forms and other UI elements. I want the user to feel as if using the website was a fun and engaging experience as if browsing a shop in person.
+I wanted the design to be consistent though each page to have a unique feel to it. This was achieved through reusable component cards and a consistency of color, buttons, forms, and other UI elements. I want the user to feel as if using the website was a fun and engaging experience as if browsing a shop in person.
 
-This commitment to intuitive navigation and user-focused design principles remained at the forefront of project's development.
+This commitment to intuitive navigation and user-focused design principles remained at the forefront of the project's development.
 
-In order to enhance development style I researched different styling options and decided to take a strong inspiration from Deliveroo .
+To enhance the user experience,  I researched different styling options and decided to take strong inspiration from Deliveroo.
 
-### Colour Scheme
+### FlowChart
 
-The website colour theme mimics The Coffee Bean colour theme. The use of red, black, white and grey are the primary colours to help mimic the feel. Action components such as checkout, pay now or update forms are clearly distinguished by using the primary colour of the website.
+![flowchart](./documentation/images/lucidchart.png)
+
+### Color Scheme
+
+The website color theme mimics The Coffee Bean color theme. The use of red(Tawny Port), black, white(Snow Drift), and brown(Muddy Waters) are the primary colors to help mimic the feel. Action components such as checkout, pay now or update forms are clearly distinguished by using the primary color of the website.
 
 ![Colour Scheme](./documentation/images/colourpalette.png)
 
