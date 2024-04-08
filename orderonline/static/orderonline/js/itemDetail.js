@@ -1,12 +1,12 @@
+const optionsExtrasDataElement = document.getElementById('optionsExtras');
+const form = document.getElementById('id_included_item');
+const optionsExtrasDiv = document.getElementById('options-extras');
+
 document.addEventListener('DOMContentLoaded', (event) => {
-    let optionsExtrasDataElement = document.getElementById('optionsExtras');
     let parsedOptionsExtras;
     if (optionsExtrasDataElement && optionsExtrasDataElement.textContent.trim() !== "") {
         parsedOptionsExtras = JSON.parse(optionsExtrasDataElement.textContent);
     }
-
-    let form = document.getElementById('id_included_item');
-
 
     if (form) {
         form.addEventListener('change', function() {
@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             if (optionsExtrasToUse && selectedIncludedItem in optionsExtrasToUse) {
                 var selectedOptionsExtras = optionsExtrasToUse[selectedIncludedItem];
                 if (selectedOptionsExtras) {
-                    let optionsExtrasDiv = document.getElementById('options-extras');
                     optionsExtrasDiv.innerHTML = '';
                     let extras = selectedOptionsExtras['Extras'];
                     let options = selectedOptionsExtras['Options'];
@@ -65,11 +64,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         optionsExtrasDiv.appendChild(optionDiv);
                     }
                 }
-                }
+            }
         });
         // Trigger the change event manually
         let event = new Event('change');
         form.dispatchEvent(event);
     }
 });
-

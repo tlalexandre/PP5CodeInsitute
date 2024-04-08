@@ -1,7 +1,9 @@
+const divsWithId = document.querySelectorAll('div[id]');
+const navLinks = document.querySelectorAll('.navbar-menu a');
+
+
 document.addEventListener('DOMContentLoaded', (event) => {
-    let divsWithId = document.querySelectorAll('div[id]');
     let currentActiveNavLink = null;
-    let navbar = document.querySelector('.navbar-menu');
     let isUserScrolling = false;
     let isNavLinkClicked = false;  // Flag to indicate whether a navlink was clicked
 
@@ -27,7 +29,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         observer.observe(div);
     });
 
-    let navLinks = document.querySelectorAll('.navbar-menu a');
 
     navLinks.forEach((navLink) => {
         let eventName = 'ontouchend' in window ? 'touchend' : 'click';

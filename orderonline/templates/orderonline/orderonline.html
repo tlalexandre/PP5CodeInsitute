@@ -32,11 +32,10 @@
                         {% for item in items %}
                             {% if item.category == category %}
                                 <div class="col-sm-6 col-12 mb-2">
+                                    <a href="{% url 'item_detail' item.id %}" class="block-link">
                                     <div class="card card-fixed-height rounded">
                                         <div class="card-body">
-                                            <a href="{% url 'item_detail' item.id %}" class="block-link">
-                                                <h5 class="card-title">{{ item.name }}</h5>  
-                                            </a>
+                                                <h5 class="card-title">{{ item.name }}</h5>
                                                 <div class="d-flex">
                                                     <div class="item-info">
                                                         <p class="card-text my-0">Ingredients : {{ item.description | truncatechars:50 }}</p>
@@ -60,6 +59,7 @@
                                         </div>
                        
                                 </div>
+                                </a>
                             {% endif %}
                         {% endfor %}
                     </div>

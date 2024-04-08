@@ -37,15 +37,17 @@
         {% block page_header %}
         {% endblock %}
         
-        {% block corejs %}
-        {% include 'includes/scripts.html' %}    
-        {% endblock %}
+
+
         {% block content %}
         {% endblock %}
         
         {% include 'includes/footer.html' %}
         
-        
+        {% block corejs %}
+        {% include 'includes/scripts.html' %}    
+        {% endblock %}
+
         {% block extra_js %}
         {% endblock %}
         

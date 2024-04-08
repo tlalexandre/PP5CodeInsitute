@@ -22,3 +22,8 @@
 textarea.non-resizable {
     resize: none !important;
 }
+
+.ordernow{
+    height: 50px;
+    width: 100%;
+}

@@ -1,6 +1,9 @@
-window.onload = function() {
+const button = document.querySelector('.add-to-cart-button');
+const selectedIncludedItem = document.querySelector('select[name="included_item"]');
+const quantityInput = $('#id_quantity');
+
+document.addEventListener('DOMContentLoaded', () => {
     // Get the initial total price from the button's text content
-    let button = document.querySelector('.add-to-cart-button');
     let originalText = button.textContent;
     let originalPrice;
 
@@ -28,7 +31,6 @@ window.onload = function() {
         }
 
         // Add the price of the selected includeditem
-        let selectedIncludedItem = document.querySelector('select[name="included_item"]');
         if (selectedIncludedItem) {
             console.log("Selected Included Item Price: ", selectedIncludedItem.options[selectedIncludedItem.selectedIndex].dataset.price);
             totalPrice += parseFloat(selectedIncludedItem.options[selectedIncludedItem.selectedIndex].dataset.price);
@@ -58,14 +60,13 @@ window.onload = function() {
 
     // Calculate total price on page load
     calculateTotalPrice();
-};
+});
 
 $(document).ready(function() {
 
     $('#increase-id_quantity').click(function(event) {
         event.preventDefault();
-        var quantityInput = $('#id_quantity');
-        var quantity = parseInt(quantityInput.val());
+        let quantity = parseInt(quantityInput.val());
         if (!isNaN(quantity)) {
             quantityInput.val(quantity + 1);
         }
@@ -73,8 +74,7 @@ $(document).ready(function() {
 
     $('#decrease-id_quantity').click(function(event) {
         event.preventDefault();
-        var quantityInput = $('#id_quantity');
-        var quantity = parseInt(quantityInput.val());
+        let quantity = parseInt(quantityInput.val());
         if (!isNaN(quantity) && quantity > 1) {
             quantityInput.val(quantity - 1);
         }
