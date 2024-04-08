@@ -177,6 +177,8 @@ The website color theme mimics The Coffee Bean color theme. The use of red(Tawny
 
 ### Models
 
+
+
 #### Allauth User Model
 
 The User model is an integral component of Django Allauth, featuring pre-established fields as part of its standard configuration. Among these fields are username, email, name, password, and others. This model primarily serves the purpose of user authentication, which is why it is not recommended to make direct alterations to it. Furthermore, the User model is linked to the Profile model through a one-to-one relationship, facilitating the management of user-specific data and interactions.
@@ -276,7 +278,9 @@ The fonts used in this project are Allerta and Jost, which give a welcoming and 
 
 #### Overview
 
-This project adhered to agile principles, allowing for the meticulous planning of website features through the creation of user stories. Each story included specific acceptance criteria and tasks, facilitating clear objectives. Grouping these stories into EPIC milestones enabled a focused approach to addressing key elements of the site, ensuring necessary prerequisites were distinctly outlined for successful implementation.
+This project adhered to agile principles, allowing for the meticulous planning of website features through the creation of user stories.
+
+Each story included specific acceptance criteria and tasks, facilitating clear objectives. Grouping these stories into EPIC milestones enabled a focused approach to addressing key elements of the site, ensuring necessary prerequisites were distinctly outlined for successful implementation.
 
 #### EPICS - Milestones
 
@@ -285,7 +289,9 @@ In the Agile methodology framework, user stories are categorized into eight EPIC
 
 #### User Stories - Issues
 
-The user story issue format includes the user story, acceptance criteria, and tasks, detailing essential steps for issue resolution. Whenever feasible, commit messages are linked to their respective issues during development, ensuring the significance of each commit and visually tracking progress on project issues. Milestones, Kanban boards, and other Agile tools are employed to monitor these issues effectively.
+The user story issue format includes the user story, acceptance criteria, and tasks, detailing essential steps for issue resolution. 
+
+Whenever feasible, commit messages are linked to their respective issues during development, ensuring the significance of each commit and visually tracking progress on project issues. Milestones, Kanban boards, and other Agile tools are employed to monitor these issues effectively.
 
 <details><summary>User Story</summary>
 <img src="./documentation/images/userstories.png">
@@ -296,7 +302,9 @@ The user story issue format includes the user story, acceptance criteria, and ta
 
 #### GitHub Projects/Kanban
 
-The project implemented a simple Kanban Board structure, comprising columns like Todo, In Progress, and Done. This arrangement offered a well-organised method for monitoring task progress, facilitating visualising and managing the workflow during development. The GitHub project Kanban was linked to the repository for consistent reference.
+The project implemented a simple Kanban Board structure, comprising columns like Todo, In Progress, and Done. 
+
+This arrangement offered a well-organised method for monitoring task progress, facilitating visualising and managing the workflow during development. The GitHub project Kanban was linked to the repository for consistent reference.
 
 <details><summary>Kanban</summary>
 <img src="./documentation/images/kanban.png">
@@ -307,7 +315,9 @@ The project implemented a simple Kanban Board structure, comprising columns like
 
 ### Navigation Header
 
-The navigation bar is a consistent element across all pages, designed using Bootstrap and optimised for full responsiveness. The left is centered around navigation of content while the right hand side is related to user authentication. Authenticated users can also see create posts and view profile links while unauthenticated users only see a prompt to login/register.
+The navigation bar is a consistent element across all pages, designed using Bootstrap and optimised for full responsiveness. 
+
+The left is centered around navigation of content while the right hand side is related to user authentication. Authenticated users can also see create posts and view profile links while unauthenticated users only see a prompt to login/register.
 
 The mobile version of the navbar has all the content rendered when a hamburger icon is clicked. When clicked a dropdown display is rendered showing all navigation links.
 
@@ -356,7 +366,13 @@ The Add/Edit products page displays a simple form where admins can add products 
 
 ### Item Detail Page
 
-The product detail page contains information about the selected product, including price, ingredients, the different options and extras for that product, as well as the included items if the item has some. Whenever the user selects an included item, the options and extras for this included item are retrieved from the database, allowing the user to customize fully the product.  Depending on which options, extras and included items the user selects, the price displayed in the Add to Cart button changes to let the user know how much the product is gonna be. Featuring an image of the product, users can view it before making a purchase decision.  With the option to adjust the quantity and an "Add to Cart" button where users can update their cart with a product quantity.
+The product detail page contains information about the selected product, including price, ingredients, the different options and extras for that product, as well as the included items if the item has some.
+
+ Whenever the user selects an included item, the options and extras for this included item are retrieved from the database, allowing the user to customize fully the product. 
+
+ Depending on which options, extras and included items the user selects, the price displayed in the Add to Cart button changes to let the user know how much the product is gonna be. Featuring an image of the product, users can view it before making a purchase decision. 
+
+ With the option to adjust the quantity and an "Add to Cart" button where users can update their cart with a product quantity.
 
 <details><summary>Product Detail</summary>
 <img src="./documentation/images/features/itemdetail.png">
@@ -378,7 +394,11 @@ This page serves as a hub for users to review and manage their selected items be
 
 ### Checkout Page
 
-The checkout page streamlines the purchasing process, guiding users through the final steps of completing their orders. Users can review their selected items, input shipping and payment information. Users can add email changes and name changes for orders, but this will only affect a singler purpose. The checkout page provides order summary details, ensuring transparency regarding the total cost. Stripe payment elements are used to handle the payment processing.
+The checkout page streamlines the purchasing process, guiding users through the final steps of completing their orders. Users can review their selected items, input shipping and payment information.
+
+ Users can add email changes and name changes for orders, but this will only affect a singler purpose. The checkout page provides order summary details, ensuring transparency regarding the total cost. 
+
+Stripe payment elements are used to handle the payment processing.
 
 <details><summary>Checkout</summary>
 <img src="./documentation/images/features/checkout.png">
@@ -387,7 +407,11 @@ The checkout page streamlines the purchasing process, guiding users through the 
 
 ### Confirmation Page
 
-The thank you and order confirmation page serves as a final acknowledgment of the user's completed purchase, expressing gratitude for their patronage. It provides a summary of the order details, including items purchased and total cost. Additionally, users may receive confirmation numbers or order IDs for reference. This page also serves as the order history page so users can review all orders they have purchased.
+The thank you and order confirmation page serves as a final acknowledgment of the user's completed purchase, expressing gratitude for their patronage. 
+
+It provides a summary of the order details, including items purchased and total cost. Additionally, users may receive confirmation numbers or order IDs for reference.
+
+ This page also serves as the order history page so users can review all orders they have purchased.
 
 <details><summary>Confirmation</summary>
 <img src="./documentation/images/features/confirmation.png">
@@ -396,7 +420,9 @@ The thank you and order confirmation page serves as a final acknowledgment of th
 
 ### Profile Page
 
-The profile page is where users can easily update their user details such as edit delivery information. Users can access an overview of their past orders, allowing them to track their purchase history and review previous transactions.
+The profile page is where users can easily update their user details such as edit delivery information.
+
+ Users can access an overview of their past orders, allowing them to track their purchase history and review previous transactions.
 
 <details><summary>Profile</summary>
 <img src="./documentation/images/features/profile.png">
@@ -404,7 +430,9 @@ The profile page is where users can easily update their user details such as edi
 
 ### Sign In page
 
-This page comprises a form with fields for entering a username and password. Beneath the form is the sign up button which submits the form. Below the form is a redirect to the register page if the user does not have an account. Click the remember me checkbox to remain logged in as a session.
+This page comprises a form with fields for entering a username and password. 
+
+Beneath the form is the sign up button which submits the form. Below the form is a redirect to the register page if the user does not have an account. Click the remember me checkbox to remain logged in as a session.
 
 <details><summary>Sign In</summary>
 <img src="./documentation/images/features/signin.png">
@@ -413,7 +441,11 @@ This page comprises a form with fields for entering a username and password. Ben
 
 ### Sign Up page
 
-It features a form with fields for inputting name, email, username, password, and password confirmation. Underneath the form, there is a link to log in for users with existing accounts, followed by the signup button. After signup, users receive a welcome email at the provided email address and are then directed to the home page.
+It features a form with fields for inputting name, email, username, password, and password confirmation. 
+
+Underneath the form, there is a link to log in for users with existing accounts, followed by the signup button. 
+
+After signup, users receive a welcome email at the provided email address and are then directed to the home page.
 
 <details><summary>Sign Up</summary>
 <img src="./documentation/images/features/signup.png">
@@ -456,7 +488,7 @@ An email is sent to a users selected email address on sign up requesting the ver
 
 ### Order Confirmation Email
 
-An email is sent to both authnetication and non authenticated users upon the completion of a successful purchase from the store
+An email is sent to both authenticated and non authenticated users upon the completion of a successful purchase from the store
 
 <details><summary>Order Confirmation Email</summary>
 <img src="./documentation/images/features/orderconfirmationemail.png">
@@ -538,17 +570,23 @@ Future creation of a Google business account will improve SEO performance and we
 
 In depth testing documentation can be found [here.](./TESTING.md)
 
-## Technologies And Languages
+## Technologies Used
 
 ### Languages Used
 
 - HTML
 - CSS
 - JavaScript
-- JQuery
-- Bootstrap
 - Python
+
+### Frameworks
+
+- Bootstrap
 - Django
+
+### Libraries
+
+- JQuery
 
 ### Python Modules Imported
 
@@ -568,15 +606,12 @@ In depth testing documentation can be found [here.](./TESTING.md)
 
 [Django Storages](https://pypi.org/project/django-storages/) Django Storages simplifies file storage management in Django apps by offering custom backends.
 
-[Django Embed Video](https://pypi.org/project/django-embed-video/) Django-embed-video is a Django app that simplifies embedding videos from various platforms, such as YouTube and Vimeo, into Django templates by providing template tags and model fields.
-
 [Stripe](https://pypi.org/project/stripe/) Stripe is a payment processing platform that enables payments by offering a developer-friendly API and a range of customizable payment solutions.
 
 ### Technologies and programs
 
 - [Bootstrap](https://getbootstrap.com/) was used to quickly layout the responsive structure of the website
 - [JQuery](https://jquery.com/) was used to apply all javascript functionality in a more efficient manner
-- [Chat-GPT](https://chat.openai.com/) was used to create all written content and copy of the website
 - [VS Code](https://code.visualstudio.com/) was used to code the website locally
 - [Figma](https://figma.com/) was used to create quick and precise wireframes
 - [Font Awesome](https://fontawesome.com/) was used for all icons on the website
@@ -615,7 +650,7 @@ To ensure the application is deployed correctly on Heroku it is mandatory to upd
 - Navigate to developers section (link located at the top right)
 - Go to API keys tab and copy the values of PUBLIC_KEY and SECRET_KEY and add them to your env.py file
 - Navigate to the Webhooks page from the tab in the menu at the top and click on add endpoint.
-- This section requires a link to the deployed application. The link should look like this https://your_website.herokuapp.com/checkout/wh/
+- This section requires a link to the deployed application. The link should look like this `https://your_website.herokuapp.com/checkout/wh/`
 - Choose the events the webhook should recieve and add endpoint.
 - When the application is deployed, run a test transaction to ensure the webhooks are working. The events chan be checked in the webhooks page.
 
@@ -737,14 +772,18 @@ To ensure the application is deployed correctly on Heroku it is mandatory to upd
 - Pick a unique name for the app, select a region, and click Create App.
 - On the next page select the settings tab and scroll down to Config Vars. If there are any files that should be hidden like credentials and API keys they should be added here. In this project, there are credentials that need to be protected. This project requires credentials added for:
 
-        1. Django's secret key
-        2. Database Credentials
-        3. AWS access key
-        3. AWS secret key
-        4. Email host password.
-        5. Stripe public key
-        6. stripe secret key
-        7. Stripe wh secret
+        ['DATABASE_URL'] = XXX
+        ['STRIPE_PUBLIC_KEY'] = XXX
+        ['STRIPE_SECRET_KEY'] = XXX
+        ['STRIPE_WH_SECRET'] = XXX
+        ['SECRET_KEY'] = XXX
+        ['MAILCHIMP_API_KEY'] = XXX
+        ['MAILCHIMP_LIST_ID']=XXX
+        ['EMAIL_HOST_USER']=XXX
+        ['EMAIL_HOST_PASS']=XXX
+        ['USE_AWS']=XXX
+        ['AWS_ACCESS_KEY_ID']=XXX
+        ['AWS_SECRET_ACCESS_KEY']=XXX
 
 - Scroll down to Buildpacks. The buildpacks will install further dependencies that are not included in the requirements.txt. For this project, the buildpack required is Python
 - From the tab above select the deploy section.
