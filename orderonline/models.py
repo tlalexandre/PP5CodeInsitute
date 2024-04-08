@@ -2,6 +2,7 @@ from django.db import models
 
 
 class MenuCategory(models.Model):
+    '''Model for Menu Categories'''
     class Meta:
         verbose_name_plural = 'Categories'
 
@@ -16,6 +17,7 @@ class MenuCategory(models.Model):
 
 
 class MenuItem(models.Model):
+    '''Model for Menu Items'''
     category = models.ForeignKey(
         'MenuCategory', null=True, blank=True, on_delete=models.SET_NULL)
     sku = models.CharField(max_length=254, null=True, blank=True)
@@ -41,6 +43,7 @@ class MenuItem(models.Model):
 
 
 class MenuItemIngredient(models.Model):
+    '''Model for Menu Item Ingredients'''
     menu_item = models.ForeignKey('MenuItem', on_delete=models.CASCADE)
     ingredient = models.ForeignKey('Ingredient', on_delete=models.CASCADE)
     option = models.ForeignKey(
@@ -53,6 +56,7 @@ class MenuItemIngredient(models.Model):
 
 
 class IngredientOption(models.Model):
+    '''Model for Ingredient Options'''
     menu_items = models.ManyToManyField('MenuItem', blank=True)
     category = models.ForeignKey(
         'MenuCategory', null=True, blank=True, on_delete=models.CASCADE)
@@ -64,6 +68,7 @@ class IngredientOption(models.Model):
 
 
 class Ingredient(models.Model):
+    '''Model for Ingredients'''
     name = models.CharField(max_length=254)
 
     def __str__(self):
@@ -71,6 +76,7 @@ class Ingredient(models.Model):
 
 
 class MenuItemIncludedItem(models.Model):
+    '''Model for Included Menu Items'''
     menu_item = models.ForeignKey(
         'MenuItem',
         related_name='included_menu_items',

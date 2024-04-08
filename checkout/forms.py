@@ -3,6 +3,7 @@ from .models import Order
 
 
 class OrderForm(forms.ModelForm):
+    ''' Form for the user to enter their details for an order'''
     class Meta:
         model = Order
         fields = (
@@ -44,6 +45,7 @@ class OrderForm(forms.ModelForm):
 
 
 class CheckoutForm(forms.Form):
+    ''' Form for the user to enter their details for an order'''
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     address = forms.CharField(max_length=100)

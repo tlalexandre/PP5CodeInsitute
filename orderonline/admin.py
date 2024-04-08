@@ -6,11 +6,13 @@ from .models import (
 
 
 class MenuItemAdmin(admin.ModelAdmin):
+    '''Menu Item Admin'''
     list_display = ('name', 'category', 'price')
     list_filter = ('category',)
 
 
 class MenuItemIngredientAdmin(admin.ModelAdmin):
+    '''Menu Item Ingredient Admin'''
     list_display = (
         'menu_item',
         'ingredient',
@@ -20,11 +22,13 @@ class MenuItemIngredientAdmin(admin.ModelAdmin):
 
 
 class MenuItemIngredientInline(admin.TabularInline):
+    '''Menu Item Ingredient Inline'''
     model = MenuItemIngredient
     extra = 1
 
 
 class IngredientOptionAdmin(admin.ModelAdmin):
+    '''Ingredient Option Admin'''
     inlines = [MenuItemIngredientInline]
 
 

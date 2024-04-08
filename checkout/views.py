@@ -46,6 +46,28 @@ def cache_checkout_data(request):
 
 
 def checkout(request):
+    """
+    Handles the checkout process.
+
+    This function creates a Stripe PaymentIntent and an Order instance
+    based on the items in the user's cart. 
+    It also handles the creation of OrderLineItem instances for each item
+    in the cart, including any included items and their options and extras.
+
+    If the user is authenticated, the function pre-fills the order form with
+    the user's default information from their profile.
+
+    The function also handles form validation and error handling,
+    including checking if the cart is empty and if the Stripe public key is 
+    missing.
+
+    Parameters:
+    request (HttpRequest): The request instance.
+
+    Returns:
+    HttpResponse: The response instance, 
+    rendering the 'checkout/checkout.html' template.
+    """
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 

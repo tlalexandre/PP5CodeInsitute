@@ -14,6 +14,7 @@ from profiles.models import UserProfile
 
 
 class Order(models.Model):
+    '''Order Model'''
     order_number = models.CharField(max_length=32, null=False, editable=False)
     user_profile = models.ForeignKey(
         UserProfile,
@@ -59,6 +60,7 @@ class Order(models.Model):
 
 
 class OrderLineItem(models.Model):
+    '''Order Line Item Model'''
     order = models.ForeignKey(
         Order, null=False, on_delete=models.CASCADE, related_name='lineitems')
     menu_item = models.ForeignKey(
@@ -108,6 +110,7 @@ class OrderLineItem(models.Model):
 
 
 class Cart(models.Model):
+    '''Cart Model'''
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     items = models.TextField()
 

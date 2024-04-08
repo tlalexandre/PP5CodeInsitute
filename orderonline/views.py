@@ -23,6 +23,32 @@ def order_online(request):
 
 
 def item_detail(request, item_id):
+    """
+    Handles the item detail view.
+
+    This function retrieves a specific menu item by its ID, 
+    fetches all the included items associated with it,
+    and prepares a form for adding the item to the cart.
+    It also fetches all menu categories.
+
+    For each included item, it fetches the associated ingredients
+    and categorizes them into 'Options' and 'Extras'.
+    These are stored in a dictionary where the key is the included 
+    item's ID.
+
+    Finally, it renders the 'item_detail.html' template,
+    passing in the menu item, categories, form, included items,
+    and the options/extras dictionary.
+
+    Parameters:
+    request (HttpRequest): The request instance.
+    item_id (int): The ID of the menu item.
+
+    Returns:
+    HttpResponse: The response instance,
+    rendering the 'item_detail.html' template.
+    """
+
     item = get_object_or_404(MenuItem, id=item_id)
     included_items = MenuItemIncludedItem.objects.filter(menu_item=item)
     form = AddToCartForm(item=item, initial={'item_id': item})
@@ -97,8 +123,8 @@ def edit_item(request, item_id):
             return redirect(reverse('item_detail', args=[item.id]))
         else:
             error_message = (
-                    'Failed to update product.'
-                    ' Please ensure the form is valid.')
+                'Failed to update product.'
+                ' Please ensure the form is valid.')
             messages.error(request, error_message)
     else:
         form = ItemForm(instance=item)

@@ -8,6 +8,7 @@ from .widgets import CustomClearableFileInput
 
 
 class MenuItemIncludedItemOptionForm(forms.Form):
+    '''Form for MenuItem Included Item Options'''
     option = forms.ModelChoiceField(
         queryset=MenuItemIngredient.objects.none(),
         widget=forms.RadioSelect, required=False
@@ -27,6 +28,7 @@ MenuItemIncludedItemOptionFormSet = formset_factory(
 
 
 class MenuItemIncludedItemChoiceField(forms.ModelChoiceField):
+    '''Model Choice Field for MenuItem Included Items'''
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.prices = {}
@@ -40,6 +42,7 @@ class MenuItemIncludedItemChoiceField(forms.ModelChoiceField):
 
 
 class IngredientChoiceField(forms.ModelChoiceField):
+    '''Model Choice Field for Ingredients'''
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.prices = {}
@@ -53,6 +56,7 @@ class IngredientChoiceField(forms.ModelChoiceField):
 
 
 class CustomCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
+    '''Custom Checkbox Select Multiple Widget'''
     def create_option(
         self, name, value, label, selected, index, subindex=None, attrs=None
     ):
@@ -66,6 +70,7 @@ class CustomCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
 
 
 class CustomRadioSelect(forms.RadioSelect):
+    '''Custom Radio Select Widget'''
     def create_option(
         self, name, value, label, selected, index, subindex=None, attrs=None
     ):
@@ -79,6 +84,7 @@ class CustomRadioSelect(forms.RadioSelect):
 
 
 class CustomSelect(forms.Select):
+    '''Custom Select Widget'''
     def create_option(
         self, name, value, label, selected, index, subindex=None, attrs=None
     ):
@@ -93,6 +99,38 @@ class CustomSelect(forms.Select):
 
 
 class AddToCartForm(forms.Form):
+    """
+    A form for adding a menu item to the cart.
+
+    This form includes fields for the menu item ID and the quantity.
+    The menu item ID is a hidden field, and the quantity is an integer
+    field with a minimum value of 1.
+
+    The form's initialization function takes an optional 'item' argument,
+    which is a menu item instance. If an item is provided, the function fetches
+    all the ingredients associated with the item and categorizes them into
+    'Options' and 'Extras'. These categories are then added as fields to 
+    the form.
+
+    If the 'Extras' category exists, it is added as a field with a custom
+    checkbox select multiple widget and is not required.
+    Other categories are added as fields with a custom radio select widget 
+    and are required.
+
+    If the 'adding' argument is True, the initial value of the 'Options' 
+    fields is set to the ID of the last ingredient in the category.
+
+    The function also fetches all the included items associated with 
+    the menu item and adds them as a field to the form with a custom
+    select widget. 
+    The initial value of this field is set to the first included item.
+
+    The 'get_options' method categorizes the ingredients into 'Options'
+    and 'Extras' based on their option attribute. 
+    If an ingredient does not have an option, it is categorized as an 'Extra'.
+    The method returns a dictionary where the keys are the category names and
+    the values are lists of ingredients in the category.
+    """
     item_id = forms.ModelChoiceField(
         queryset=MenuItem.objects.all(), widget=forms.HiddenInput()
     )
@@ -157,7 +195,7 @@ class AddToCartForm(forms.Form):
 
 
 class ItemForm(forms.ModelForm):
-
+    '''Form for Menu Items'''
     class Meta:
         model = MenuItem
         fields = '__all__'
