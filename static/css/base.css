@@ -11,6 +11,10 @@ body{
     background-color: #F3F7F5;
 }
 
+.font-size{
+    font-size: 1.2rem;
+}
+
 
 .brandLogo{
     background: url('/media/CoffeeBeanLogo.jpg') no-repeat center center fixed;

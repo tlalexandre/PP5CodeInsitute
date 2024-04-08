@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load enumerate %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'cart/css/cart.css' %}">
@@ -90,8 +89,11 @@
         
         {% endfor %}
         {% if cart %}
-        <div class="checkout-btn">
-            <a href="{% url 'checkout' %}" class="checkout-btn btn btn-primary">Proceed to Checkout</a>
+        <div>
+            <a href="{% url 'checkout' %}" class="checkout-btn btn btn-primary d-flex flex-sm-row flex-lg-column align-items-center">
+                <p class="mt-3">Proceed to Checkout</p>
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
         </div>
         {% endif %}
     </div>
