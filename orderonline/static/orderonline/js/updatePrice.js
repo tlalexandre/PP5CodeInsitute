@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Add the price of the selected includeditem
-        if (selectedIncludedItem.value !== '') {
+        if (selectedIncludedItem) {
             totalPrice += parseFloat(selectedIncludedItem.options[selectedIncludedItem.selectedIndex].dataset.price);
         }
 
