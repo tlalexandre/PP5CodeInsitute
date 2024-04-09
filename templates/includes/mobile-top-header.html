@@ -3,7 +3,7 @@
         <div id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
             <div class="text-center text-black nav-link d-block d-lg-none white bg-accent-color rounded">
                 <div><i class="fas fa-user fa-lg"></i></div>
-                <p class="my-0">Account</p>
+                <p class="my-0">{{ request.user.username|default:"Account"|capfirst }}</p>
             </div>
         </div>
         <div class="dropdown-menu border-0" aria-labelledby="user-options">

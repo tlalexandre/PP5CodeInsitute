@@ -19,32 +19,42 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
             
             if (optionsExtrasToUse && selectedIncludedItem in optionsExtrasToUse) {
-                var selectedOptionsExtras = optionsExtrasToUse[selectedIncludedItem];
+                let selectedOptionsExtras = optionsExtrasToUse[selectedIncludedItem];
                 if (selectedOptionsExtras) {
                     optionsExtrasDiv.innerHTML = '';
                     let extras = selectedOptionsExtras['Extras'];
                     let options = selectedOptionsExtras['Options'];
-                    let extrasTitle = document.createElement('h3');
-                    extrasTitle.innerHTML = 'Extras';
-                    optionsExtrasDiv.appendChild(extrasTitle);
-                    // Create checkboxes for extras
-                    for (let i = 0; i < extras.length; i++) {
-                        let input = document.createElement('input');
-                        input.type = 'checkbox';
-                        input.name = 'included_item_extra_' + extras[i].id; // Use the actual ID of the extra
-                        input.value = extras[i].id;
-                        input.dataset.price = extras[i].price; // Add data-price attribute
-                        optionsExtrasDiv.appendChild(input);
-                        let label = document.createElement('label');
-                        label.innerHTML = extras[i].price == 0 ? extras[i].ingredient__name : extras[i].ingredient__name + " - €" + extras[i].price;
-                        optionsExtrasDiv.appendChild(label);
-                        optionsExtrasDiv.appendChild(document.createElement('br'));
+
+                    if (extras.length > 0){
+                        let extrasTitle = document.createElement('h3');
+                        extrasTitle.innerHTML = 'Included Item Extras';
+                        let optionDiv = document.createElement('div');
+                        optionDiv.appendChild(extrasTitle);
+                        optionDiv.className = 'extrasDiv';
+                        
+                        for (let i = 0; i < extras.length; i++) {
+                            let input = document.createElement('input');
+                            input.type = 'checkbox';
+                            input.name = 'included_item_extra_' + extras[i].id; // Use the actual ID of the extra
+                            input.value = extras[i].id;
+                            input.dataset.price = extras[i].price; // Add data-price attribute
+                            optionDiv.appendChild(input);
+                            
+                            let label = document.createElement('label');
+                            label.innerHTML = extras[i].price == 0 ? extras[i].ingredient__name : extras[i].ingredient__name + " - €" + extras[i].price;
+                            optionDiv.appendChild(label);
+                            
+                            optionDiv.appendChild(document.createElement('br'));
+                        }
+                        
+                        optionsExtrasDiv.appendChild(optionDiv);
                     }
-                    // Create radio buttons for options
+                        // Create radio buttons for options
                     for (let optionName in options) {
                         let optionDiv = document.createElement('div');
+                        optionDiv.className = 'extrasDiv';
                         let optionTitle = document.createElement('h3');
-                        optionTitle.innerHTML = optionName;
+                        optionTitle.innerHTML = "Included Item " + optionName;
                         optionDiv.appendChild(optionTitle);
                         for (let i = 0; i < options[optionName].length; i++) {
                             let input = document.createElement('input');

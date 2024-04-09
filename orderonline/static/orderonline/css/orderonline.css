@@ -44,10 +44,61 @@ html{
     scroll-padding-top:280px;
     scroll-behavior: smooth;
 }
+
+.returnButton{
+    top: 10px; left: 10px;
+}
+
 .category{
     
     width: 100%;
 }
+
+#itemForm{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+}
+
+.formContainer{
+    display: flex;
+    justify-content: center;
+}
+.itemOptionsContainer{
+    width: 30%;
+}
+#options-extras{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+#itemForm h3{
+    font-size: 1.5rem;
+    color: #6B2934;
+}
+.optionDiv ul{
+    padding-left: 0;
+}
+
+.extrasDiv{
+    width: 50%;
+}
+#itemForm h3:after{
+    content: "";
+    display: block;
+    width: 75%;
+    height: 8px;
+    background-color: #6B2934;
+}
+
+#itemForm li{
+    list-style-type: none;
+}
+#id_included_item{
+    width: 75%;
+    
+}
+
 .quantity-button{
     width: 25px;
     height: 25px;
@@ -89,6 +140,33 @@ html{
     border: 1px solid #6B2934;
 }
 
+.quantityHeading::after{
+    width: 25% !important;
+}
+
+@media (max-width: 900px) {
+    .formContainer{
+        display: block;
+    } 
+}
+@media screen and (min-width: 768px) {
+    #options-extras{
+        flex-direction: row;
+        flex-wrap: wrap;
+    } 
+}
+@media screen and (max-width: 768px) {
+    .itemOptionsContainer{
+        width: 100%;
+    }
+    #options-extras{
+        width: 100%;
+    }
+    .extrasDiv{
+        width: 100%;
+    }
+}
+
 @media (max-width: 576px) {
     .navbar-menu {
         display: flex;
@@ -109,6 +187,13 @@ html{
     }
     .card-img-top-fixed {
         width: 100px;
+    }
+    #id_included_item{
+        width: 100%;
+        
+    }
+    #itemForm h3:after{
+        width: 100%;
     }
 }
 

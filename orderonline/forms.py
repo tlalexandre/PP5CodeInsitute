@@ -176,7 +176,7 @@ class AddToCartForm(forms.Form):
                     queryset=included_items,
                     required=False,
                     widget=CustomSelect(
-                        attrs={'class': 'd-block mx-auto w-100'})
+                        attrs={'class': 'd-block'})
                 )
                 self.fields['included_item'].initial = included_items.first()
 

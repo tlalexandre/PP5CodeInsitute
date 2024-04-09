@@ -157,15 +157,38 @@ footer a{
     min-height: 180px;
 }
 
+
+.profile-form-input{
+    width: 100%;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    color: #aab7c4;
+}
+
+
+.profile-form-input:focus,
+.profile-form-input:active {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+#id_country{
+  width: 36%;
+}
+
+select,select option{
+  color: #000;
+}
+
+select:invalid, select option[value=""]{
+  color: #aab7c4 !important;
+
+}
+
 /* fixed top navbar only on medium and up */
 @media (min-width: 992px) {
-    .fixed-top-desktop-only {
-        position: fixed;
-        top: 0;
-        right: 0;
-        left: 0;
-        z-index: 1030;
-    }
+
     .header-container{
         height: 174px;
     }

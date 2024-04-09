@@ -24,7 +24,7 @@
     </div>
     <div class="w-75 item-card-body mt-4 mx-auto rounded justify-content-center">
         <div class="position-relative">
-            <a href="{% url 'order_online' %}" class="rounded p-2 position-absolute bg-white brand-color" style="top: 10px; left: 10px;">
+            <a href="{% url 'order_online' %}" class="rounded p-2 position-absolute bg-white brand-color returnButton">
                 <i class="fas fa-arrow-left"></i>
             </a>
             {% if item.image %}
@@ -37,20 +37,28 @@
         <div class="d-flex mx-4">
             <div class="item-info w-100">
                 <p class="card-text my-2 ">Ingredients : {{ item.description }}</p>
-                {{ options_extras|json_script:"optionsExtras" }}
                 
-                <form method="POST" action="{% url 'add_to_cart' %}">
+                <form method="POST" id="itemForm" action="{% url 'add_to_cart' %}">
                     {% csrf_token %}
                     {{ form.item_id }}  <!-- Render the item_id field here -->
                     <!-- Render the rest of the fields here -->
-                    {% for field in form %}
-                    {% if not field.is_hidden and field.name != 'quantity' %}
-                    {{ field.errors }}
-                    {{ field.label_tag }} {{ field }}
-                    {% endif %}
-                    {% endfor %}
-                    <div id="options-extras"></div>
-                    <h3>Quantity</h3>
+                    <div class="formContainer">
+
+                        <div class="itemOptionsContainer">
+                            {% for field in form %}
+                            {% if not field.is_hidden and field.name != 'quantity' %}
+                            {{ field.errors }}
+                            <div class="optionDiv">
+                                
+                                <h3>{{ field.label_tag }}</h3> 
+                                {{ field }}
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div id="options-extras"></div>
+                    </div>
+                    <h3 class="quantityHeading">Quantity</h3>
                     <div class="d-flex justify-content-around ">
                         <button type="button" id="decrease-id_quantity" class="bg-brand-color white rounded-pill mb-2 quantity">-</button>
                         {{ form.quantity }}  <!-- Render the quantity field here -->
@@ -68,13 +76,14 @@
                 </form>
             </div>
         </div>    
-
+        
     </div>
 </div>
 
 {% endblock %}
 
 {% block extra_js %}
+{{ options_extras|json_script:"optionsExtras" }}
 <script src="{% static 'orderonline/js/itemDetail.js' %}"></script>
 <script src="{% static 'orderonline/js/updatePrice.js' %}"></script>
 {% endblock %}
