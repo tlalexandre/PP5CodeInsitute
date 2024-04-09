@@ -27,3 +27,16 @@ textarea.non-resizable {
     height: 50px;
     width: 100%;
 }
+
+
+.homeImg1{
+    max-height: 600px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.homeImg2{
+    max-height: 400px;
+    width: 100%;
+    object-fit: cover;
+}
