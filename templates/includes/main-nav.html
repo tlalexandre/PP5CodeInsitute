@@ -49,7 +49,13 @@
 
         <li class="nav-item dropdown">
             <a class="logo-font font-weight-300 nav-link text-black text-center" href="{% url 'contact' %}"  aria-haspopup="true" aria-expanded="false">
+                {% if request.resolver_match.url_name == 'contact' %}
+                <span class="bg-brand-color white px-4 mx-2 rounded-pill">
+                {% endif %}
                 Contact
+                {% if request.resolver_match.url_name == 'contact' %}
+                    </span>
+                {% endif %}
             </a>
         </li>
     </ul>
