@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             } else {
                 optionsExtrasToUse = optionsExtras;
             }
+            
             if (optionsExtrasToUse && selectedIncludedItem in optionsExtrasToUse) {
                 var selectedOptionsExtras = optionsExtrasToUse[selectedIncludedItem];
                 if (selectedOptionsExtras) {
