@@ -80,7 +80,6 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#add-to-cart-button').click(function(event) {
-        console.log('clicked')
         setTimeout(function() {
             event.target.disabled = true;
         }, 100); // delay in milliseconds
