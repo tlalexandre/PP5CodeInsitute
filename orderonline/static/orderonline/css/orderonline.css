@@ -44,6 +44,7 @@ html{
     scroll-padding-top:280px;
     scroll-behavior: smooth;
 }
+/* Item Detail */
 
 .returnButton{
     top: 10px; left: 10px;
@@ -111,19 +112,8 @@ html{
 .nav-link{
     color: inherit;
 }
-@media (min-width:576px) {
-    
-    .navbar-menu{
-        position: fixed;
-        left: 0;
-        top: 280px;
-        z-index: 1000;
-        width: 15%;
-    }
-}
 
 
-/* Item Detail */
 
 .item-detail-img{
     width: 100%;
@@ -138,30 +128,16 @@ html{
     width: 25% !important;
 }
 
-@media (max-width: 900px) {
-    .formContainer{
-        display: block;
-    } 
-}
-@media screen and (min-width: 768px) {
-    #options-extras{
-        flex-direction: row;
-        flex-wrap: wrap;
-    } 
-}
-@media screen and (max-width: 768px) {
-    .itemOptionsContainer{
-        width: 100%;
-    }
-    #options-extras{
-        width: 100%;
-    }
-    .extrasDiv{
-        width: 100%;
-    }
+@media (min-width:576px) {
     
+    .navbar-menu{
+        position: fixed;
+        left: 0;
+        top: 280px;
+        z-index: 1000;
+        width: 15%;
+    }
 }
-
 @media (max-width: 576px) {
     .navbar-menu {
         display: flex;
@@ -194,3 +170,27 @@ html{
         width: 100% !important;
     }
 }
+@media screen and (min-width: 768px) {
+    #options-extras{
+        flex-direction: row;
+        flex-wrap: wrap;
+    } 
+}
+@media screen and (max-width: 768px) {
+    .itemOptionsContainer{
+        width: 100%;
+    }
+    #options-extras{
+        width: 100%;
+    }
+    .extrasDiv{
+        width: 100%;
+    }
+    
+}
+@media (max-width: 900px) {
+    .formContainer{
+        display: block;
+    } 
+}
+

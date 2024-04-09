@@ -1,9 +1,7 @@
-
-
 @import url('https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Jost:ital@0;1&display=swap');
 
 /* General Settings */
-body{
+body {
     height: 100%;
     font-family: "Jost", sans-serif;
     font-weight: 400;
@@ -12,49 +10,54 @@ body{
     background-color: #F3F7F5;
 }
 
-.font-size{
+.font-size {
     font-size: 1.2rem;
 }
 
-
-.brandLogo{
+.brandLogo {
     background: url('/media/CoffeeBeanLogo.jpg') no-repeat center center fixed;
     background-color: brown;
     height: 100px;
 }
-.brand-color{
+
+.brand-color {
     color: #6B2934;
 }
-.white{
+
+.white {
     color: #F3F7F5 !important;
 }
-.bg-white{
+
+.bg-white {
     background-color: #F3F7F5 !important;
 
 }
-.bg-brand-color{
+
+.bg-brand-color {
     background-color: #6B2934;
 }
-.bg-accent-color{
+
+.bg-accent-color {
     background-color: #BC926D;
 }
-.allerta{
+
+.allerta {
     font-family: "Allerta Stencil", sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 1.7rem;
 }
 
-.rounded{
+.rounded {
     border-radius: 1.25rem !important;
 }
-.rounded-right{
+
+.rounded-right {
     border-top-right-radius: 1.25rem !important;
     border-bottom-right-radius: 1.25rem !important;
 }
 
-
-.floating-button{
+.floating-button {
     position: fixed;
     bottom: 1rem;
     right: 1rem;
@@ -74,48 +77,49 @@ body{
     width: 1.5rem;
 }
 
-
 /* Bootstrap */
 .btn-primary {
     color: #fff;
     background-color: #7a363f !important;
-    border:none;
+    border: none;
 }
 
 .btn-info {
     color: #fff;
     background-color: #282639 !important;
-    border:none
+    border: none
 }
+
 .btn-success {
     color: #fff;
     background-color: #5a8b4b !important;
-    border:none
+    border: none
 }
+
 .btn-warning {
     color: #fff;
     background-color: #d77b13 !important;
-    border:none
+    border: none
 }
+
 .btn-danger {
     color: #fff;
     background-color: #f44336 !important;
     border: none;
 }
 
-.no-bullets{
+.no-bullets {
     list-style-type: none;
 }
 
-
 /* Product form */
 
-.btn-file{
+.btn-file {
     position: relative;
     overflow: hidden;
 }
 
-.btn-file input[type=file]{
+.btn-file input[type=file] {
     position: absolute;
     top: 0;
     right: 0;
@@ -130,35 +134,35 @@ body{
     border-color: #f44336;
 }
 
-.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
     background-color: #f44336;
     border-color: #f44336;
     border-radius: 0;
 }
 
-.img-form{
+.img-form {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.main-logo-link img{
+.main-logo-link img {
     height: 100px;
 }
 
-footer a{
+footer a {
     color: #6B2934;
 }
 
-.header-container{
+.header-container {
     height: 196px;
 }
-.header-height{
+
+.header-height {
     min-height: 180px;
 }
 
-
-.profile-form-input{
+.profile-form-input {
     width: 100%;
     border: none;
     border-radius: 0.25rem;
@@ -167,32 +171,34 @@ footer a{
     color: #aab7c4;
 }
 
-
 .profile-form-input:focus,
 .profile-form-input:active {
-  box-shadow: 0 1px 3px 0 #cfd7df;
+    box-shadow: 0 1px 3px 0 #cfd7df;
 }
 
-#id_country{
-  width: 36%;
+#id_country {
+    width: 36%;
 }
 
-select,select option{
-  color: #000;
+select,
+select option {
+    color: #000;
 }
 
-select:invalid, select option[value=""]{
-  color: #aab7c4 !important;
+select:invalid,
+select option[value=""] {
+    color: #aab7c4 !important;
 
 }
 
 /* fixed top navbar only on medium and up */
 @media (min-width: 992px) {
 
-    .header-container{
+    .header-container {
         height: 174px;
     }
-    .header-height{
+
+    .header-height {
         min-height: 174px;
     }
 }
@@ -200,12 +206,11 @@ select:invalid, select option[value=""]{
 /* pad the top a bit when navbar is collapsed on mobile */
 @media (max-width: 991px) {
 
-    .coffeeCup{
+    .coffeeCup {
         margin-top: 1.5rem;
     }
 
-    .allerta{
+    .allerta {
         font-size: 1.2rem;
     }
 }
-
