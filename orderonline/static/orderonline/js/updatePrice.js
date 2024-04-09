@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     let totalPrice = originalPrice;
 
-    console.log("Original Price: ", originalPrice);
 
     // Function to calculate total price
     function calculateTotalPrice() {
@@ -26,13 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let selectedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
         for (let i = 0; i < selectedInputs.length; i++) {
-            console.log("Selected Input Price: ", selectedInputs[i].dataset.price);
             totalPrice += parseFloat(selectedInputs[i].dataset.price);
         }
 
         // Add the price of the selected includeditem
         if (selectedIncludedItem) {
-            console.log("Selected Included Item Price: ", selectedIncludedItem.options[selectedIncludedItem.selectedIndex].dataset.price);
             totalPrice += parseFloat(selectedIncludedItem.options[selectedIncludedItem.selectedIndex].dataset.price);
         }
 
