@@ -12,13 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (originalText.startsWith('Update Item ')) {
         originalPrice = parseFloat(originalText.replace('Update Item ', '').replace(' €', ''));
     }
-    let totalPrice = originalPrice;
+
 
 
     // Function to calculate total price
     function calculateTotalPrice() {
         // Reset totalPrice to the original price
-        totalPrice = originalPrice;
+        let totalPrice = originalPrice;
 
         // Select all checkbox, radio, and select inputs
         let inputs = document.querySelectorAll('input[type="checkbox"], input[type="radio"]');
@@ -27,24 +27,23 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < selectedInputs.length; i++) {
             totalPrice += parseFloat(selectedInputs[i].dataset.price);
         }
-
+        
         // Add the price of the selected includeditem
-        if (selectedIncludedItem) {
+        if (selectedIncludedItem.value !== '') {
             totalPrice += parseFloat(selectedIncludedItem.options[selectedIncludedItem.selectedIndex].dataset.price);
         }
 
         // Get the original text without the price
         let originalTextWithoutPrice = originalText.replace(originalPrice.toFixed(2) + ' €', '').trim();
-
         // Update the button text with the new price
         button.textContent = originalTextWithoutPrice + ' ' + totalPrice.toFixed(2) + ' €';
-
         // Add change event listener to each input
         for (let i = 0; i < inputs.length; i++) {
             inputs[i].addEventListener('change', calculateTotalPrice);
         }
     }
 
+    
     // Add change event listener to the includeditem select field
     let includedItemSelect = document.querySelector('select[name="included_item"]');
     if (includedItemSelect) {
