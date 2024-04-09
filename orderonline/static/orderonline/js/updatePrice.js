@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function calculateTotalPrice() {
         // Reset totalPrice to the original price
         let totalPrice = originalPrice;
-
         // Select all checkbox, radio, and select inputs
         let inputs = document.querySelectorAll('input[type="checkbox"], input[type="radio"]');
 
@@ -27,12 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < selectedInputs.length; i++) {
             totalPrice += parseFloat(selectedInputs[i].dataset.price);
         }
-        
         // Add the price of the selected includeditem
         if (selectedIncludedItem) {
-            totalPrice += parseFloat(selectedIncludedItem.options[selectedIncludedItem.selectedIndex].dataset.price);
+            let price = parseFloat(selectedIncludedItem.options[selectedIncludedItem.selectedIndex].dataset.price);
+            if (isNaN(price)) {
+                price = 0;
+            }
+            totalPrice += price;
         }
-
         // Get the original text without the price
         let originalTextWithoutPrice = originalText.replace(originalPrice.toFixed(2) + ' €', '').trim();
         // Update the button text with the new price
@@ -74,5 +75,14 @@ $(document).ready(function() {
         if (!isNaN(quantity) && quantity > 1) {
             quantityInput.val(quantity - 1);
         }
+    });
+});
+
+$(document).ready(function() {
+    $('#add-to-cart-button').click(function(event) {
+        console.log('clicked')
+        setTimeout(function() {
+            event.target.disabled = true;
+        }, 100); // delay in milliseconds
     });
 });
