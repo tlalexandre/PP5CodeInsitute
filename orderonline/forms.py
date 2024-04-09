@@ -136,7 +136,11 @@ class AddToCartForm(forms.Form):
     )
     quantity = forms.IntegerField(
         min_value=1, initial=1,
-        widget=forms.NumberInput(attrs={'class': 'form-control quantity'})
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control quantityInput',
+            'min': '1',
+            'readonly': 'readonly'
+        })
     )
 
     def __init__(self, *args, item=None, adding=True, **kwargs):

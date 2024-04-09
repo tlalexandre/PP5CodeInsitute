@@ -98,22 +98,16 @@ html{
     width: 75%;
     
 }
-
-.quantity-button{
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background-color: #6B2934;
-    color: #F3F7F5;
-    border: none;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    margin: 5px;
-    padding: 5px;
+.quantityButton{
+    width: 50px;
 }
+.quantityInput {
+    width: 50px;
+    -webkit-appearance: none; /* for Chrome */
+    -moz-appearance: none; /* for Firefox */
+    appearance: none;
+}
+
 .nav-link{
     color: inherit;
 }
@@ -165,6 +159,7 @@ html{
     .extrasDiv{
         width: 100%;
     }
+    
 }
 
 @media (max-width: 576px) {
@@ -195,8 +190,7 @@ html{
     #itemForm h3:after{
         width: 100%;
     }
-}
-
-.quantity{
-    width: 50px;
+    .quantityHeading::after{
+        width: 100% !important;
+    }
 }

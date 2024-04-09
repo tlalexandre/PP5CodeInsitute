@@ -43,7 +43,6 @@
                     {{ form.item_id }}  <!-- Render the item_id field here -->
                     <!-- Render the rest of the fields here -->
                     <div class="formContainer">
-
                         <div class="itemOptionsContainer">
                             {% for field in form %}
                             {% if not field.is_hidden and field.name != 'quantity' %}
@@ -60,9 +59,9 @@
                     </div>
                     <h3 class="quantityHeading">Quantity</h3>
                     <div class="d-flex justify-content-around ">
-                        <button type="button" id="decrease-id_quantity" class="bg-brand-color white rounded-pill mb-2 quantity">-</button>
+                        <button type="button" id="decrease-id_quantity" class="bg-brand-color white rounded-pill mb-2 quantityButton">-</button>
                         {{ form.quantity }}  <!-- Render the quantity field here -->
-                        <button type="button" id="increase-id_quantity" class="bg-brand-color white rounded-pill mb-2 quantity">+</button>
+                        <button type="button" id="increase-id_quantity" class="bg-brand-color white rounded-pill mb-2 quantityButton">+</button>
                     </div>
                     {% if request.user.is_superuser %}
                     <small class="ml-3">
